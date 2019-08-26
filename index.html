@@ -3,15 +3,18 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=h, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 
     <link rel='stylesheet' href="/css/main.css">
+
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
 </head>
 
 <body>
-    <div class="App">
+    <!-- <div class="App">
         <div class="TimeboxEditor inactive">
             <label for="">Co robisz?</label><input disabled type="text" value="Ucze się skrótów klawiszowych"><br>
             <label for="">Ile minut?</label><input disabled type="number" value="25"><br>
@@ -25,7 +28,103 @@
             <button>Stop</button>
             <button>Pauzuj</button>
             Liczba przerw: 2
-        </div>
+        </div> -->
+
+    <div class="root"></div>
+
+    <script type='text/javascript'>
+        const root = document.querySelector('.root');
+
+        const App = React.createElement(
+            "div",
+            { className: "App" },
+            React.createElement(
+                "div",
+                {
+                    className: 'TimeboxEditor inactive',
+                },
+                React.createElement(
+                    "label",
+                    {},
+                    "Co robisz?"
+                ),
+                React.createElement(
+                    "input",
+                    {
+                        type: 'text',
+                        disabled: true,
+                        value: 'Ucze się skrótów klawiszowych'
+                    },
+                ),
+                React.createElement(
+                    "br",
+                    {},
+                ),
+                React.createElement(
+                    "label",
+                    {},
+                    "Co robisz?"
+                ),
+                React.createElement(
+                    "input",
+                    {
+                        type: 'number',
+                        disabled: true
+                    },
+                ),
+                React.createElement(
+                    "br",
+                    {},
+                ),
+                React.createElement(
+                    "button",
+                    {},
+                    'Zacznij',
+                ),
+            ),
+            React.createElement(
+                "div",
+                { className: "Timebox" },
+                React.createElement(
+                    "h1",
+                    {},
+                    "Ucze się skrótów klawiszowych"
+                ),
+                React.createElement(
+                    "h2",
+                    { className: "Clock" },
+                    "Pozostało: 12:43"
+                ),
+                React.createElement(
+                    "div",
+                    { className: "ProgressBar" },
+                ),
+                React.createElement(
+                    "button",
+                    { disabled: true },
+                    'Start',
+                ),
+                React.createElement(
+                    "button",
+                    {},
+                    'Stop',
+                ),
+                React.createElement(
+                    "button",
+                    {},
+                    'Pauzuj',
+                ),
+                React.createElement(
+                    "span",
+                    {},
+                    'Liczba przerw: 2',
+                ),
+            ),
+        );
+
+
+        ReactDOM.render(App, root);
+    </script>
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-@import "normalize";
+@import "/css/normalize.css";
 @import url("https://fonts.googleapis.com/css?family=Fira+Code:300,400,600&display=swap&subset=latin-ext");
 html {
   box-sizing: border-box;
@@ -20,8 +20,10 @@ button {
   background: white;
   border: none;
   padding: 0.75rem 3rem;
+  font-size: 1rem;
   font-family: "Fira Code", monospace;
   font-weight: 400;
+  margin: 0 0.5rem;
 }
 
 .Clock {
