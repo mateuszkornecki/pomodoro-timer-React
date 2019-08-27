@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <div class="App"></div>
+
 
 
     <div class="root"></div>
@@ -24,9 +24,13 @@
 
 
              function App(){
-                return<><TimeboxEditor /><Timebox /></>
+                return(
+                <div className="App">
+                    <TimeboxEditor />
+                    <Timebox />
+                </div>
+                )
             }
-
 
             function Clock({hours, minutes, seconds, miliseconds}) {
                 hours = hours.toString();
@@ -61,18 +65,32 @@
                 )
             }       
 
-            function Timebox() {
-                return(
-                    <div className="Timebox">
-                        <h1>Ucze się skrótów klawiszowych</h1>
-                        <Clock hours={26} minutes={63} seconds={98} miliseconds={1000}/> 
-                        <ProgressBar percent={25} trackRemaining={false} />
-                        <button disabled>Start</button>
-                        <button>Stop</button>
-                        <button>Pauzuj</button>
-                        Liczba przerw: 2
-                    </div>
-                )
+            class Timebox extends React.Component {
+
+                constructor(props) {
+                    super(props);
+                    this.state ={
+                        isRunning: true,
+                        isPaused: false,
+                        pausesCount:0,
+                    }
+                }
+
+
+                render() {
+                    const  {isRunning, isPaused, pausesCount} = this.state;
+                    return(
+                        <div className="Timebox">
+                            <h1>Ucze się skrótów klawiszowych</h1>
+                            <Clock hours={26} minutes={63} seconds={98} miliseconds={1000}/> 
+                            <ProgressBar percent={25} trackRemaining={false} />
+                            <button disabled={isRunning}>Start</button>
+                            <button disabled={!isRunning}>Stop</button>
+                            <button disabled={!isRunning}>{isPaused ? 'Wznów' : 'Pauzuj'}</button>
+                            Liczba przerw: {pausesCount}
+                        </div>
+                    )
+                }
             }
 
                 ReactDOM.render(<App />, document.querySelector('.root'));
