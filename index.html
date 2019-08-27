@@ -16,24 +16,17 @@
 </head>
 
 <body>
-    <div class="App">
-        <div class="TimeboxEditor inactive">
-            <label for="">Co robisz?</label><input disabled type="text" value="Ucze się skrótów klawiszowych"><br>
-            <label for="">Ile minut?</label><input disabled type="number" value="25"><br>
-            <button disabled>Zacznij</button>
-        </div>
-        <div class="Timebox">
-            <h1>Ucze się skrótów klawiszowych</h1>
-            <!-- <h2 class="Clock">Pozostało 12:32</h2> -->
-            <div class="root"></div>
+    <div class="App"></div>
 
-            <button disabled>Start</button>
-            <button>Stop</button>
-            <button>Pauzuj</button>
-            Liczba przerw: 2
-        </div>
 
-        <script type='text/babel'>
+    <div class="root"></div>
+    <script type='text/babel'>
+
+
+             function App(){
+                return<><TimeboxEditor /><Timebox /></>
+            }
+
 
             function Clock({hours, minutes, seconds, miliseconds}) {
                 hours = hours.toString();
@@ -44,8 +37,7 @@
                 let minutesCounter = `${(minutes < 0)? '00' : (minutes<10)? `0${minutes}`: (minutes<60)? minutes : '59'}`;
                 let secondsCounter = `${(seconds < 0)? '00' : (seconds<10)? `0${seconds}`: (seconds<60)? seconds : '59'}`;
                 let milisecondsCounter = `${(miliseconds < 0)? '000' : (miliseconds<10)? `00${miliseconds}`: (miliseconds<100)? `0${miliseconds}` : (miliseconds<1000)? miliseconds : `999`}`;
-                return <h2 className="Clock"> Pozostało {hoursCounter}:{minutesCounter}:{secondsCounter}:{milisecondsCounter}</h2>
-                
+                return <h2 className="Clock"> Pozostało {hoursCounter}:{minutesCounter}:{secondsCounter}:{milisecondsCounter}</h2>  
             }
 
             function ProgressBar({percent, trackRemaining}){
@@ -59,7 +51,31 @@
                 )
             }
 
-                ReactDOM.render(<><Clock hours={26} minutes={63} seconds={98} miliseconds={1000}/> <ProgressBar percent={25} trackRemaining={false} /></>, document.querySelector('.root'));
+            function TimeboxEditor(){
+                return(
+                    <div className="TimeboxEditor inactive">
+                        <label htmlFor="taskInput">Co robisz?</label><input id="taskInput" disabled type="text" value="Ucze się skrótów klawiszowych" /><br />
+                        <label htmlFor="timeInput">Ile minut?</label><input id="timeInput" disabled type="number" value="25" /><br />
+                        <button disabled>Zacznij</button>
+                     </div>
+                )
+            }       
+
+            function Timebox() {
+                return(
+                    <div className="Timebox">
+                        <h1>Ucze się skrótów klawiszowych</h1>
+                        <Clock hours={26} minutes={63} seconds={98} miliseconds={1000}/> 
+                        <ProgressBar percent={25} trackRemaining={false} />
+                        <button disabled>Start</button>
+                        <button>Stop</button>
+                        <button>Pauzuj</button>
+                        Liczba przerw: 2
+                    </div>
+                )
+            }
+
+                ReactDOM.render(<App />, document.querySelector('.root'));
 
 
         </script>
