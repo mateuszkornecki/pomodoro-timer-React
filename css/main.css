@@ -56,17 +56,19 @@ label {
   width: 100%;
   border: 1px solid white;
   margin-bottom: 1rem;
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.ProgressBar--reverse {
+  justify-content: flex-end;
 }
 
-.ProgressBar::before {
-  width: calc(75% - 8px);
-  content: "";
+.ProgressBar > div {
+  /* width: calc(100% - 25%); */
   height: 20px;
-  right: 4px;
-  top: 4px;
+  margin: 4px;
   background: #5c5c5c;
-  position: absolute;
 }
 
 .TimeboxEditor {

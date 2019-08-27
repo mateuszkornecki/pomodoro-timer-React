@@ -26,7 +26,7 @@
             <h1>Ucze się skrótów klawiszowych</h1>
             <!-- <h2 class="Clock">Pozostało 12:32</h2> -->
             <div class="root"></div>
-            <div class="ProgressBar "></div>
+
             <button disabled>Start</button>
             <button>Stop</button>
             <button>Pauzuj</button>
@@ -47,11 +47,19 @@
                 return <h2 className="Clock"> Pozostało {hoursCounter}:{minutesCounter}:{secondsCounter}:{milisecondsCounter}</h2>
                 
             }
-            const root = document.querySelector('.root');
-            const element = <Clock hours={25} minutes={63} seconds={98} miliseconds={1000}/>
 
+            function ProgressBar({percent, trackRemaining}){
+                const ProgressBarClasses = trackRemaining === true ? 'ProgressBar ProgressBar--reverse' : 'ProgressBar';
+                const ProgressBarWidth = trackRemaining === true ? `calc(100% - ${percent}%)` : `${percent}%`;
+                
+                return (
+                    <div className={ProgressBarClasses}>
+                        <div style={{width: `${ProgressBarWidth}`}}></div>
+                    </div>
+                )
+            }
 
-                ReactDOM.render(element, root);
+                ReactDOM.render(<><Clock hours={26} minutes={63} seconds={98} miliseconds={1000}/> <ProgressBar percent={25} trackRemaining={false} /></>, document.querySelector('.root'));
 
 
         </script>
