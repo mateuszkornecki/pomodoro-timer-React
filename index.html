@@ -45,6 +45,7 @@
                 let secondsCounter = `${(seconds < 0)? '00' : (seconds<10)? `0${seconds}`: (seconds<60)? seconds : '59'}`;
                 let milisecondsCounter = `${(miliseconds < 0)? '000' : (miliseconds<10)? `00${miliseconds}`: (miliseconds<100)? `0${miliseconds}` : (miliseconds<1000)? miliseconds : `999`}`;
                 return <h2 className="Clock"> Pozostało {hoursCounter}:{minutesCounter}:{secondsCounter}:{milisecondsCounter}</h2>
+                
             }
             const root = document.querySelector('.root');
             const element = <Clock hours={25} minutes={63} seconds={98} miliseconds={1000}/>
