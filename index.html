@@ -33,7 +33,7 @@
             }
 
 
-            function minMax(min, max, value) {
+            function timeInterval(min, max, value) {
                 //It will return a number between min and max
                 value = Math.max(min, Math.min(value, max))
                 return value;
@@ -49,7 +49,7 @@
             }
 
             function normalizeTime (min, max, targetLength, value) {
-               return fillWithZeros(targetLength, minMax(min, max, value));
+               return fillWithZeros(targetLength, timeInterval(min, max, value));
             }
 
             function Clock({hours, minutes, seconds, miliseconds}) {
@@ -93,6 +93,20 @@
                     }
                 }
 
+                handleStart = (e) => {
+                    this.setState({
+                        isRunning: true
+                    })
+                }
+
+                handleStop = (e) => {
+                    this.setState({
+                        isRunning: false,
+                        isPaused: false,
+                        pausesCount:0
+                    })
+                }
+
                 render() {
                     const  {isRunning, isPaused, pausesCount} = this.state;
                     return(
@@ -100,8 +114,8 @@
                             <h1>Ucze się skrótów klawiszowych</h1>
                             <Clock hours={26} minutes={63} seconds={98} miliseconds={1000}/> 
                             <ProgressBar percent={25} trackRemaining={false} />
-                            <button disabled={isRunning}>Start</button>
-                            <button disabled={!isRunning}>Stop</button>
+                            <button onClick={this.handleStart} disabled={isRunning}>Start</button>
+                            <button onClick={this.handleStop} disabled={!isRunning}>Stop</button>
                             <button disabled={!isRunning}>{isPaused ? 'Wznów' : 'Pauzuj'}</button>
                             Liczba przerw: {pausesCount}
                         </div>
