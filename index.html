@@ -52,17 +52,17 @@
                return fillWithZeros(targetLength, timeInterval(min, max, value));
             }
 
-            function Clock({hours, minutes, seconds, miliseconds}) {
+            function Clock({className="", hours, minutes, seconds, miliseconds}) {
                 hours = normalizeTime(0, 23, 2, hours);
                 minutes = normalizeTime(0, 59, 2, minutes);
                 seconds = normalizeTime(0, 59, 2, seconds);
                 miliseconds = normalizeTime(0, 999, 3, miliseconds);
             
-                return <h2 className="Clock"> Pozostało {hours}:{minutes}:{seconds}:{miliseconds}</h2>  
+                return <h2 className={"Clock " + className} > Pozostało {hours}:{minutes}:{seconds}:{miliseconds}</h2>  
             }
 
-            function ProgressBar({percent, trackRemaining}){
-                const ProgressBarClasses = trackRemaining === true ? 'ProgressBar ProgressBar--reverse' : 'ProgressBar';
+            function ProgressBar({className="", percent, trackRemaining}){
+                const ProgressBarClasses = trackRemaining === true ? `ProgressBar ProgressBar--reverse ${className}` : `ProgressBar ${className}`;
                 const ProgressBarWidth = trackRemaining === true ? `calc(100% - ${percent}%)` : `${percent}%`;
                 
                 return (
@@ -93,13 +93,13 @@
                     }
                 }
 
-                handleStart = (e) => {
+               handleStart() {
                     this.setState({
                         isRunning: true
                     })
                 }
 
-                handleStop = (e) => {
+                handleStop() {
                     this.setState({
                         isRunning: false,
                         isPaused: false,
@@ -107,16 +107,31 @@
                     })
                 }
 
+                togglePause() {
+                    this.setState(
+                        function(prevState){
+                            //? WTF?? - dlaczego to działa w sensie skąd wiadomo że isPaused = isPaused?
+                            //TODO do ogarnięcia
+                            const isPaused = !prevState.isPaused
+                            return{
+                                isPaused,
+                                pausesCount: prevState.isPaused ? prevState.pausesCount + 1 : prevState.pausesCount
+                                
+                            }
+                        }
+                    )
+                }
+
                 render() {
                     const  {isRunning, isPaused, pausesCount} = this.state;
                     return(
                         <div className="Timebox">
                             <h1>Ucze się skrótów klawiszowych</h1>
-                            <Clock hours={26} minutes={63} seconds={98} miliseconds={1000}/> 
-                            <ProgressBar percent={25} trackRemaining={false} />
-                            <button onClick={this.handleStart} disabled={isRunning}>Start</button>
-                            <button onClick={this.handleStop} disabled={!isRunning}>Stop</button>
-                            <button disabled={!isRunning}>{isPaused ? 'Wznów' : 'Pauzuj'}</button>
+                            <Clock className={ isPaused ? "inactive" : ""} hours={26} minutes={63} seconds={98} miliseconds={1000}/> 
+                            <ProgressBar className={ isPaused ? "inactive" : ""} percent={25} trackRemaining={false} />
+                            <button onClick={this.handleStart.bind(this)} disabled={isRunning}>Start</button>
+                            <button onClick={this.handleStop.bind(this)} disabled={!isRunning}>Stop</button>
+                            <button onClick={this.togglePause.bind(this)} disabled={!isRunning}>{isPaused ? 'Wznów' : 'Pauzuj'}</button>
                             Liczba przerw: {pausesCount}
                         </div>
                     )
