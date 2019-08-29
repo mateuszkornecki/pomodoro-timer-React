@@ -83,7 +83,6 @@
             }       
 
             class Timebox extends React.Component {
-
                 constructor(props) {
                     super(props);
                     this.state ={
@@ -91,14 +90,15 @@
                         isPaused: false,
                         pausesCount:0,
                     }
+                    this.handleStart = this.handleStart.bind(this)
+                    this.handleStop = this.handleStop.bind(this)
+                    this.togglePause = this.togglePause.bind(this)
                 }
-
                handleStart() {
                     this.setState({
                         isRunning: true
                     })
                 }
-
                 handleStop() {
                     this.setState({
                         isRunning: false,
@@ -114,7 +114,7 @@
                             //TODO do ogarnięcia
                             const isPaused = !prevState.isPaused
                             return{
-                                isPaused,
+                                isPaused: isPaused,
                                 pausesCount: prevState.isPaused ? prevState.pausesCount + 1 : prevState.pausesCount
                                 
                             }
@@ -129,9 +129,9 @@
                             <h1>Ucze się skrótów klawiszowych</h1>
                             <Clock className={ isPaused ? "inactive" : ""} hours={26} minutes={63} seconds={98} miliseconds={1000}/> 
                             <ProgressBar className={ isPaused ? "inactive" : ""} percent={25} trackRemaining={false} />
-                            <button onClick={this.handleStart.bind(this)} disabled={isRunning}>Start</button>
-                            <button onClick={this.handleStop.bind(this)} disabled={!isRunning}>Stop</button>
-                            <button onClick={this.togglePause.bind(this)} disabled={!isRunning}>{isPaused ? 'Wznów' : 'Pauzuj'}</button>
+                            <button onClick={this.handleStart} disabled={isRunning}>Start</button>
+                            <button onClick={this.handleStop} disabled={!isRunning}>Stop</button>
+                            <button onClick={this.togglePause} disabled={!isRunning}>{isPaused ? 'Wznów' : 'Pauzuj'}</button>
                             Liczba przerw: {pausesCount}
                         </div>
                     )
