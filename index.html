@@ -88,30 +88,56 @@
                     this.state ={
                         isRunning: true,
                         isPaused: false,
-                        pausesCount:0,
+                        pausesCount: 0,
+                        x: 0
                     }
-                    this.handleStart = this.handleStart.bind(this)
-                    this.handleStop = this.handleStop.bind(this)
-                    this.togglePause = this.togglePause.bind(this)
+                    this.handleStart = this.handleStart.bind(this);
+                    this.handleStop = this.handleStop.bind(this);
+                    this.togglePause = this.togglePause.bind(this);
+                    this.start = this.start.bind(this);
+                    this.stop = this.stop.bind(this);
+                    let countDown;
+                    
                 }
+                
+                start() {
+                     this.countDown = setInterval( () => {
+                        this.setState(
+                            function(prevState){
+                                return{
+                                    x: prevState.x + 0.01
+                                }
+                            }
+                        )
+                    }, 10)
+                }
+
+                stop() {
+                    clearInterval(this.countDown);
+                }
+
+
+
+
                handleStart() {
                     this.setState({
-                        isRunning: true
+                        isRunning: true,
                     })
+                    this.start();
                 }
                 handleStop() {
                     this.setState({
                         isRunning: false,
                         isPaused: false,
-                        pausesCount:0
+                        pausesCount: 0,
+                        x: 0
                     })
+                    this.stop();
                 }
 
                 togglePause() {
                     this.setState(
                         function(prevState){
-                            //? WTF?? - dlaczego to działa w sensie skąd wiadomo że isPaused = isPaused?
-                            //TODO do ogarnięcia
                             const isPaused = !prevState.isPaused
                             return{
                                 isPaused: isPaused,
@@ -123,12 +149,19 @@
                 }
 
                 render() {
-                    const  {isRunning, isPaused, pausesCount} = this.state;
+                    const  {isRunning, isPaused, pausesCount, x} = this.state;
+                    const y = 7200;
+                    let z = y - x;
+                    let hours = Math.floor( z / 3600);
+                    let minutes = Math.floor(z / 60);
+                    let seconds = Math.floor(z % 60);
+                    let actualpercent = (x / y) * 100;
+
                     return(
                         <div className="Timebox">
                             <h1>Ucze się skrótów klawiszowych</h1>
-                            <Clock className={ isPaused ? "inactive" : ""} hours={26} minutes={63} seconds={98} miliseconds={1000}/> 
-                            <ProgressBar className={ isPaused ? "inactive" : ""} percent={25} trackRemaining={false} />
+                            <Clock className={ isPaused ? "inactive" : ""} hours={hours} minutes={minutes} seconds={seconds} miliseconds={0}/> 
+                            <ProgressBar className={ isPaused ? "inactive" : ""} percent={actualpercent} trackRemaining={false} />
                             <button onClick={this.handleStart} disabled={isRunning}>Start</button>
                             <button onClick={this.handleStop} disabled={!isRunning}>Stop</button>
                             <button onClick={this.togglePause} disabled={!isRunning}>{isPaused ? 'Wznów' : 'Pauzuj'}</button>
