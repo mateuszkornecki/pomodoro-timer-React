@@ -119,7 +119,7 @@
 
                 setTime() {
                     this.setState({
-                    taskTime: 30 * 1000,
+                    taskTime: 10 * 1000,
                     })
                 }
                handleStart() {
@@ -163,13 +163,16 @@
                     let seconds = Math.floor(remainingTime % 60);
                     //todo: add ms
                     // let ms = (seconds*1000);
-                    let actualpercent = 100-((endTime-actualTime)/(taskTime) * 100);
-
+                    let actualPercent = 100-((endTime-actualTime)/(taskTime) * 100);
+                    //clear interval after finishing counting down
+                    if (actualPercent>=100){
+                        this.stop();
+                    }
                     return(
                         <div className="Timebox">
                             <h1>Ucze się skrótów klawiszowych</h1>
                             <Clock className={ isPaused ? "inactive" : ""} hours={hours} minutes={minutes} seconds={seconds} miliseconds={0}/> 
-                            <ProgressBar className={ isPaused ? "inactive" : ""} percent={actualpercent} trackRemaining={false} />
+                            <ProgressBar className={ isPaused ? "inactive" : ""} percent={actualPercent} trackRemaining={false} />
                             <button onClick={this.handleStart} disabled={isRunning}>Start</button>
                             <button onClick={this.handleStop} disabled={!isRunning}>Stop</button>
                             <button onClick={this.togglePause} disabled={!isRunning}>{isPaused ? 'Wznów' : 'Pauzuj'}</button>
