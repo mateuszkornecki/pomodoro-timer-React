@@ -89,25 +89,26 @@
                         isRunning: true,
                         isPaused: false,
                         pausesCount: 0,
-                        x: 0
+                        initialTime: 0,
+                        actualTime: 0,
+                        taskTime: 0,
                     }
                     this.handleStart = this.handleStart.bind(this);
                     this.handleStop = this.handleStop.bind(this);
                     this.togglePause = this.togglePause.bind(this);
                     this.start = this.start.bind(this);
                     this.stop = this.stop.bind(this);
+                    this.setTime = this.setTime.bind(this);
                     let countDown;
                     
                 }
                 
                 start() {
                      this.countDown = setInterval( () => {
-                        this.setState(
-                            function(prevState){
-                                return{
-                                    x: prevState.x + 0.01
-                                }
-                            }
+                        let actualTime = Date.now();
+                        this.setState({
+                            actualTime: actualTime,
+                        }
                         )
                     }, 10)
                 }
@@ -116,21 +117,26 @@
                     clearInterval(this.countDown);
                 }
 
-
-
-
+                setTime() {
+                    this.setState({
+                    taskTime: 30 * 1000,
+                    })
+                }
                handleStart() {
+                const initialTime = Date.now();
                     this.setState({
                         isRunning: true,
+                        initialTime: initialTime
                     })
                     this.start();
+                    this.setTime();
                 }
                 handleStop() {
                     this.setState({
                         isRunning: false,
                         isPaused: false,
                         pausesCount: 0,
-                        x: 0
+                        initialTime: 0
                     })
                     this.stop();
                 }
@@ -149,13 +155,15 @@
                 }
 
                 render() {
-                    const  {isRunning, isPaused, pausesCount, x} = this.state;
-                    const y = 7200;
-                    let z = y - x;
-                    let hours = Math.floor( z / 3600);
-                    let minutes = Math.floor(z / 60);
-                    let seconds = Math.floor(z % 60);
-                    let actualpercent = (x / y) * 100;
+                    const  {isRunning, isPaused, pausesCount, initialTime, actualTime, taskTime,} = this.state;
+                    let endTime = initialTime + taskTime;
+                    let remainingTime = (endTime - actualTime)/1000;
+                    let hours = Math.floor(remainingTime / 3600);
+                    let minutes = Math.floor(remainingTime / 60);
+                    let seconds = Math.floor(remainingTime % 60);
+                    //todo: add ms
+                    // let ms = (seconds*1000);
+                    let actualpercent = 100-((endTime-actualTime)/(taskTime) * 100);
 
                     return(
                         <div className="Timebox">
