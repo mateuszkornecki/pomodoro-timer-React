@@ -91,14 +91,22 @@
                         pausesCount: 0,
                         initialTime: 0,
                         actualTime: 0,
-                        taskTime: 0,
+                        taskTime: 30,
+                        endTime: 0,
+                        remainingTime: 0,
+                        actualPercent: 0
                     }
                     this.handleStart = this.handleStart.bind(this);
                     this.handleStop = this.handleStop.bind(this);
                     this.togglePause = this.togglePause.bind(this);
                     this.start = this.start.bind(this);
                     this.stop = this.stop.bind(this);
-                    this.setTime = this.setTime.bind(this);
+                    this.repause = this.repause.bind(this);
+                    this.setTaskTime = this.setTaskTime.bind(this);
+                    this.setEndTime = this.setEndTime.bind(this);
+                    this.setRemainingTime = this.setRemainingTime.bind(this);
+                    this.setActualPercent = this.setActualPercent.bind(this);
+                    
                     let countDown;
                     
                 }
@@ -108,42 +116,91 @@
                         let actualTime = Date.now();
                         this.setState({
                             actualTime: actualTime,
-                        }
-                        )
+                        })
+                        // musi tu być żeby był ciągle aktualny
+                        this.setRemainingTime();
+                        this.setActualPercent();
                     }, 10)
                 }
 
                 stop() {
                     clearInterval(this.countDown);
-                    this.setState({
-                            initialTime: 0,
-                            actualTime: 0,
-                            taskTime: 0
-                        })
                 }
 
-                setTime() {
+                repause() {
+                    const {remainingTime} = this.state;
+                    this.setEndTime(remainingTime);
+                    this.handleStart();                    
+                }
+
+                setTaskTime(seconds) {
                     this.setState({
-                    taskTime: 7200 * 1000,
+                    taskTime: seconds * 1000,
                     })
                 }
+
+                setEndTime(){
+                    this.setState(
+                        function(prevState){
+                            let endTime = prevState.initialTime + prevState.taskTime;
+                            return{
+                                endTime: endTime,
+                            }
+                        }
+
+                    )
+                }
+
+                setRemainingTime(){
+                    this.setState(
+                        function(prevState){
+                            let remainingTime = (prevState.endTime - prevState.actualTime)/1000;
+                            return{
+                                remainingTime: remainingTime
+                            }
+                        }
+                    )
+                }
+
+                setActualPercent(){
+                    
+                    this.setState(
+                        function(prevState){
+                            let actualPercent = 100-((prevState.endTime-prevState.actualTime)/(prevState.taskTime) * 100);
+                            return{
+                                actualPercent: actualPercent
+                            }
+                        }
+                    )
+
+                }
+
                handleStart() {
+                const {taskTime} = this.state;
                 const initialTime = Date.now();
                     this.setState({
                         isRunning: true,
-                        initialTime: initialTime
+                        initialTime: initialTime,
                     })
                     this.start();
-                    this.setTime();
+                    this.setTaskTime(10);
+                    this.setEndTime();
+                    
                 }
                 handleStop() {
+                    this.stop();
                     this.setState({
                         isRunning: false,
                         isPaused: false,
                         pausesCount: 0,
-                        initialTime: 0
+                        initialTime: 0,
+                        actualTime: 0,
+                        taskTime: 0,
+                        endTime: 0,
+                        remainingTime: 0,
+                        actualPercent: 0
                     })
-                    this.stop();
+                    
                 }
 
                 togglePause() {
@@ -157,20 +214,22 @@
                             }
                         }
                     )
+                    const  {isPaused} = this.state;
+                    isPaused ? this.repause() : this.stop();
                 }
 
+               
+
                 render() {
-                    const  {isRunning, isPaused, pausesCount, initialTime, actualTime, taskTime,} = this.state;
-                    let endTime = initialTime + taskTime;
-                    let remainingTime = (endTime - actualTime)/1000;
+                    const  {isRunning, isPaused, pausesCount, initialTime, actualTime, taskTime, endTime, remainingTime, actualPercent} = this.state;
+                    // let endTime = initialTime + taskTime;
+                    // let remainingTime = (endTime - actualTime)/1000;
                     let fullSec = Math.floor(remainingTime);
-                    
                     let hours = Math.floor(remainingTime / 3600);
                     let minutes = Math.floor(remainingTime / 60);
                     let seconds = Math.floor(remainingTime % 60);
-                    //todo: add ms, fix hours/minutes 
                     let ms = Math.floor((remainingTime - fullSec)*1000);
-                    let actualPercent = 100-((endTime-actualTime)/(taskTime) * 100);
+                    // let actualPercent = 100-((endTime-actualTime)/(taskTime) * 100);
                     //clear interval after finishing counting down
                     if (actualPercent>=100){
                         this.stop();
@@ -187,6 +246,14 @@
                         </div>
                     )
                 }
+
+                displayEndTime(){
+                    console.log(this.endTime);
+                }
+
+
+
+
             }
 
                 ReactDOM.render(<App />, document.querySelector('.root'));
