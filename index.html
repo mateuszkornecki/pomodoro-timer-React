@@ -1,27 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-
     <link rel='stylesheet' href="/css/main.css">
-
     <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
 </head>
 
 <body>
-
-
-
     <div class="root"></div>
-    <script type='text/babel'>
 
+    <script type='text/babel'>
 
              function App(){
                 return(
@@ -31,7 +25,6 @@
                 </div>
                 )
             }
-
 
             function timeInterval(min, max, value) {
                 //It will return a number between min and max
@@ -107,18 +100,16 @@
                     this.setRemainingTime = this.setRemainingTime.bind(this);
                     this.setActualPercent = this.setActualPercent.bind(this);
                     this.forceStop = this.forceStop.bind(this);
-                    
-                    let countDown;
-                    
+                    let countDown;   
                 }
                 
                 start() {                       
-                     this.countDown = setInterval( () => {
+                    this.countDown = setInterval( () => {
                         let actualTime = Date.now();
                         this.setState({
                             actualTime: actualTime,
                         })
-                        // musi tu być żeby był ciągle aktualny
+                        // keeps remaining time actual
                         this.setRemainingTime();
                         this.setActualPercent();
                         this.forceStop();
@@ -138,7 +129,8 @@
                 }
 
                 repause() {
-                    const {remainingTime, actualTime} = this.state; 
+                    //create new initialTime, use remainingTime as new taskTime
+                    const {remainingTime} = this.state; 
                     const initialTime = Date.now();
                     this.setState({
                         isRunning: true,
@@ -163,7 +155,6 @@
                                 endTime: endTime,
                             }
                         }
-
                     )
                 }
 
@@ -187,7 +178,6 @@
                             }
                         }
                     )
-
                 }
 
                handleStart() {
@@ -225,15 +215,12 @@
                             return{
                                 isPaused: isPaused,
                                 pausesCount: prevState.isPaused ? prevState.pausesCount + 1 : prevState.pausesCount
-                                
                             }
                         }
                     )
                     const  {isPaused} = this.state;
                     isPaused ? this.repause() : this.stop();
                 }
-
-               
 
                 render() {
                     const  {isRunning, isPaused, pausesCount, initialTime, actualTime, taskTime, endTime, remainingTime, actualPercent} = this.state;
@@ -243,7 +230,7 @@
                     let seconds = Math.floor(remainingTime % 60);
                     //to prevent counting after passing 0
                     let ms = (fullSec >= 0) ? Math.floor((remainingTime - fullSec)*1000) : 0;
-
+                    
                     return(
                         <div className="Timebox">
                             <h1>Ucze się skrótów klawiszowych</h1>
@@ -260,10 +247,6 @@
                 displayEndTime(){
                     console.log(this.endTime);
                 }
-
-
-
-
             }
 
                 ReactDOM.render(<App />, document.querySelector('.root'));
