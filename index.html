@@ -106,12 +106,13 @@
                     this.setEndTime = this.setEndTime.bind(this);
                     this.setRemainingTime = this.setRemainingTime.bind(this);
                     this.setActualPercent = this.setActualPercent.bind(this);
+                    this.forceStop = this.forceStop.bind(this);
                     
                     let countDown;
                     
                 }
                 
-                start() {
+                start() {                       
                      this.countDown = setInterval( () => {
                         let actualTime = Date.now();
                         this.setState({
@@ -120,17 +121,32 @@
                         // musi tu być żeby był ciągle aktualny
                         this.setRemainingTime();
                         this.setActualPercent();
+                        this.forceStop();
                     }, 10)
+                    
                 }
 
                 stop() {
                     clearInterval(this.countDown);
                 }
 
+                forceStop() {
+                    const {remainingTime} = this.state; 
+                    if (remainingTime <= 0) {
+                        this.stop();
+                    }
+                }
+
                 repause() {
-                    const {remainingTime} = this.state;
-                    this.setEndTime(remainingTime);
-                    this.handleStart();                    
+                    const {remainingTime, actualTime} = this.state; 
+                    const initialTime = Date.now();
+                    this.setState({
+                        isRunning: true,
+                        initialTime: initialTime,
+                    })
+                    this.start();
+                    this.setTaskTime(remainingTime);
+                    this.setEndTime();
                 }
 
                 setTaskTime(seconds) {
@@ -162,11 +178,10 @@
                     )
                 }
 
-                setActualPercent(){
-                    
+                setActualPercent(){  
                     this.setState(
                         function(prevState){
-                            let actualPercent = 100-((prevState.endTime-prevState.actualTime)/(prevState.taskTime) * 100);
+                            let actualPercent = 100-((prevState.endTime-prevState.actualTime)/prevState.taskTime * 100);
                             return{
                                 actualPercent: actualPercent
                             }
@@ -183,7 +198,7 @@
                         initialTime: initialTime,
                     })
                     this.start();
-                    this.setTaskTime(10);
+                    this.setTaskTime(5);
                     this.setEndTime();
                     
                 }
@@ -222,18 +237,13 @@
 
                 render() {
                     const  {isRunning, isPaused, pausesCount, initialTime, actualTime, taskTime, endTime, remainingTime, actualPercent} = this.state;
-                    // let endTime = initialTime + taskTime;
-                    // let remainingTime = (endTime - actualTime)/1000;
                     let fullSec = Math.floor(remainingTime);
                     let hours = Math.floor(remainingTime / 3600);
                     let minutes = Math.floor(remainingTime / 60);
                     let seconds = Math.floor(remainingTime % 60);
-                    let ms = Math.floor((remainingTime - fullSec)*1000);
-                    // let actualPercent = 100-((endTime-actualTime)/(taskTime) * 100);
-                    //clear interval after finishing counting down
-                    if (actualPercent>=100){
-                        this.stop();
-                    }
+                    //to prevent counting after passing 0
+                    let ms = (fullSec >= 0) ? Math.floor((remainingTime - fullSec)*1000) : 0;
+
                     return(
                         <div className="Timebox">
                             <h1>Ucze się skrótów klawiszowych</h1>
