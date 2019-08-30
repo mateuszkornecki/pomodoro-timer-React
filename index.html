@@ -86,7 +86,7 @@
                 constructor(props) {
                     super(props);
                     this.state ={
-                        isRunning: true,
+                        isRunning: false,
                         isPaused: false,
                         pausesCount: 0,
                         initialTime: 0,
@@ -115,11 +115,16 @@
 
                 stop() {
                     clearInterval(this.countDown);
+                    this.setState({
+                            initialTime: 0,
+                            actualTime: 0,
+                            taskTime: 0
+                        })
                 }
 
                 setTime() {
                     this.setState({
-                    taskTime: 10 * 1000,
+                    taskTime: 7200 * 1000,
                     })
                 }
                handleStart() {
@@ -158,11 +163,13 @@
                     const  {isRunning, isPaused, pausesCount, initialTime, actualTime, taskTime,} = this.state;
                     let endTime = initialTime + taskTime;
                     let remainingTime = (endTime - actualTime)/1000;
+                    let fullSec = Math.floor(remainingTime);
+                    
                     let hours = Math.floor(remainingTime / 3600);
                     let minutes = Math.floor(remainingTime / 60);
                     let seconds = Math.floor(remainingTime % 60);
-                    //todo: add ms
-                    // let ms = (seconds*1000);
+                    //todo: add ms, fix hours/minutes 
+                    let ms = Math.floor((remainingTime - fullSec)*1000);
                     let actualPercent = 100-((endTime-actualTime)/(taskTime) * 100);
                     //clear interval after finishing counting down
                     if (actualPercent>=100){
@@ -171,7 +178,7 @@
                     return(
                         <div className="Timebox">
                             <h1>Ucze się skrótów klawiszowych</h1>
-                            <Clock className={ isPaused ? "inactive" : ""} hours={hours} minutes={minutes} seconds={seconds} miliseconds={0}/> 
+                            <Clock className={ isPaused ? "inactive" : ""} hours={hours} minutes={minutes} seconds={seconds} miliseconds={ms}/> 
                             <ProgressBar className={ isPaused ? "inactive" : ""} percent={actualPercent} trackRemaining={false} />
                             <button onClick={this.handleStart} disabled={isRunning}>Start</button>
                             <button onClick={this.handleStop} disabled={!isRunning}>Stop</button>
@@ -183,7 +190,6 @@
             }
 
                 ReactDOM.render(<App />, document.querySelector('.root'));
-
 
         </script>
 </body>
