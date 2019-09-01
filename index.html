@@ -84,7 +84,8 @@
                         pausesCount: 0,
                         initialTime: 0,
                         actualTime: 0,
-                        taskTime: 30,
+                        taskTime: 0,
+                        initialTaskTime: 0,
                         endTime: 0,
                         remainingTime: 0,
                         actualPercent: 0
@@ -114,7 +115,6 @@
                         this.setActualPercent();
                         this.forceStop();
                     }, 10)
-                    
                 }
 
                 stop() {
@@ -130,20 +130,26 @@
 
                 repause() {
                     //create new initialTime, use remainingTime as new taskTime
-                    const {remainingTime} = this.state; 
+                    const {remainingTime, taskTime} = this.state; 
                     const initialTime = Date.now();
+                    //task time that was set on start (needed for correct calculation of actual percent)
+                    const newTaskTime = remainingTime * 1000
+                    console.log(taskTime);
                     this.setState({
                         isRunning: true,
                         initialTime: initialTime,
+                        taskTime: newTaskTime,
                     })
                     this.start();
-                    this.setTaskTime(remainingTime);
+                    // this.setTaskTime(remainingTime);
                     this.setEndTime();
+                    
                 }
 
                 setTaskTime(seconds) {
                     this.setState({
                     taskTime: seconds * 1000,
+                    initialTaskTime: seconds * 1000
                     })
                 }
 
@@ -172,7 +178,9 @@
                 setActualPercent(){  
                     this.setState(
                         function(prevState){
-                            let actualPercent = 100-((prevState.endTime-prevState.actualTime)/prevState.taskTime * 100);
+                            //*1000 to convert seconds to ms and *100 to convert fraction to a full number
+                            let actualPercent = 100-((prevState.remainingTime*1000)/prevState.initialTaskTime)*100;
+
                             return{
                                 actualPercent: actualPercent
                             }
@@ -188,7 +196,7 @@
                         initialTime: initialTime,
                     })
                     this.start();
-                    this.setTaskTime(5);
+                    this.setTaskTime(10);
                     this.setEndTime();
                     
                 }
