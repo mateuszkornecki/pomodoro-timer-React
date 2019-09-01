@@ -134,14 +134,12 @@
                     const initialTime = Date.now();
                     //task time that was set on start (needed for correct calculation of actual percent)
                     const newTaskTime = remainingTime * 1000
-                    console.log(taskTime);
                     this.setState({
                         isRunning: true,
                         initialTime: initialTime,
                         taskTime: newTaskTime,
                     })
                     this.start();
-                    // this.setTaskTime(remainingTime);
                     this.setEndTime();
                     
                 }
@@ -180,7 +178,6 @@
                         function(prevState){
                             //*1000 to convert seconds to ms and *100 to convert fraction to a full number
                             let actualPercent = 100-((prevState.remainingTime*1000)/prevState.initialTaskTime)*100;
-
                             return{
                                 actualPercent: actualPercent
                             }
@@ -250,10 +247,6 @@
                             Liczba przerw: {pausesCount}
                         </div>
                     )
-                }
-
-                displayEndTime(){
-                    console.log(this.endTime);
                 }
             }
 
