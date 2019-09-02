@@ -66,28 +66,27 @@
 
             class EditableTimebox extends React.Component {
                 state = {
-                    title: "Ucze się skrótów klawiszowych",
-                    taskTime: 225,
+                    title: "To pole powinno działać",
+                    newTaskTime: 10,
                 }
 
 
                 render(){
-                    const {title, taskTime} = this.state;
+                    const {title, newTaskTime} = this.state;
                     return(
                         <>
                             <TimeboxEditor  />
-                            <Timebox title={title} taskTime={taskTime} />
+                            <Timebox title={title} newTaskTime={newTaskTime} />
                         </>
                     )
                 }
 
             }
 
-
             class TimeboxEditor extends React.Component {
                 state = {
-                    title: "Ucze się skrótów klawiszowych",
-                    taskTime: 225,
+                    title: "Alpaka",
+                    newTaskTime: 666,
                 }
 
                 handleChangeTitle = (e) => {
@@ -98,12 +97,12 @@
 
                 handleChangeTaskTime = (e) => {
                     this.setState({
-                        taskTime: e.target.value
+                        newTaskTime: e.target.value
                     })
                 }
 
                 render() {
-                    const {title, taskTime} = this.state;
+                    const {title, newTaskTime} = this.state;
                     return(
                         <div className="TimeboxEditor">
                             <label htmlFor="taskInput">Co robisz?</label>
@@ -118,7 +117,7 @@
                                 id="timeInput" 
                                 onChange={this.handleChangeTaskTime} 
                                 type="number" 
-                                defaultValue={taskTime} 
+                                defaultValue={newTaskTime} 
                             />
                             <br />
                             <button disabled>Zacznij</button>
@@ -267,18 +266,33 @@
                     isPaused ? this.repause() : this.stop();
                 }
 
+                
+
                 render() {
                     const  {isRunning, isPaused, pausesCount, initialTime, actualTime, taskTime, endTime, remainingTime, actualPercent} = this.state;
-                    let fullSec = Math.floor(remainingTime);
-                    let hours = Math.floor(remainingTime / 3600);
-                    let minutes = Math.floor(remainingTime / 60);
-                    let seconds = Math.floor(remainingTime % 60);
+                    const {title, newTaskTime} = this.props;
+                    
+                    let hours;
+                    let minutes;
+                    let seconds;
+                    let ms;
+                    let fullSec;
+                    
+                    const reworkTime = (value) =>{
+                        fullSec = Math.floor(value);
+                        hours = Math.floor(value / 3600);
+                        minutes = Math.floor(value / 60);
+                        seconds = Math.floor(value % 60);
                     //to prevent counting after passing 0
-                    let ms = (fullSec >= 0) ? Math.floor((remainingTime - fullSec)*1000) : 0;
+                        ms = (fullSec >= 0) ? Math.floor((value - fullSec)*1000) : 0;
+                    // return(hours, minutes, seconds, ms);
+                }
+                    //if timebox is not running display time entered in input else display  remaining time
+                    reworkTime(isRunning ? remainingTime : newTaskTime);
                     
                     return(
                         <div className="Timebox">
-                            <h1>Ucze się skrótów klawiszowych</h1>
+                            <h1>{title}</h1>
                             <Clock className={ isPaused ? "inactive" : ""} hours={hours} minutes={minutes} seconds={seconds} miliseconds={ms}/> 
                             <ProgressBar className={ isPaused ? "inactive" : ""} percent={actualPercent} trackRemaining={false} />
                             <button onClick={this.handleStart} disabled={isRunning}>Start</button>
