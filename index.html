@@ -65,14 +65,35 @@
                 )
             }
 
-            function TimeboxEditor(){
-                return(
-                    <div className="TimeboxEditor inactive">
-                        <label htmlFor="taskInput">Co robisz?</label><input id="taskInput" disabled type="text" value="Ucze się skrótów klawiszowych" /><br />
-                        <label htmlFor="timeInput">Ile minut?</label><input id="timeInput" disabled type="number" value="25" /><br />
-                        <button disabled>Zacznij</button>
-                     </div>
-                )
+            class TimeboxEditor extends React.Component {
+
+                state = {
+                    taskInputValue: "Ucze się skrótów klawiszowych",
+                    taskInputTime: 225,
+                }
+
+                handleChangeTaskInputValue = (e) => {
+                    this.setState({
+                        taskInputValue: e.target.value 
+                    })
+                }
+
+                hangleChangeTaskTime = (e) => {
+                    this.setState({
+                        taskInputTime: e.target.value
+                    })
+                }
+
+                render() {
+                    const {taskInputValue, taskInputTime} = this.state;
+                    return(
+                        <div className="TimeboxEditor">
+                            <label htmlFor="taskInput">Co robisz?</label><input id="taskInput" onChange={this.handleChangeTaskInputValue} type="text" defaultValue={taskInputValue} /><br />
+                            <label htmlFor="timeInput">Ile minut?</label><input id="timeInput" onChange={this.handleChangeTaskTime} type="number" defaultValue={taskInputTime} /><br />
+                            <button disabled>Zacznij</button>
+                         </div>
+                    )
+                }
             }       
 
             class Timebox extends React.Component {
@@ -132,7 +153,6 @@
                     //create new initialTime, use remainingTime as new taskTime
                     const {remainingTime, taskTime} = this.state; 
                     const initialTime = Date.now();
-                    //task time that was set on start (needed for correct calculation of actual percent)
                     const newTaskTime = remainingTime * 1000
                     this.setState({
                         isRunning: true,
