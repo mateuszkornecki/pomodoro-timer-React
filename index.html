@@ -68,28 +68,41 @@
             class TimeboxEditor extends React.Component {
 
                 state = {
-                    taskInputValue: "Ucze się skrótów klawiszowych",
-                    taskInputTime: 225,
+                    title: "Ucze się skrótów klawiszowych",
+                    taskTime: 225,
                 }
 
-                handleChangeTaskInputValue = (e) => {
+                handleChangeTitle = (e) => {
                     this.setState({
-                        taskInputValue: e.target.value 
+                        title: e.target.value 
                     })
                 }
 
-                hangleChangeTaskTime = (e) => {
+                handleChangeTaskTime = (e) => {
                     this.setState({
-                        taskInputTime: e.target.value
+                        taskTime: e.target.value
                     })
                 }
 
                 render() {
-                    const {taskInputValue, taskInputTime} = this.state;
+                    const {title, taskTime} = this.state;
                     return(
                         <div className="TimeboxEditor">
-                            <label htmlFor="taskInput">Co robisz?</label><input id="taskInput" onChange={this.handleChangeTaskInputValue} type="text" defaultValue={taskInputValue} /><br />
-                            <label htmlFor="timeInput">Ile minut?</label><input id="timeInput" onChange={this.handleChangeTaskTime} type="number" defaultValue={taskInputTime} /><br />
+                            <label htmlFor="taskInput">Co robisz?</label>
+                            <input 
+                                id="taskInput" 
+                                onChange={this.handleChangeTitle} 
+                                type="text" defaultValue={title} 
+                            />
+                            <br />
+                            <label htmlFor="timeInput">Ile minut?</label>
+                            <input 
+                                id="timeInput" 
+                                onChange={this.handleChangeTaskTime} 
+                                type="number" 
+                                defaultValue={taskTime} 
+                            />
+                            <br />
                             <button disabled>Zacznij</button>
                          </div>
                     )
