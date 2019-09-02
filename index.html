@@ -20,8 +20,7 @@
              function App(){
                 return(
                 <div className="App">
-                    <TimeboxEditor />
-                    <Timebox />
+                    <EditableTimebox/>
                 </div>
                 )
             }
@@ -65,8 +64,27 @@
                 )
             }
 
-            class TimeboxEditor extends React.Component {
+            class EditableTimebox extends React.Component {
+                state = {
+                    title: "Ucze się skrótów klawiszowych",
+                    taskTime: 225,
+                }
 
+
+                render(){
+                    const {title, taskTime} = this.state;
+                    return(
+                        <>
+                            <TimeboxEditor  />
+                            <Timebox title={title} taskTime={taskTime} />
+                        </>
+                    )
+                }
+
+            }
+
+
+            class TimeboxEditor extends React.Component {
                 state = {
                     title: "Ucze się skrótów klawiszowych",
                     taskTime: 225,
@@ -124,21 +142,10 @@
                         remainingTime: 0,
                         actualPercent: 0
                     }
-                    this.handleStart = this.handleStart.bind(this);
-                    this.handleStop = this.handleStop.bind(this);
-                    this.togglePause = this.togglePause.bind(this);
-                    this.start = this.start.bind(this);
-                    this.stop = this.stop.bind(this);
-                    this.repause = this.repause.bind(this);
-                    this.setTaskTime = this.setTaskTime.bind(this);
-                    this.setEndTime = this.setEndTime.bind(this);
-                    this.setRemainingTime = this.setRemainingTime.bind(this);
-                    this.setActualPercent = this.setActualPercent.bind(this);
-                    this.forceStop = this.forceStop.bind(this);
                     let countDown;   
                 }
                 
-                start() {                       
+                start = () => {                       
                     this.countDown = setInterval( () => {
                         let actualTime = Date.now();
                         this.setState({
@@ -151,18 +158,18 @@
                     }, 10)
                 }
 
-                stop() {
+                stop = () => {
                     clearInterval(this.countDown);
                 }
 
-                forceStop() {
+                forceStop = () => {
                     const {remainingTime} = this.state; 
                     if (remainingTime <= 0) {
                         this.stop();
                     }
                 }
 
-                repause() {
+                repause = () => {
                     //create new initialTime, use remainingTime as new taskTime
                     const {remainingTime, taskTime} = this.state; 
                     const initialTime = Date.now();
@@ -177,14 +184,14 @@
                     
                 }
 
-                setTaskTime(seconds) {
+                setTaskTime = (seconds) => {
                     this.setState({
                     taskTime: seconds * 1000,
                     initialTaskTime: seconds * 1000
                     })
                 }
 
-                setEndTime(){
+                setEndTime = () => {
                     this.setState(
                         function(prevState){
                             let endTime = prevState.initialTime + prevState.taskTime;
@@ -195,7 +202,7 @@
                     )
                 }
 
-                setRemainingTime(){
+                setRemainingTime = () =>{
                     this.setState(
                         function(prevState){
                             let remainingTime = (prevState.endTime - prevState.actualTime)/1000;
@@ -206,7 +213,7 @@
                     )
                 }
 
-                setActualPercent(){  
+                setActualPercent = () =>{  
                     this.setState(
                         function(prevState){
                             //*1000 to convert seconds to ms and *100 to convert fraction to a full number
@@ -218,7 +225,7 @@
                     )
                 }
 
-               handleStart() {
+               handleStart = () => {
                 const {taskTime} = this.state;
                 const initialTime = Date.now();
                     this.setState({
@@ -230,7 +237,7 @@
                     this.setEndTime();
                     
                 }
-                handleStop() {
+                handleStop = () => {
                     this.stop();
                     this.setState({
                         isRunning: false,
@@ -246,7 +253,7 @@
                     
                 }
 
-                togglePause() {
+                togglePause= () => {
                     this.setState(
                         function(prevState){
                             const isPaused = !prevState.isPaused
