@@ -50,11 +50,6 @@
                 seconds = normalizeTime(0, 59, 2, seconds);
                 miliseconds = normalizeTime(0, 999, 3, miliseconds);
                 
-                //?fix - should be reworked for stand alone function?
-                // minutes = 60 ? '00' : minutes;
-                // seconds = 60 ? '00' : seconds;
-                // miliseconds = 1000 ? '000' : miliseconds;
-
                 return <h2 className={"Clock " + className} > Pozostało {hours}:{minutes}:{seconds}:{miliseconds}</h2>  
             }
 
@@ -88,7 +83,6 @@
                     })
                 }
 
-
                 render(){
                     const {title, taskTimeInSeconds} = this.state;
                     return(
@@ -106,34 +100,36 @@
                         </>
                     )
                 }
-
             }
 
-            class TimeboxEditor extends React.Component {
-        
-                render() {
-                    const {title, taskTimeInSeconds, onChangeTitle, onChangeTaskTime} = this.props;
-                    return(
-                        <div className="TimeboxEditor">
-                            <label htmlFor="taskInput">Co robisz?</label>
-                            <input 
-                                id="taskInput" 
-                                onChange={onChangeTitle} 
-                                type="text" defaultValue={title} 
-                            />
-                            <br />
-                            <label htmlFor="timeInput">Ile minut?</label>
-                            <input 
-                                id="timeInput" 
-                                onChange={onChangeTaskTime} 
-                                type="number" 
-                                defaultValue={taskTimeInSeconds} 
-                            />
-                            <br />
-                            <button disabled>Zacznij</button>
-                         </div>
-                    )
-                }
+            function TimeboxEditor(props) {
+                const {
+                    title,
+                    taskTimeInSeconds,
+                    onChangeTitle,
+                    onChangeTaskTime
+                } = props;
+
+                return(
+                    <div className="TimeboxEditor">
+                        <label htmlFor="taskInput">Co robisz?</label>
+                        <input 
+                            id="taskInput" 
+                            onChange={onChangeTitle} 
+                            type="text" defaultValue={title} 
+                        />
+                        <br />
+                        <label htmlFor="timeInput">Ile minut?</label>
+                        <input 
+                            id="timeInput" 
+                            onChange={onChangeTaskTime} 
+                            type="number" 
+                            defaultValue={taskTimeInSeconds} 
+                        />
+                        <br />
+                        <button disabled>Zacznij</button>
+                    </div>
+                )
             }       
 
             class Timebox extends React.Component {
@@ -190,7 +186,6 @@
                     })
                     this.start();
                     this.setEndTime();
-                    
                 }
 
                 setTaskTime = (seconds) => {
@@ -260,7 +255,6 @@
                         remainingTime: 0,
                         actualPercent: 0
                     })
-                    
                 }
 
                 togglePause= () => {
@@ -276,8 +270,6 @@
                     const  {isPaused} = this.state;
                     isPaused ? this.repause() : this.stop();
                 }
-
-                
 
                 render() {
                     const  {isRunning, isPaused, pausesCount, initialTime, actualTime, taskTimeInMs, endTime, remainingTime, actualPercent} = this.state;
@@ -297,7 +289,7 @@
                     //to prevent counting after passing 0
                         ms = (fullSec >= 0) ? Math.floor((value - fullSec)*1000) : 0;
                     // return(hours, minutes, seconds, ms);
-                }
+                    }
                     //if timebox is not running display time entered in input else display  remaining time
                     reworkTime(isRunning ? remainingTime : taskTimeInSeconds);
                     console.log([remainingTime, taskTimeInSeconds])
