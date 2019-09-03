@@ -255,8 +255,10 @@
                             <TimeboxEditor 
                                 title={title}
                                 taskTimeInSeconds={taskTimeInSeconds}
+                                isRunning={isRunning}
                                 onChangeTitle={this.handleChangeTitle} 
                                 onChangeTaskTime={this.handleChangeTaskTime} 
+                                handleStart={this.handleStart}
                             />
                             <Timebox 
                                 title={title} 
@@ -294,8 +296,10 @@
                 const {
                     title,
                     taskTimeInSeconds,
+                    isRunning,
                     onChangeTitle,
-                    onChangeTaskTime
+                    onChangeTaskTime,
+                    handleStart
                 } = props;
 
                 return(
@@ -315,7 +319,9 @@
                             defaultValue={taskTimeInSeconds} 
                         />
                         <br />
-                        <button disabled>Zacznij</button>
+                        <button disabled={isRunning} onClick={handleStart}>
+                            Zacznij
+                        </button>
                     </div>
                 )
             }       
