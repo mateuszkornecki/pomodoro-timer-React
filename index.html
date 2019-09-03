@@ -65,11 +65,20 @@
             }
 
             class EditableTimebox extends React.Component {
-                state = {
+                    state = {
                     title: "To pole powinno działać",
-                    taskTimeInSeconds: 10,
+                    taskTimeInSeconds: 0,
                     isRunning: false,
                     isPaused: false,
+                    pausesCount: 0,
+                    initialTime: 0,
+                    actualTime: 0,
+                    taskTimeInMs: 0,
+                    initialTaskTime: 0,
+                    endTime: 0,
+                    remainingTime: 0,
+                    elapsedTime: 0,
+                    actualPercent: 0,
                 }
 
                 handleChangeTitle = (e) => {
@@ -85,78 +94,37 @@
                     })
                 }
 
-                render(){
-                    const {title, taskTimeInSeconds, isRunning, isPaused} = this.state;
-                    return(
-                        <>
-                            <TimeboxEditor 
-                                title={title}
-                                taskTimeInSeconds={taskTimeInSeconds}
-                                onChangeTitle={this.handleChangeTitle} 
-                                onChangeTaskTime={this.handleChangeTaskTime} 
-                            />
-                            <Timebox 
-                                title={title}  
-                                taskTimeInSeconds={taskTimeInSeconds}
-                                isRunning={isRunning}
-                                isPaused={isPaused} 
-                            />
-                        </>
-                    )
+                handleStart = () => {
+                const {taskTimeInMs, isRunning} = this.state;
+                // const {taskTimeInSeconds} = this.props;
+                const initialTime = Date.now();
+                    this.setState({
+                        isRunning: true,
+                        initialTime: initialTime,
+                    })
+                    this.start();
+                    // this.setTaskTime(taskTimeInSeconds);
+                    this.setTaskTime();
+                    this.setEndTime();
+                    
                 }
-            }
-
-            function TimeboxEditor(props) {
-                const {
-                    title,
-                    taskTimeInSeconds,
-                    onChangeTitle,
-                    onChangeTaskTime
-                } = props;
-
-                return(
-                    <div className="TimeboxEditor">
-                        <label htmlFor="taskInput">Co robisz?</label>
-                        <input 
-                            id="taskInput" 
-                            onChange={onChangeTitle} 
-                            type="text" defaultValue={title} 
-                        />
-                        <br />
-                        <label htmlFor="timeInput">Ile minut?</label>
-                        <input 
-                            id="timeInput" 
-                            onChange={onChangeTaskTime} 
-                            type="number" 
-                            defaultValue={taskTimeInSeconds} 
-                        />
-                        <br />
-                        <button disabled>Zacznij</button>
-                    </div>
-                )
-            }       
-
-            class Timebox extends React.Component {
-                constructor(props) {
-                    super(props);
-                    this.state ={
-                        // isRunning: false,
-                        // isPaused: false,
+                handleStop = () => {
+                    this.stop();
+                    this.setState({
+                        isRunning: false,
+                        isPaused: false,
                         pausesCount: 0,
                         initialTime: 0,
                         actualTime: 0,
                         taskTimeInMs: 0,
-                        initialTaskTime: 0,
                         endTime: 0,
                         remainingTime: 0,
-                        elapsedTime: 0,
-                        actualPercent: 0,
-                    }
-                    let countDown;   
+                        actualPercent: 0
+                    })
                 }
                 
                 start = () => {                       
-                    this.countDown = setInterval( () => {
+                        this.countDown = setInterval( () => {
                         let actualTime = Date.now();
                         this.setState({
                             actualTime: actualTime,
@@ -180,10 +148,23 @@
                     }
                 }
 
+                togglePause= () => {
+                    this.setState(
+                        function(prevState){
+                            const isPaused = !prevState.isPaused
+                            return{
+                                isPaused: isPaused,
+                                pausesCount: prevState.isPaused ? prevState.pausesCount + 1 : prevState.pausesCount
+                            }
+                        }
+                    )
+                    const  {isPaused} = this.state;
+                    isPaused ? this.repause() : this.stop();
+                }
+
                 repause = () => {
                     //create new initialTime, use remainingTime as new taskTimeInMsInMiliseconds
-                    const {remainingTime, taskTimeInMs} = this.state; 
-                    const {isRunning} = this.props;
+                    const {remainingTime, taskTimeInMs, isRunning} = this.state; 
                     const initialTime = Date.now();
                     const taskTimeAfterPause = remainingTime * 1000
                     this.setState({
@@ -196,7 +177,7 @@
                 }
 
                 setTaskTime = () => {
-                    const {taskTimeInSeconds} = this.props
+                    const {taskTimeInSeconds} = this.state
                     this.setState({
                     taskTimeInMs: taskTimeInSeconds * 1000,
                     initialTaskTime: taskTimeInSeconds * 1000
@@ -252,59 +233,126 @@
                     )
                 }
 
-               handleStart = () => {
-                const {taskTimeInMs} = this.state;
-                const {isRunning} = this.props;
-                // const {taskTimeInSeconds} = this.props;
-                const initialTime = Date.now();
-                    this.setState({
-                        isRunning: true,
-                        initialTime: initialTime,
-                    })
-                    this.start();
-                    // this.setTaskTime(taskTimeInSeconds);
-                    this.setTaskTime();
-                    this.setEndTime();
-                    
-                }
-                handleStop = () => {
-                    this.stop();
-                    this.setState({
-                        isRunning: false,
-                        isPaused: false,
-                        pausesCount: 0,
-                        initialTime: 0,
-                        actualTime: 0,
-                        taskTimeInMs: 0,
-                        endTime: 0,
-                        remainingTime: 0,
-                        actualPercent: 0
-                    })
-                }
+                render(){
+                    const {
+                        title, 
+                        taskTimeInSeconds, 
+                        isRunning, 
+                        isPaused, 
+                        pausesCount, 
+                        initialTime, 
+                        actualTime, 
+                        taskTimeInMs, 
+                        endTime, 
+                        remainingTime, 
+                        actualPercent, 
+                        initialTaskTime, 
+                        elapsedTime, 
+                    } = this.state;
 
-                togglePause= () => {
-                    this.setState(
-                        function(prevState){
-                            const isPaused = !prevState.isPaused
-                            return{
-                                isPaused: isPaused,
-                                pausesCount: prevState.isPaused ? prevState.pausesCount + 1 : prevState.pausesCount
-                            }
-                        }
+                    return(
+                        <>
+                            <TimeboxEditor 
+                                title={title}
+                                taskTimeInSeconds={taskTimeInSeconds}
+                                onChangeTitle={this.handleChangeTitle} 
+                                onChangeTaskTime={this.handleChangeTaskTime} 
+                            />
+                            <Timebox 
+                                title={title} 
+                                isRunning={isRunning}
+                                isPaused={isPaused}
+                                pausesCount={pausesCount}
+                                initialTime={initialTime}
+                                actualTime={actualTime}
+                                taskTimeInMs={taskTimeInMs}
+                                endTime={endTime}
+                                remainingTime={remainingTime}
+                                actualPercent={actualPercent}
+                                initialTaskTime={initialTaskTime}
+                                elapsedTime={elapsedTime}
+                                taskTimeInSeconds={taskTimeInSeconds}
+                                handleStart={this.handleStart}
+                                handleStop={this.handleStop}
+                                start={this.start}
+                                stop={this.stop}
+                                forceStop={this.forceStop}
+                                togglePause={this.togglePause}
+                                repause={this.repause}
+                                setTaskTime={this.setTaskTime}
+                                setEndTime={this.setEndTime}
+                                setRemainingTime={this.setRemainingTime}
+                                setElapsedTime={this.setElapsedTime}
+                                setActualPercent={this.setActualPercent}
+                            />
+                        </>
                     )
-                    const  {isPaused} = this.state;
-                    isPaused ? this.repause() : this.stop();
                 }
+            }
 
-                render() {
-                    const  {isRunning, isPaused, pausesCount, initialTime, actualTime, taskTimeInMs, endTime, remainingTime, actualPercent} = this.state;
-                    const {title, taskTimeInSeconds} = this.props;
-                    
+            function TimeboxEditor(props) {
+                const {
+                    title,
+                    taskTimeInSeconds,
+                    onChangeTitle,
+                    onChangeTaskTime
+                } = props;
+
+                return(
+                    <div className="TimeboxEditor">
+                        <label htmlFor="taskInput">Co robisz?</label>
+                        <input 
+                            id="taskInput" 
+                            onChange={onChangeTitle} 
+                            type="text" defaultValue={title} 
+                        />
+                        <br />
+                        <label htmlFor="timeInput">Ile minut?</label>
+                        <input 
+                            id="timeInput" 
+                            onChange={onChangeTaskTime} 
+                            type="number" 
+                            defaultValue={taskTimeInSeconds} 
+                        />
+                        <br />
+                        <button disabled>Zacznij</button>
+                    </div>
+                )
+            }       
+
+            function Timebox(props) {
+                    const  {
+                        title, 
+                        isRunning, 
+                        isPaused, 
+                        pausesCount, 
+                        initialTime, 
+                        actualTime, 
+                        taskTimeInMs, 
+                        endTime, 
+                        remainingTime, 
+                        actualPercent,
+                        taskTimeInSeconds,
+                        handleStart,
+                        handleStop,
+                        start,
+                        stop,
+                        forceStop,
+                        togglePause,
+                        repause,
+                        setTaskTime,
+                        setEndTime,
+                        setRemainingTime,
+                        setElapsedTime,
+                        setActualPercent,
+                    } = props;
+
                     let hours;
                     let minutes;
                     let seconds;
                     let ms;
                     let fullSec;
+
                     const reworkTime = (value) =>{
                         fullSec = Math.floor(value);
                         hours = Math.floor(value / 3600);
@@ -321,13 +369,12 @@
                             <h1>{title}</h1>
                             <Clock className={ isPaused ? "inactive" : ""} hours={hours} minutes={minutes} seconds={seconds} miliseconds={ms}/> 
                             <ProgressBar className={ isPaused ? "inactive" : ""} percent={actualPercent} trackRemaining={false} />
-                            <button onClick={this.handleStart} disabled={isRunning}>Start</button>
-                            <button onClick={this.handleStop} disabled={!isRunning}>Stop</button>
-                            <button onClick={this.togglePause} disabled={!isRunning}>{isPaused ? 'Wznów' : 'Pauzuj'}</button>
+                            <button onClick={handleStart} disabled={isRunning}>Start</button>
+                            <button onClick={handleStop} disabled={!isRunning}>Stop</button>
+                            <button onClick={togglePause} disabled={!isRunning}>{isPaused ? 'Wznów' : 'Pauzuj'}</button>
                             Liczba przerw: {pausesCount}
                         </div>
-                    )
-                }
+                    ) 
             }
 
                 ReactDOM.render(<App />, document.querySelector('.root'));
