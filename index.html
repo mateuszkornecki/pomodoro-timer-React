@@ -68,6 +68,8 @@
                 state = {
                     title: "To pole powinno działać",
                     taskTimeInSeconds: 10,
+                    isRunning: false,
+                    isPaused: false,
                 }
 
                 handleChangeTitle = (e) => {
@@ -84,7 +86,7 @@
                 }
 
                 render(){
-                    const {title, taskTimeInSeconds} = this.state;
+                    const {title, taskTimeInSeconds, isRunning, isPaused} = this.state;
                     return(
                         <>
                             <TimeboxEditor 
@@ -95,7 +97,9 @@
                             />
                             <Timebox 
                                 title={title}  
-                                taskTimeInSeconds={taskTimeInSeconds} 
+                                taskTimeInSeconds={taskTimeInSeconds}
+                                isRunning={isRunning}
+                                isPaused={isPaused} 
                             />
                         </>
                     )
@@ -136,8 +140,8 @@
                 constructor(props) {
                     super(props);
                     this.state ={
-                        isRunning: false,
-                        isPaused: false,
+                        // isRunning: false,
+                        // isPaused: false,
                         pausesCount: 0,
                         initialTime: 0,
                         actualTime: 0,
@@ -145,7 +149,8 @@
                         initialTaskTime: 0,
                         endTime: 0,
                         remainingTime: 0,
-                        actualPercent: 0
+                        elapsedTime: 0,
+                        actualPercent: 0,
                     }
                     let countDown;   
                 }
@@ -158,6 +163,7 @@
                         })
                         // keeps remaining time actual
                         this.setRemainingTime();
+                        this.setElapsedTime();
                         this.setActualPercent();
                         this.forceStop();
                     }, 10)
@@ -177,6 +183,7 @@
                 repause = () => {
                     //create new initialTime, use remainingTime as new taskTimeInMsInMiliseconds
                     const {remainingTime, taskTimeInMs} = this.state; 
+                    const {isRunning} = this.props;
                     const initialTime = Date.now();
                     const taskTimeAfterPause = remainingTime * 1000
                     this.setState({
@@ -188,10 +195,13 @@
                     this.setEndTime();
                 }
 
-                setTaskTime = (seconds) => {
+                setTaskTime = () => {
+                    const {taskTimeInSeconds} = this.props
                     this.setState({
-                    taskTimeInMs: seconds * 1000,
-                    initialTaskTime: seconds * 1000
+                    taskTimeInMs: taskTimeInSeconds * 1000,
+                    initialTaskTime: taskTimeInSeconds * 1000
+                    // taskTimeInMs: seconds * 1000,
+                    // initialTaskTime: seconds * 1000
                     })
                 }
 
@@ -217,6 +227,19 @@
                     )
                 }
 
+                setElapsedTime = () => {
+                    this.setState(
+                        function(prevState){
+                            let elapsedTime = ((prevState.initialTaskTime/1000) - prevState.remainingTime);
+                            console.log(elapsedTime);
+                            return{
+                                elapsedTime: elapsedTime,
+                            }
+                        }
+                    )
+                    
+                }
+
                 setActualPercent = () =>{  
                     this.setState(
                         function(prevState){
@@ -231,14 +254,16 @@
 
                handleStart = () => {
                 const {taskTimeInMs} = this.state;
-                const {taskTimeInSeconds} = this.props;
+                const {isRunning} = this.props;
+                // const {taskTimeInSeconds} = this.props;
                 const initialTime = Date.now();
                     this.setState({
                         isRunning: true,
                         initialTime: initialTime,
                     })
                     this.start();
-                    this.setTaskTime(taskTimeInSeconds);
+                    // this.setTaskTime(taskTimeInSeconds);
+                    this.setTaskTime();
                     this.setEndTime();
                     
                 }
@@ -280,7 +305,6 @@
                     let seconds;
                     let ms;
                     let fullSec;
-                    
                     const reworkTime = (value) =>{
                         fullSec = Math.floor(value);
                         hours = Math.floor(value / 3600);
