@@ -70,6 +70,7 @@
                     taskTimeInSeconds: 0,
                     isRunning: false,
                     isPaused: false,
+                    isEditable: true,
                     pausesCount: 0,
                     initialTime: 0,
                     actualTime: 0,
@@ -96,14 +97,12 @@
 
                 handleStart = () => {
                 const {taskTimeInMs, isRunning} = this.state;
-                // const {taskTimeInSeconds} = this.props;
                 const initialTime = Date.now();
                     this.setState({
                         isRunning: true,
                         initialTime: initialTime,
                     })
                     this.start();
-                    // this.setTaskTime(taskTimeInSeconds);
                     this.setTaskTime();
                     this.setEndTime();
                     
@@ -121,6 +120,17 @@
                         remainingTime: 0,
                         actualPercent: 0
                     })
+                }
+
+                handleEdit = () => {
+                    this.setState(
+                        function(prevState){
+                            const isEditable = !prevState.isEditable
+                            return{
+                                isEditable: isEditable,
+                            }
+                        }
+                    )
                 }
                 
                 start = () => {                       
@@ -212,13 +222,11 @@
                     this.setState(
                         function(prevState){
                             let elapsedTime = ((prevState.initialTaskTime/1000) - prevState.remainingTime);
-                            console.log(elapsedTime);
                             return{
                                 elapsedTime: elapsedTime,
                             }
                         }
-                    )
-                    
+                    ) 
                 }
 
                 setActualPercent = () =>{  
@@ -239,6 +247,7 @@
                         taskTimeInSeconds, 
                         isRunning, 
                         isPaused, 
+                        isEditable,
                         pausesCount, 
                         initialTime, 
                         actualTime, 
@@ -256,14 +265,17 @@
                                 title={title}
                                 taskTimeInSeconds={taskTimeInSeconds}
                                 isRunning={isRunning}
+                                isEditable={isEditable}
                                 onChangeTitle={this.handleChangeTitle} 
                                 onChangeTaskTime={this.handleChangeTaskTime} 
-                                handleStart={this.handleStart}
+                                onConfirm={this.handleEdit}
+                                // handleStart={this.handleStart}
                             />
                             <Timebox 
                                 title={title} 
                                 isRunning={isRunning}
                                 isPaused={isPaused}
+                                isEditable={isEditable}
                                 pausesCount={pausesCount}
                                 initialTime={initialTime}
                                 actualTime={actualTime}
@@ -286,6 +298,7 @@
                                 setRemainingTime={this.setRemainingTime}
                                 setElapsedTime={this.setElapsedTime}
                                 setActualPercent={this.setActualPercent}
+                                onConfirm={this.handleEdit}
                             />
                         </>
                     )
@@ -297,13 +310,16 @@
                     title,
                     taskTimeInSeconds,
                     isRunning,
+                    isEditable,
                     onChangeTitle,
                     onChangeTaskTime,
-                    handleStart
+                    onConfirm,
+                    // handleStart
                 } = props;
 
                 return(
-                    <div className="TimeboxEditor">
+                    // <div className="TimeboxEditor">
+                        <div className={isEditable ? "TimeboxEditor" : "TimeboxEditor inactive"}>
                         <label htmlFor="taskInput">Co robisz?</label>
                         <input 
                             id="taskInput" 
@@ -319,8 +335,8 @@
                             defaultValue={taskTimeInSeconds} 
                         />
                         <br />
-                        <button disabled={isRunning} onClick={handleStart}>
-                            Zacznij
+                        <button disabled={!isEditable} onClick={onConfirm}>
+                            Zatwierdź zmiany
                         </button>
                     </div>
                 )
@@ -331,6 +347,7 @@
                         title, 
                         isRunning, 
                         isPaused, 
+                        isEditable,
                         pausesCount, 
                         initialTime, 
                         actualTime, 
@@ -351,6 +368,7 @@
                         setRemainingTime,
                         setElapsedTime,
                         setActualPercent,
+                        onConfirm,
                     } = props;
 
                     let hours;
@@ -371,10 +389,11 @@
                     //if timebox is not running display time entered in input else display  remaining time
                     reworkTime(isRunning ? remainingTime : taskTimeInSeconds);
                     return(
-                        <div className="Timebox">
+                        <div className={isEditable ? "Timebox inactive" : "Timebox"}>
                             <h1>{title}</h1>
                             <Clock className={ isPaused ? "inactive" : ""} hours={hours} minutes={minutes} seconds={seconds} miliseconds={ms}/> 
                             <ProgressBar className={ isPaused ? "inactive" : ""} percent={actualPercent} trackRemaining={false} />
+                            <button onClick={onConfirm} disabled={isEditable}>Edytuj</button>
                             <button onClick={handleStart} disabled={isRunning}>Start</button>
                             <button onClick={handleStop} disabled={!isRunning}>Stop</button>
                             <button onClick={togglePause} disabled={!isRunning}>{isPaused ? 'Wznów' : 'Pauzuj'}</button>
