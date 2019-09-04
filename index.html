@@ -102,8 +102,6 @@
 
                 handleChangeTaskTimeWhileRunning = () => {
                     //needed to edit taskTime while counting down!
-                    // const {remainingTime, taskTimeInSeconds} = this.state;
-                    // if(taskTimeInSeconds < remainingTime)
                     this.setState((state) => ({
                         taskTimeInMs: state.taskTimeInMs - (state.elapsedTime * 1000),
                     }));
@@ -298,7 +296,6 @@
                                 forceStop={this.forceStop}
                                 togglePause={this.togglePause}
                                 repause={this.repause}
-                                setTaskTime={this.setTaskTime}
                                 setEndTime={this.setEndTime}
                                 setRemainingTime={this.setRemainingTime}
                                 setElapsedTime={this.setElapsedTime}
@@ -368,7 +365,6 @@
                         forceStop,
                         togglePause,
                         repause,
-                        setTaskTime,
                         setEndTime,
                         setRemainingTime,
                         setElapsedTime,
