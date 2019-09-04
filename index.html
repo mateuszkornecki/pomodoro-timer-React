@@ -91,7 +91,10 @@
                 handleChangeTaskTime = (e) => {
                     this.setState({
                         //* 60 to convert seconds to minutes
-                        taskTimeInSeconds: e.target.value * 60
+                        taskTimeInSeconds: e.target.value * 60,
+                        taskTimeInMs: e.target.value * 60 * 1000,
+                        initialTaskTime: e.target.value * 60 * 1000
+                        //???
                     })
                 }
 
@@ -103,7 +106,7 @@
                         initialTime: initialTime,
                     })
                     this.start();
-                    this.setTaskTime();
+                    // this.setTaskTime();
                     this.setEndTime();
                     
                 }
@@ -115,10 +118,11 @@
                         pausesCount: 0,
                         initialTime: 0,
                         actualTime: 0,
-                        taskTimeInMs: 0,
+                        // taskTimeInMs: 0,
                         endTime: 0,
                         remainingTime: 0,
-                        actualPercent: 0
+                        actualPercent: 0,
+                        elapsedTime: 0,
                     })
                 }
 
@@ -186,15 +190,13 @@
                     this.setEndTime();
                 }
 
-                setTaskTime = () => {
-                    const {taskTimeInSeconds} = this.state
-                    this.setState({
-                    taskTimeInMs: taskTimeInSeconds * 1000,
-                    initialTaskTime: taskTimeInSeconds * 1000
-                    // taskTimeInMs: seconds * 1000,
-                    // initialTaskTime: seconds * 1000
-                    })
-                }
+                // setTaskTime = () => {
+                //     const {taskTimeInSeconds} = this.state
+                //     this.setState({
+                //     taskTimeInMs: taskTimeInSeconds * 1000,
+                //     initialTaskTime: taskTimeInSeconds * 1000
+                //     })
+                // }
 
                 setEndTime = () => {
                     this.setState(
@@ -233,7 +235,8 @@
                     this.setState(
                         function(prevState){
                             //*1000 to convert seconds to ms and *100 to convert fraction to a full number
-                            let actualPercent = 100-((prevState.remainingTime*1000)/prevState.initialTaskTime)*100;
+                            // let actualPercent = 100-((prevState.remainingTime*1000)/prevState.initialTaskTime)*100;
+                            let actualPercent = (prevState.elapsedTime/prevState.taskTimeInSeconds) * 100;
                             return{
                                 actualPercent: actualPercent
                             }
