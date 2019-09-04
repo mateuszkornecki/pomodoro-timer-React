@@ -75,7 +75,6 @@
                     initialTime: 0,
                     actualTime: 0,
                     taskTimeInMs: 0,
-                    initialTaskTime: 0,
                     endTime: 0,
                     remainingTime: 0,
                     elapsedTime: 0,
@@ -89,13 +88,24 @@
                 }
 
                 handleChangeTaskTime = (e) => {
+                    const {elapsedTime} = this.state;
                     this.setState({
                         //* 60 to convert seconds to minutes
                         taskTimeInSeconds: e.target.value * 60,
                         taskTimeInMs: e.target.value * 60 * 1000,
-                        initialTaskTime: e.target.value * 60 * 1000
-                        //???
                     })
+                    if(elapsedTime>0){
+                        this.handleChangeTaskTimeWhileRunning();
+                    }
+                }
+
+                handleChangeTaskTimeWhileRunning = () => {
+                    //needed to edit taskTime while counting down!
+                    this.setState((state) => ({
+                        taskTimeInMs: state.taskTimeInMs - (state.elapsedTime * 1000),
+                    }));
+                    this.setEndTime();
+                    this.setRemainingTime();
                 }
 
                 handleStart = () => {
@@ -106,19 +116,19 @@
                         initialTime: initialTime,
                     })
                     this.start();
-                    // this.setTaskTime();
                     this.setEndTime();
                     
                 }
                 handleStop = () => {
                     this.stop();
+                    const {taskTimeInSeconds} = this.state;
                     this.setState({
                         isRunning: false,
                         isPaused: false,
                         pausesCount: 0,
                         initialTime: 0,
                         actualTime: 0,
-                        // taskTimeInMs: 0,
+                        taskTimeInMs: taskTimeInSeconds * 1000,
                         endTime: 0,
                         remainingTime: 0,
                         actualPercent: 0,
@@ -190,14 +200,6 @@
                     this.setEndTime();
                 }
 
-                // setTaskTime = () => {
-                //     const {taskTimeInSeconds} = this.state
-                //     this.setState({
-                //     taskTimeInMs: taskTimeInSeconds * 1000,
-                //     initialTaskTime: taskTimeInSeconds * 1000
-                //     })
-                // }
-
                 setEndTime = () => {
                     this.setState(
                         function(prevState){
@@ -223,7 +225,7 @@
                 setElapsedTime = () => {
                     this.setState(
                         function(prevState){
-                            let elapsedTime = ((prevState.initialTaskTime/1000) - prevState.remainingTime);
+                            let elapsedTime = ((prevState.taskTimeInSeconds) - prevState.remainingTime);
                             return{
                                 elapsedTime: elapsedTime,
                             }
@@ -235,7 +237,6 @@
                     this.setState(
                         function(prevState){
                             //*1000 to convert seconds to ms and *100 to convert fraction to a full number
-                            // let actualPercent = 100-((prevState.remainingTime*1000)/prevState.initialTaskTime)*100;
                             let actualPercent = (prevState.elapsedTime/prevState.taskTimeInSeconds) * 100;
                             return{
                                 actualPercent: actualPercent
@@ -258,7 +259,6 @@
                         endTime, 
                         remainingTime, 
                         actualPercent, 
-                        initialTaskTime, 
                         elapsedTime, 
                     } = this.state;
 
@@ -286,7 +286,6 @@
                                 endTime={endTime}
                                 remainingTime={remainingTime}
                                 actualPercent={actualPercent}
-                                initialTaskTime={initialTaskTime}
                                 elapsedTime={elapsedTime}
                                 taskTimeInSeconds={taskTimeInSeconds}
                                 handleStart={this.handleStart}
