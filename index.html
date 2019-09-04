@@ -94,6 +94,7 @@
                         taskTimeInSeconds: e.target.value * 60,
                         taskTimeInMs: e.target.value * 60 * 1000,
                     })
+                    //elapsedTime>0 mean that program is running or it is running or it is paused
                     if(elapsedTime>0){
                         this.handleChangeTaskTimeWhileRunning();
                     }
@@ -101,6 +102,8 @@
 
                 handleChangeTaskTimeWhileRunning = () => {
                     //needed to edit taskTime while counting down!
+                    // const {remainingTime, taskTimeInSeconds} = this.state;
+                    // if(taskTimeInSeconds < remainingTime)
                     this.setState((state) => ({
                         taskTimeInMs: state.taskTimeInMs - (state.elapsedTime * 1000),
                     }));
