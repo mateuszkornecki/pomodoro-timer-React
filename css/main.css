@@ -71,7 +71,8 @@ label {
     background: #5c5c5c;
 }
 
-.TimeboxEditor {
+.TimeboxEditor,
+.TimeboxCreator {
     padding: 1rem;
     border: 2px solid white;
     text-align: right;

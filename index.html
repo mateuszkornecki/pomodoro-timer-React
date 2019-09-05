@@ -276,31 +276,31 @@
                                 // handleStart={this.handleStart}
                             />
                             <CurrentTimebox 
-                                title={title} 
-                                isRunning={isRunning}
-                                isPaused={isPaused}
-                                isEditable={isEditable}
-                                pausesCount={pausesCount}
-                                initialTime={initialTime}
-                                actualTime={actualTime}
-                                taskTimeInMs={taskTimeInMs}
-                                endTime={endTime}
-                                remainingTime={remainingTime}
-                                actualPercent={actualPercent}
-                                elapsedTime={elapsedTime}
-                                taskTimeInSeconds={taskTimeInSeconds}
-                                handleStart={this.handleStart}
-                                handleStop={this.handleStop}
-                                start={this.start}
-                                stop={this.stop}
-                                forceStop={this.forceStop}
-                                togglePause={this.togglePause}
-                                repause={this.repause}
-                                setEndTime={this.setEndTime}
-                                setRemainingTime={this.setRemainingTime}
-                                setElapsedTime={this.setElapsedTime}
-                                setActualPercent={this.setActualPercent}
-                                onConfirm={this.handleEdit}
+                                title = {title} 
+                                isRunning = {isRunning}
+                                isPaused = {isPaused}
+                                isEditable = {isEditable}
+                                pausesCount = {pausesCount}
+                                initialTime = {initialTime}
+                                actualTime = {actualTime}
+                                taskTimeInMs = {taskTimeInMs}
+                                endTime = {endTime}
+                                remainingTime = {remainingTime}
+                                actualPercent = {actualPercent}
+                                elapsedTime = {elapsedTime}
+                                taskTimeInSeconds = {taskTimeInSeconds}
+                                handleStart = {this.handleStart}
+                                handleStop = {this.handleStop}
+                                start = {this.start}
+                                stop = {this.stop}
+                                forceStop = {this.forceStop}
+                                togglePause = {this.togglePause}
+                                repause = {this.repause}
+                                setEndTime = {this.setEndTime}
+                                setRemainingTime = {this.setRemainingTime}
+                                setElapsedTime = {this.setElapsedTime}
+                                setActualPercent = {this.setActualPercent}
+                                onConfirm = {this.handleEdit}
                             />
                         </>
                     )
@@ -402,6 +402,34 @@
                         </div>
                     ) 
             }
+
+            function TimeboxCreator(props) {
+
+                return(
+                    // <div className="TimeboxEditor">
+                        <div className="TimeboxCreator">
+                        <label htmlFor="taskInput">Co robisz?</label>
+                        <input 
+                            id="taskInput" 
+                            onChange={onChangeTitle} 
+                            type="text" defaultValue={title} 
+                        />
+                        <br />
+                        <label htmlFor="timeInput">Ile minut?</label>
+                        <input 
+                            id="timeInput" 
+                            onChange={onChangeTaskTime} 
+                            type="number" 
+                            defaultValue={taskTimeInSeconds} 
+                        />
+                        <br />
+                        <button disabled={!isEditable} onClick={onConfirm}>
+                            Zatwierdź zmiany
+                        </button>
+                    </div>
+                )
+            }       
+
 
                 ReactDOM.render(<App />, document.querySelector('.root'));
 
