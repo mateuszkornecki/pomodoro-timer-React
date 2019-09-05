@@ -439,19 +439,18 @@
                         <>
                         <TimeboxCreator />
                        {timeboxes.map((timebox, index) => (
-                        <div key={index} className="Timebox">
-                            <h3>{timebox.title} - {timebox.taskTime}</h3>
-                        </div>
+                            <Timebox key={index} title={timebox.title} taskTime={timebox.taskTitle} />
                         ))}
                         </>
                     )
                 }
             }
 
-            function Timebox({title, taskTime}) {
+            function Timebox({title, taskTime, onDelete, onEdit, index}) {
                     return(
-                        <div className="Timebox">
-                        <h3>{title} - {taskTime} min.</h3>    
+                        <div key={index} className="Timebox">
+                            <h3>{title} - {taskTime} min.</h3>  
+                                 
                         </div>
 
                     )
