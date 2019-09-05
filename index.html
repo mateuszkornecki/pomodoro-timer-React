@@ -275,7 +275,7 @@
                                 onConfirm={this.handleEdit}
                                 // handleStart={this.handleStart}
                             />
-                            <Timebox 
+                            <CurrentTimebox 
                                 title={title} 
                                 isRunning={isRunning}
                                 isPaused={isPaused}
@@ -344,7 +344,7 @@
                 )
             }       
 
-            function Timebox(props) {
+            function CurrentTimebox(props) {
                     const  {
                         title, 
                         isRunning, 
@@ -390,7 +390,7 @@
                     //if timebox is not running display time entered in input else display  remaining time
                     reworkTime(isRunning ? remainingTime : taskTimeInSeconds);
                     return(
-                        <div className={isEditable ? "Timebox inactive" : "Timebox"}>
+                        <div className={isEditable ? "CurrentTimebox inactive" : "CurrentTimebox"}>
                             <h1>{title}</h1>
                             <Clock className={ isPaused ? "inactive" : ""} hours={hours} minutes={minutes} seconds={seconds} miliseconds={ms}/> 
                             <ProgressBar className={ isPaused ? "inactive" : ""} percent={actualPercent} trackRemaining={false} />

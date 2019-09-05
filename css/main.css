@@ -1,4 +1,4 @@
-@import "css/normalize.css";
+@import "normalize.css";
 @import url("https://fonts.googleapis.com/css?family=Fira+Code:300,400,600&display=swap&subset=latin-ext");
 html {
     box-sizing: border-box;
@@ -78,7 +78,7 @@ label {
     margin: 1rem;
 }
 
-.Timebox {
+.CurrentTimebox {
     padding: 1rem;
     border: 2px solid white;
     text-align: center;
