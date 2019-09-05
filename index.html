@@ -433,10 +433,22 @@
                 }
 
                 handleCreate = () => {
-                    console.log("Tworzę Timebox'a");
+                    this.addTimebox({title: "Nowy Timebox", taskTime: 666});
                 }
                 
-                
+                addTimebox = (timebox) => {
+                    this.setState(prevState=>{
+                        const timeboxes = [timebox, ...prevState.timeboxes];
+                        return(
+                            {
+                                timeboxes: timeboxes,
+                            }
+                        )
+                    })
+
+
+                }
+
                 render() {
                     const {timeboxes} = this.state;
                     return (
