@@ -403,7 +403,7 @@
                     ) 
             }
 
-            function TimeboxCreator(props) {
+            function TimeboxCreator({onCreate}) {
                 return(
                         <div className="TimeboxCreator">
                         <label htmlFor="taskInput">Co robisz?</label>
@@ -418,7 +418,7 @@
                             type="number" 
                         />
                         <br />
-                        <button> Dodaj Timebox'a</button>
+                        <button onClick={onCreate}> Dodaj Timebox'a</button>
                     </div>
                 )
             }       
@@ -431,22 +431,26 @@
                         {title: "Ucze się komponentów niekontrolowanych", taskTime: 5}
                     ]
                 }
+
+                handleCreate = () => {
+                    console.log("Tworzę Timebox'a");
+                }
                 
                 
                 render() {
                     const {timeboxes} = this.state;
                     return (
                         <>
-                        <TimeboxCreator />
+                            <TimeboxCreator onCreate={this.handleCreate}/>
                             {timeboxes.map((timebox, index) => (
                                 <Timebox 
-                                key={index} 
-                                title={timebox.title} 
-                                taskTime={timebox.taskTitle}  
-                                onDelete={()=> console.log(`Usuwam Timeboxa o id ${index}`)}
-                                onEdit={()=> console.log(`Edytuje Timeboxa o id ${index}`)}
+                                    key={index} 
+                                    title={timebox.title} 
+                                    taskTime={timebox.taskTitle}  
+                                    onDelete={()=> console.log(`Usuwam Timeboxa o id ${index}`)}
+                                    onEdit={()=> console.log(`Edytuje Timeboxa o id ${index}`)}
                                 />
-                        ))}
+                            ))}
                         </>
                     )
                 }
