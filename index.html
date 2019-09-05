@@ -20,7 +20,7 @@
              function App(){
                 return(
                 <div className="App">
-                    <EditableTimebox/>
+                    <TimeboxList/>
                 </div>
                 )
             }
@@ -404,32 +404,37 @@
             }
 
             function TimeboxCreator(props) {
-
                 return(
-                    // <div className="TimeboxEditor">
                         <div className="TimeboxCreator">
                         <label htmlFor="taskInput">Co robisz?</label>
                         <input 
                             id="taskInput" 
-                            onChange={onChangeTitle} 
-                            type="text" defaultValue={title} 
+                            type="text" 
                         />
                         <br />
                         <label htmlFor="timeInput">Ile minut?</label>
                         <input 
                             id="timeInput" 
-                            onChange={onChangeTaskTime} 
                             type="number" 
-                            defaultValue={taskTimeInSeconds} 
                         />
                         <br />
-                        <button disabled={!isEditable} onClick={onConfirm}>
-                            Zatwierdź zmiany
-                        </button>
+                        <button> Dodaj Timebox'a</button>
                     </div>
                 )
             }       
 
+            class TimeboxList extends React.Component {
+                state = {
+                    title: "To pole powinno działać",
+                    taskTime: 12,
+                }
+
+                render() {
+                    return (
+                        <TimeboxCreator />
+                    )
+                }
+            }
 
                 ReactDOM.render(<App />, document.querySelector('.root'));
 
