@@ -431,10 +431,28 @@
 
                 render() {
                     return (
+                        <>
                         <TimeboxCreator />
+                        <Timebox title="Uczę się formularzy" taskTime={15}/>
+                        <Timebox title="Uczę się list" taskTime={10}/>
+                        <Timebox title="Ucze się komponentów niekontrolowanych" taskTime={5}/>
+
+                        </>
                     )
                 }
             }
+
+            function Timebox({title, taskTime}) {
+                    return(
+                        <div className="Timebox">
+                        <h3>{title} - {taskTime} min.</h3>    
+                        </div>
+
+                    )
+
+
+            }
+
 
                 ReactDOM.render(<App />, document.querySelector('.root'));
 

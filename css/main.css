@@ -30,6 +30,13 @@ button {
     color: #5c5c5c;
 }
 
+.CurrentTimebox {
+    padding: 1rem;
+    border: 2px solid white;
+    text-align: center;
+    margin: 1rem;
+}
+
 input {
     min-width: 50%;
     margin: 0 0 1rem 1rem;
@@ -79,9 +86,8 @@ label {
     margin: 1rem;
 }
 
-.CurrentTimebox {
-    padding: 1rem;
+.Timebox {
     border: 2px solid white;
-    text-align: center;
+    padding: 1rem;
     margin: 1rem;
 }
