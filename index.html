@@ -425,18 +425,24 @@
 
             class TimeboxList extends React.Component {
                 state = {
-                    title: "To pole powinno działać",
-                    taskTime: 12,
+                   timeboxes: [
+                        {title: "Ucze się formularzy", taskTime: 15},
+                        {title: "Ucze się list", taskTime: 10},
+                        {title: "Ucze się komponentów niekontrolowanych", taskTime: 5}
+                    ]
                 }
-
+                
+                
                 render() {
+                    const {timeboxes} = this.state;
                     return (
                         <>
                         <TimeboxCreator />
-                        <Timebox title="Uczę się formularzy" taskTime={15}/>
-                        <Timebox title="Uczę się list" taskTime={10}/>
-                        <Timebox title="Ucze się komponentów niekontrolowanych" taskTime={5}/>
-
+                       {timeboxes.map((timebox, index) => (
+                        <div key={index} className="Timebox">
+                            <h3>{timebox.title} - {timebox.taskTime}</h3>
+                        </div>
+                        ))}
                         </>
                     )
                 }
