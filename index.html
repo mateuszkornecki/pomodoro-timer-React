@@ -438,8 +438,14 @@
                     return (
                         <>
                         <TimeboxCreator />
-                       {timeboxes.map((timebox, index) => (
-                            <Timebox key={index} title={timebox.title} taskTime={timebox.taskTitle} />
+                            {timeboxes.map((timebox, index) => (
+                                <Timebox 
+                                key={index} 
+                                title={timebox.title} 
+                                taskTime={timebox.taskTitle}  
+                                onDelete={()=> console.log(`Usuwam Timeboxa o id ${index}`)}
+                                onEdit={()=> console.log(`Edytuje Timeboxa o id ${index}`)}
+                                />
                         ))}
                         </>
                     )
@@ -450,7 +456,8 @@
                     return(
                         <div key={index} className="Timebox">
                             <h3>{title} - {taskTime} min.</h3>  
-                                 
+                            <button onClick={onDelete}>Usuń</button>
+                            <button onClick={onEdit}>Zmień</button>
                         </div>
 
                     )
