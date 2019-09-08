@@ -431,7 +431,8 @@
                         {title: "Ucze się formularzy", taskTime: 15},
                         {title: "Ucze się list", taskTime: 10},
                         {title: "Ucze się komponentów niekontrolowanych", taskTime: 5}
-                    ]
+                    ],
+                    editInput: "asd",
                 }
 
                 handleCreate = () => {
@@ -467,6 +468,9 @@
                     return(array);
                 }
 
+
+                //TODO: refactor editing title
+
                 editTimebox = (indexToChange, contentToChange) => {
                     this.setState(prevState => {
                         const timeboxes = prevState.timeboxes;
@@ -474,13 +478,20 @@
                         return(
                             {
                                 timeboxes: timeboxes,
+                                editInput: "",
                             }
                         )
                     })
                 }
 
+                changeTitle = (e) => {
+                    this.setState({
+                        editInput: e.target.value,
+                    })
+                }
+
                 render() {
-                    const {timeboxes} = this.state;
+                    const {timeboxes, editInput} = this.state;
                     return (
                         <>
                             <TimeboxCreator onCreate={this.handleCreate}/>
@@ -490,7 +501,8 @@
                                     title={timebox.title} 
                                     taskTime={timebox.taskTime}  
                                     onDelete={() => this.removeTimebox(index)}
-                                    onEdit={()=> this.editTimebox(index, {...timebox, title: "Updated Timebox"} )}
+                                    onEdit={()=> this.editTimebox(index, {...timebox, title: editInput} )}
+                                    onChange={this.changeTitle}
                                 />
                             ))}
                         </>
@@ -498,13 +510,13 @@
                 }
             }
 
-            function Timebox({title, taskTime, onDelete, onEdit, index}) {
+            function Timebox({title, taskTime, onDelete, onEdit, index, onChange}) {
                     return(
                         <div key={index} className="Timebox">
                             <h3>{title} - {taskTime} min.</h3>  
                             <button onClick={onDelete}>Usuń</button>
                             <button onClick={onEdit}>Zmień</button>
-                            <input />
+                            <input onChange={onChange} />
                         </div>
 
                     )
