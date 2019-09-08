@@ -447,19 +447,35 @@
                         )
                     })
                 }
-
+                //TODO find another way to create this function
                 removeTimebox = (indexToRemove) => {
                     this.setState(prevState => {
-                        const timeboxes = prevState.timeboxes.filter((current, index) => index !== indexToRemove);
+                        const timeboxes = prevState.timeboxes.filter((timebox, index) => index !== indexToRemove);
                         return(
                             {
                                 timeboxes: timeboxes,
                             }
                         )
                     })
+                }
 
+                updateArray = (array, index, value) => {
+                    array.splice(index, 1);
+                    array.splice(index, 0, value);
+                    return(array);
+                }
 
-
+                editTimebox = (indexToChange, contentToChange) => {
+                    this.setState(prevState => {
+                        // const changedTimebox = prevState.timeboxes.find((timebox, index) => index === indexToChange);
+                        const timeboxes = prevState.timeboxes;
+                        this.updateArray(timeboxes, indexToChange, contentToChange);
+                        return(
+                            {
+                                timeboxes: timeboxes,
+                            }
+                        )
+                    })
                 }
 
                 render() {
@@ -471,9 +487,9 @@
                                 <Timebox 
                                     key={index} 
                                     title={timebox.title} 
-                                    taskTime={timebox.taskTitle}  
+                                    taskTime={timebox.taskTime}  
                                     onDelete={() => this.removeTimebox(index)}
-                                    onEdit={()=> console.log(`Edytuje Timeboxa o id ${index}`)}
+                                    onEdit={()=> this.editTimebox(index, {...timebox, title: "Nowy Taaimebox"} )}
                                 />
                             ))}
                         </>
