@@ -10,6 +10,8 @@
     <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/node-uuid/1.4.8/uuid.min.js"
+        integrity="sha256-h7PiJxtxsf7+VkAGN6N+8/0qZrhK7oYJc/pguDnYJi4=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -433,7 +435,7 @@
                 }
 
                 handleCreate = () => {
-                    this.addTimebox({title: "Nowy Timebox", taskTime: 666});
+                    this.addTimebox({id: uuid.v4(), title: "Nowy Timebox", taskTime: 666});
                 }
                 
                 addTimebox = (timebox) => {
@@ -467,7 +469,6 @@
 
                 editTimebox = (indexToChange, contentToChange) => {
                     this.setState(prevState => {
-                        // const changedTimebox = prevState.timeboxes.find((timebox, index) => index === indexToChange);
                         const timeboxes = prevState.timeboxes;
                         this.updateArray(timeboxes, indexToChange, contentToChange);
                         return(
@@ -485,11 +486,11 @@
                             <TimeboxCreator onCreate={this.handleCreate}/>
                             {timeboxes.map((timebox, index) => (
                                 <Timebox 
-                                    key={index} 
+                                    key={timebox.id} 
                                     title={timebox.title} 
                                     taskTime={timebox.taskTime}  
                                     onDelete={() => this.removeTimebox(index)}
-                                    onEdit={()=> this.editTimebox(index, {...timebox, title: "Nowy Taaimebox"} )}
+                                    onEdit={()=> this.editTimebox(index, {...timebox, title: "Updated Timebox"} )}
                                 />
                             ))}
                         </>
@@ -503,6 +504,7 @@
                             <h3>{title} - {taskTime} min.</h3>  
                             <button onClick={onDelete}>Usuń</button>
                             <button onClick={onEdit}>Zmień</button>
+                            <input />
                         </div>
 
                     )
