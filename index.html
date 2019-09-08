@@ -441,10 +441,23 @@
                         const timeboxes = [timebox, ...prevState.timeboxes];
                         return(
                             {
+                                //OR JUST timeboxes
                                 timeboxes: timeboxes,
                             }
                         )
                     })
+                }
+
+                removeTimebox = (indexToRemove) => {
+                    this.setState(prevState => {
+                        const timeboxes = prevState.timeboxes.filter((current, index) => index !== indexToRemove);
+                        return(
+                            {
+                                timeboxes: timeboxes,
+                            }
+                        )
+                    })
+
 
 
                 }
@@ -459,7 +472,7 @@
                                     key={index} 
                                     title={timebox.title} 
                                     taskTime={timebox.taskTitle}  
-                                    onDelete={()=> console.log(`Usuwam Timeboxa o id ${index}`)}
+                                    onDelete={() => this.removeTimebox(index)}
                                     onEdit={()=> console.log(`Edytuje Timeboxa o id ${index}`)}
                                 />
                             ))}
