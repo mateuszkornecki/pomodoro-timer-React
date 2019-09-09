@@ -322,7 +322,6 @@
                 } = props;
 
                 return(
-                    // <div className="TimeboxEditor">
                         <div className={isEditable ? "TimeboxEditor" : "TimeboxEditor inactive"}>
                         <label htmlFor="taskInput">Co robisz?</label>
                         <input 
@@ -405,26 +404,6 @@
                     ) 
             }
 
-            function TimeboxCreator({onCreate}) {
-                return(
-                        <div className="TimeboxCreator">
-                        <label htmlFor="taskInput">Co robisz?</label>
-                        <input 
-                            id="taskInput" 
-                            type="text" 
-                        />
-                        <br />
-                        <label htmlFor="timeInput">Ile minut?</label>
-                        <input 
-                            id="timeInput" 
-                            type="number" 
-                        />
-                        <br />
-                        <button onClick={onCreate}> Dodaj Timebox'a</button>
-                    </div>
-                )
-            }       
-
             class TimeboxList extends React.Component {
                 state = {
                    timeboxes: [
@@ -435,8 +414,8 @@
                     editInput: "",
                 }
 
-                handleCreate = () => {
-                    this.addTimebox({id: uuid.v4(), title: "Nowy Timebox", taskTime: 666});
+                handleCreate = (createdTimebox) => {
+                    this.addTimebox(createdTimebox);
                 }
                 
                 addTimebox = (timebox) => {
@@ -510,6 +489,66 @@
                 }
             }
 
+            class TimeboxCreator extends React.Component {
+
+                state = {
+                    title: "",
+                    taskTime: "",
+                }
+
+                setTitle = (e) => {
+                    this.setState({
+                        title: e.target.value
+                    })
+                }
+
+                setTaskTime = (e) => {
+                    this.setState({
+                        taskTime: e.target.value
+                    })
+                }
+
+                handleSubmit = (e) => {
+                    const {onCreate} = this.props;
+                    const {title, taskTime} = this.state;
+                    e.preventDefault();
+                    onCreate({
+                        id: uuid.v4(),
+                        title: title,
+                        taskTime: taskTime
+                    });
+                    this.setState({
+                        title:"",
+                        taskTime:""
+                    })
+                }
+
+                render() {
+                    const {title, taskTime} = this.state;
+                    return(
+                        <form onSubmit={this.handleSubmit} className="TimeboxCreator">
+                            <label htmlFor="taskInput">Co robisz?</label>
+                            <input 
+                                value={title}
+                                onChange={this.setTitle}
+                                id="taskInput" 
+                                type="text" 
+                            />
+                            <br />
+                            <label htmlFor="timeInput">Ile minut?</label>
+                            <input 
+                                value={taskTime}
+                                onChange={this.setTaskTime}
+                                id="timeInput" 
+                                type="number" 
+                            />
+                            <br />
+                            <button> Dodaj Timebox'a</button>
+                        </form>
+                    )
+                }
+            }     
+
             function Timebox({title, taskTime, onDelete, onEdit, index, onChange}) {
                     return(
                         <div className="Timebox">
@@ -520,8 +559,6 @@
                         </div>
 
                     )
-
-
             }
 
 
