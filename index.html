@@ -428,11 +428,11 @@
             class TimeboxList extends React.Component {
                 state = {
                    timeboxes: [
-                        {title: "Ucze się formularzy", taskTime: 15},
-                        {title: "Ucze się list", taskTime: 10},
-                        {title: "Ucze się komponentów niekontrolowanych", taskTime: 5}
+                        // {title: "Ucze się formularzy", taskTime: 15},
+                        // {title: "Ucze się list", taskTime: 10},
+                        // {title: "Ucze się komponentów niekontrolowanych", taskTime: 5}
                     ],
-                    editInput: "asd",
+                    editInput: "",
                 }
 
                 handleCreate = () => {
@@ -512,7 +512,7 @@
 
             function Timebox({title, taskTime, onDelete, onEdit, index, onChange}) {
                     return(
-                        <div key={index} className="Timebox">
+                        <div className="Timebox">
                             <h3>{title} - {taskTime} min.</h3>  
                             <button onClick={onDelete}>Usuń</button>
                             <button onClick={onEdit}>Zmień</button>
