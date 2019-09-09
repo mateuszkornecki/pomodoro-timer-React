@@ -491,62 +491,34 @@
 
             class TimeboxCreator extends React.Component {
 
-                // state = {
-                //     title: "",
-                //     taskTime: "",
-                // }
-
-                // setTitle = (e) => {
-                //     this.setState({
-                //         title: e.target.value
-                //     })
-                // }
-
-                // setTaskTime = (e) => {
-                //     this.setState({
-                //         taskTime: e.target.value
-                //     })
-                // }
-
                 constructor(props){
                     super(props);
-                    this.titleInput = React.createRef();
-                    this.taskTimeInput = React.createRef();
+                    this.form = React.createRef();
                 }
 
                 handleSubmit = (e) => {
                     const {onCreate} = this.props;
-                    // const {title, taskTime} = this.state;
                     e.preventDefault();
                     onCreate({
                         id: uuid.v4(),
-                        title: this.titleInput.current.value,
-                        taskTime: this.taskTimeInput.current.value
+                        title: this.form.current.children.taskInput.value,
+                        taskTime: this.form.current.children.timeInput.value,
                     });
-                    this.setState({
-                        title:"",
-                        taskTime:""
-                    })
+                    this.form.current.children.taskInput.value = "";
+                    this.form.current.children.timeInput.value = "";
                 }
 
                 render() {
-                    // const {title, taskTime} = this.state;
                     return(
-                        <form onSubmit={this.handleSubmit} className="TimeboxCreator">
+                        <form ref={this.form} onSubmit={this.handleSubmit} className="TimeboxCreator">
                             <label htmlFor="taskInput">Co robisz?</label>
                             <input 
-                                ref={this.titleInput}
-                                // value={title}
-                                // onChange={this.setTitle}
                                 id="taskInput" 
                                 type="text" 
                             />
                             <br />
                             <label htmlFor="timeInput">Ile minut?</label>
                             <input 
-                                ref={this.taskTimeInput}
-                                // value={taskTime}
-                                // onChange={this.setTaskTime}
                                 id="timeInput" 
                                 type="number" 
                             />
