@@ -2,40 +2,7 @@ import React from "react";
 
 import uuid from "uuid";
 import Clock from "./Clock";
-
-function timeInterval(min, max, value) {
-    //It will return a number between min and max
-    value = Math.max(min, Math.min(value, max));
-    return value;
-}
-
-function fillWithZeros(targetLength, value) {
-    //It will add zeros  before value till value.length = targetLength
-    value = value.toString();
-    while (value.length < targetLength) {
-        value = `0${value}`;
-    }
-    return value;
-}
-
-function normalizeTime(min, max, targetLength, value) {
-    return fillWithZeros(targetLength, timeInterval(min, max, value));
-}
-
-function ProgressBar({ className = "", percent, trackRemaining }) {
-    const ProgressBarClasses =
-        trackRemaining === true
-            ? `ProgressBar ProgressBar--reverse ${className}`
-            : `ProgressBar ${className}`;
-    const ProgressBarWidth =
-        trackRemaining === true ? `calc(100% - ${percent}%)` : `${percent}%`;
-
-    return (
-        <div className={ProgressBarClasses}>
-            <div style={{ width: `${ProgressBarWidth}` }}></div>
-        </div>
-    );
-}
+import ProgressBar from "./ProgressBar";
 
 class EditableTimebox extends React.Component {
     state = {
@@ -110,7 +77,7 @@ class EditableTimebox extends React.Component {
     };
 
     handleEdit = () => {
-        this.setState(function (prevState) {
+        this.setState(function(prevState) {
             const isEditable = !prevState.isEditable;
             return {
                 isEditable: isEditable
@@ -144,7 +111,7 @@ class EditableTimebox extends React.Component {
     };
 
     togglePause = () => {
-        this.setState(function (prevState) {
+        this.setState(function(prevState) {
             const isPaused = !prevState.isPaused;
             return {
                 isPaused: isPaused,
@@ -172,7 +139,7 @@ class EditableTimebox extends React.Component {
     };
 
     setEndTime = () => {
-        this.setState(function (prevState) {
+        this.setState(function(prevState) {
             let endTime = prevState.initialTime + prevState.taskTimeInMs;
             return {
                 endTime: endTime
@@ -181,7 +148,7 @@ class EditableTimebox extends React.Component {
     };
 
     setRemainingTime = () => {
-        this.setState(function (prevState) {
+        this.setState(function(prevState) {
             let remainingTime =
                 (prevState.endTime - prevState.actualTime) / 1000;
             return {
@@ -191,7 +158,7 @@ class EditableTimebox extends React.Component {
     };
 
     setElapsedTime = () => {
-        this.setState(function (prevState) {
+        this.setState(function(prevState) {
             let elapsedTime =
                 prevState.taskTimeInSeconds - prevState.remainingTime;
             return {
@@ -201,7 +168,7 @@ class EditableTimebox extends React.Component {
     };
 
     setActualPercent = () => {
-        this.setState(function (prevState) {
+        this.setState(function(prevState) {
             //*1000 to convert seconds to ms and *100 to convert fraction to a full number
             let actualPercent =
                 (prevState.elapsedTime / prevState.taskTimeInSeconds) * 100;
@@ -238,7 +205,7 @@ class EditableTimebox extends React.Component {
                     onChangeTitle={this.handleChangeTitle}
                     onChangeTaskTime={this.handleChangeTaskTime}
                     onConfirm={this.handleEdit}
-                // handleStart={this.handleStart}
+                    // handleStart={this.handleStart}
                 />
                 <CurrentTimebox
                     title={title}
