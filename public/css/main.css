@@ -40,7 +40,7 @@ button {
 input {
     min-width: 50%;
     margin: 0 0 1rem 1rem;
-    background: #171717;
+    background: transparent;
     color: white;
     border: none;
     border-bottom: 1px solid white;
@@ -90,4 +90,20 @@ label {
     border: 2px solid white;
     padding: 1rem;
     margin: 1rem;
+}
+
+.CurrentTimebox {
+    background: tomato;
+}
+
+.Timebox {
+    background: lightsteelblue;
+}
+
+.TimeboxCreator {
+    background: lightseagreen;
+}
+
+.TimeboxEditor {
+    background: lightsalmon;
 }
