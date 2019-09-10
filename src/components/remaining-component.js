@@ -4,87 +4,6 @@ import uuid from "uuid";
 import Clock from "./Clock";
 import ProgressBar from "./ProgressBar";
 
-function CurrentTimebox(props) {
-    const {
-        title,
-        isRunning,
-        isPaused,
-        isEditable,
-        pausesCount,
-        initialTime,
-        actualTime,
-        taskTimeInMs,
-        endTime,
-        remainingTime,
-        actualPercent,
-        taskTimeInSeconds,
-        handleStart,
-        handleStop,
-        start,
-        stop,
-        forceStop,
-        togglePause,
-        repause,
-        setEndTime,
-        setRemainingTime,
-        setElapsedTime,
-        setActualPercent,
-        onConfirm
-    } = props;
-
-    let hours;
-    let minutes;
-    let seconds;
-    let ms;
-    let fullSec;
-
-    const reworkTime = value => {
-        fullSec = Math.floor(value);
-        hours = Math.floor(value / 3600);
-        minutes = Math.floor(value / 60);
-        seconds = Math.floor(value % 60);
-        //to prevent counting after passing 0
-        ms = fullSec >= 0 ? Math.floor((value - fullSec) * 1000) : 0;
-        // return(hours, minutes, seconds, ms);
-    };
-    //if timebox is not running display time entered in input else display  remaining time
-    reworkTime(isRunning ? remainingTime : taskTimeInSeconds);
-    return (
-        <div
-            className={
-                isEditable ? "CurrentTimebox inactive" : "CurrentTimebox"
-            }
-        >
-            <h1>{title}</h1>
-            <Clock
-                className={isPaused ? "inactive" : ""}
-                hours={hours}
-                minutes={minutes}
-                seconds={seconds}
-                miliseconds={ms}
-            />
-            <ProgressBar
-                className={isPaused ? "inactive" : ""}
-                percent={actualPercent}
-                trackRemaining={false}
-            />
-            <button onClick={onConfirm} disabled={isEditable}>
-                Edytuj
-            </button>
-            <button onClick={handleStart} disabled={isRunning}>
-                Start
-            </button>
-            <button onClick={handleStop} disabled={!isRunning}>
-                Stop
-            </button>
-            <button onClick={togglePause} disabled={!isRunning}>
-                {isPaused ? "Wznów" : "Pauzuj"}
-            </button>
-            Liczba przerw: {pausesCount}
-        </div>
-    );
-}
-
 class TimeboxList extends React.Component {
     state = {
         timeboxes: [
@@ -220,4 +139,4 @@ function Timebox({ title, taskTime, onDelete, onEdit, index, onChange }) {
     );
 }
 
-export { TimeboxList, CurrentTimebox };
+export { TimeboxList };
