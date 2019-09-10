@@ -39,4 +39,4 @@ class TimeboxCreator extends React.Component {
     }
 }
 
-export { TimeboxCreator };
+export default TimeboxCreator;
