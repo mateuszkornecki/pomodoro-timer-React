@@ -1,6 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import uuid from "uuid";
+import "./styles/main.css";
+
+import Clock from "./components/Clock";
 
 function App() {
     return (
@@ -28,20 +31,6 @@ function fillWithZeros(targetLength, value) {
 
 function normalizeTime(min, max, targetLength, value) {
     return fillWithZeros(targetLength, timeInterval(min, max, value));
-}
-
-function Clock({ className = "", hours, minutes, seconds, miliseconds }) {
-    hours = normalizeTime(0, 24, 2, hours);
-    minutes = normalizeTime(0, 59, 2, minutes >= 60 ? minutes % 60 : minutes);
-    seconds = normalizeTime(0, 59, 2, seconds);
-    miliseconds = normalizeTime(0, 999, 3, miliseconds);
-
-    return (
-        <h2 className={"Clock " + className}>
-            {" "}
-            Pozostało {hours}:{minutes}:{seconds}:{miliseconds}
-        </h2>
-    );
 }
 
 function ProgressBar({ className = "", percent, trackRemaining }) {
