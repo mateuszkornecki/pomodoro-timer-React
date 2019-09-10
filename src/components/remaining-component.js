@@ -4,45 +4,6 @@ import uuid from "uuid";
 import Clock from "./Clock";
 import ProgressBar from "./ProgressBar";
 
-function TimeboxEditor(props) {
-    const {
-        title,
-        taskTimeInSeconds,
-        isRunning,
-        isEditable,
-        onChangeTitle,
-        onChangeTaskTime,
-        onConfirm
-        // handleStart
-    } = props;
-
-    return (
-        <div
-            className={isEditable ? "TimeboxEditor" : "TimeboxEditor inactive"}
-        >
-            <label htmlFor="taskInput">Co robisz?</label>
-            <input
-                id="taskInput"
-                onChange={onChangeTitle}
-                type="text"
-                defaultValue={title}
-            />
-            <br />
-            <label htmlFor="timeInput">Ile minut?</label>
-            <input
-                id="timeInput"
-                onChange={onChangeTaskTime}
-                type="number"
-                defaultValue={taskTimeInSeconds}
-            />
-            <br />
-            <button disabled={!isEditable} onClick={onConfirm}>
-                Zatwierdź zmiany
-            </button>
-        </div>
-    );
-}
-
 function CurrentTimebox(props) {
     const {
         title,
@@ -259,4 +220,4 @@ function Timebox({ title, taskTime, onDelete, onEdit, index, onChange }) {
     );
 }
 
-export { TimeboxList, TimeboxEditor, CurrentTimebox };
+export { TimeboxList, CurrentTimebox };
