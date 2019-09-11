@@ -1,16 +1,29 @@
 import React from "react";
+import classNames from "classnames";
 
-function ProgressBar({ className, percent, trackRemaining }) {
-    const ProgressBarClasses =
-        trackRemaining === true
-            ? `progress progress--reverse ${className}`
-            : `progress ${className}`;
+function ProgressBar({ className = "", percent, trackRemaining, red }) {
+    let progressClassName = classNames(
+        "progress",
+        className,
+        { "progress--reverse": trackRemaining }
+    );
+
+    let progressBarClassName = classNames(
+        "progress__bar",
+        { "progress__bar--red": red, }
+    )
+
+    // const ProgressBarClasses =
+    //     trackRemaining === true
+    //         ? `progress progress--reverse ${className}`
+    //         : `progress ${className}`;
+
     const ProgressBarWidth =
         trackRemaining === true ? `calc(100 % - ${percent} %)` : `${percent}% `;
 
     return (
-        <div className={ProgressBarClasses}>
-            <div className="progress__bar progress__bar--red" style={{ width: `${ProgressBarWidth} ` }}></div>
+        <div className={progressClassName}>
+            <div className={progressBarClassName} style={{ width: `${ProgressBarWidth} ` }}></div>
         </div>
     );
 }

@@ -53,6 +53,7 @@ function CurrentTimebox(props) {
                 className={isPaused ? "inactive" : ""}
                 percent={actualPercent}
                 trackRemaining={false}
+                red={true}
             />
             <button onClick={onConfirm} disabled={isEditable}>
                 Edytuj
