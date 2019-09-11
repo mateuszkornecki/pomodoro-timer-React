@@ -1,14 +1,16 @@
-.ProgressBar {
+.progress {
     height: 30px;
     width: 100%;
     border: 1px solid white;
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
-    > div {
-        /* width: calc(100% - 25%); */
+    &__bar {
         height: 20px;
         margin: auto 4px;
         background: #5c5c5c;
+        &--red {
+            background: $alizarin-crimson;
+        }
     }
 }
