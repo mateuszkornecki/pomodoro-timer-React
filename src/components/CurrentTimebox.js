@@ -48,6 +48,7 @@ function CurrentTimebox(props) {
                 minutes={minutes}
                 seconds={seconds}
                 miliseconds={ms}
+                coloredNumbers={true}
             />
             <ProgressBar
                 className={isPaused ? "inactive" : ""}

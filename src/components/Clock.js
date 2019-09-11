@@ -1,6 +1,14 @@
 import React from "react";
+import classNames from "classnames";
 
-function Clock({ className, hours, minutes, seconds, miliseconds }) {
+function Clock({ className, hours, minutes, seconds, miliseconds, coloredNumbers }) {
+
+    let clockNumberClassName = classNames(
+        "clock__numbers",
+        { "clock__numbers--colored": coloredNumbers }
+    )
+
+
     function timeInterval(min, max, value) {
         //It will return a number between min and max
         value = Math.max(min, Math.min(value, max));
@@ -28,10 +36,10 @@ function Clock({ className, hours, minutes, seconds, miliseconds }) {
     return (
         <h2 className={"clock " + className}>
             {" "}
-            Pozostało <mark className="clock__numbers clock__numbers--hours">{hours}</mark>:
-            <mark className="clock__numbers clock__numbers--minutes">{minutes}</mark>:
-            <mark className="clock__numbers clock__numbers--seconds">{seconds}</mark>:
-            <mark className="clock__numbers clock__numbers--miliseconds">{miliseconds}</mark>
+            Pozostało <mark className={clockNumberClassName}>{hours}</mark>:
+            <mark className={clockNumberClassName}>{minutes}</mark>:
+            <mark className={clockNumberClassName}>{seconds}</mark>:
+            <mark className={clockNumberClassName}>{miliseconds}</mark>
         </h2>
     );
 }
