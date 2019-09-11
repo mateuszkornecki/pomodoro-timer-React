@@ -26,7 +26,7 @@ function Clock({ className, hours, minutes, seconds, miliseconds }) {
     miliseconds = normalizeTime(0, 999, 3, miliseconds);
 
     return (
-        <h2 className={"clock" + className}>
+        <h2 className={"clock " + className}>
             {" "}
             Pozostało <mark className="clock__numbers clock__numbers--hours">{hours}</mark>:
             <mark className="clock__numbers clock__numbers--minutes">{minutes}</mark>:
