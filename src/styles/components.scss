@@ -1,10 +1,7 @@
 @import "./components/CurrentTimebox.scss";
 @import "./components/ProgressBar.scss";
 @import "./components/Timebox.scss";
-
-.Clock {
-    color: #5c5c5c;
-}
+@import "./components/Clock.scss";
 
 .TimeboxEditor,
 .TimeboxCreator {
