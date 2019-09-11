@@ -4,7 +4,6 @@ function TimeboxEditor(props) {
     const {
         title,
         taskTimeInSeconds,
-        isRunning,
         isEditable,
         onChangeTitle,
         onChangeTaskTime,
