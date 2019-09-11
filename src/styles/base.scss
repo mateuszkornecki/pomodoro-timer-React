@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css?family=Fira+Code:300,400,600&display=swap&subset=latin-ext");
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+body {
+    font-family: "Fira Code", monospace;
+    background: #171717;
+    color: white;
+}
+
+button {
+    background: white;
+    border: none;
+    padding: 0.75rem 3rem;
+    font-size: 1rem;
+    font-family: "Fira Code", monospace;
+    font-weight: 400;
+    margin: 0 0.5rem;
+}
+
+input {
+    min-width: 50%;
+    margin: 0 0 1rem 1rem;
+    background: transparent;
+    color: white;
+    border: none;
+    border-bottom: 1px solid white;
+    padding-bottom: 4px;
+    font-size: 1rem;
+    font-family: "Fira Code", monospace;
+    font-weight: 300;
+}
+
+label {
+    font-weight: 600;
+}

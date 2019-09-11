@@ -1,0 +1,56 @@
+.Clock {
+    color: #5c5c5c;
+}
+
+.CurrentTimebox {
+    padding: 1rem;
+    border: 2px solid white;
+    text-align: center;
+    margin: 1rem;
+}
+
+.ProgressBar {
+    height: 30px;
+    width: 100%;
+    border: 1px solid white;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.ProgressBar > div {
+    /* width: calc(100% - 25%); */
+    height: 20px;
+    margin: 4px;
+    background: #5c5c5c;
+}
+
+.TimeboxEditor,
+.TimeboxCreator {
+    padding: 1rem;
+    border: 2px solid white;
+    text-align: right;
+    margin: 1rem;
+}
+
+.Timebox {
+    border: 2px solid white;
+    padding: 1rem;
+    margin: 1rem;
+}
+
+.CurrentTimebox {
+    background: tomato;
+}
+
+.Timebox {
+    background: lightsteelblue;
+}
+
+.TimeboxCreator {
+    background: lightseagreen;
+}
+
+.TimeboxEditor {
+    background: lightsalmon;
+}
