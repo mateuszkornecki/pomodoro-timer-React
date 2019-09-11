@@ -2,8 +2,8 @@
 @import "./components/ProgressBar.scss";
 @import "./components/Timebox.scss";
 @import "./components/Clock.scss";
+@import "./components/TimeboxEditor.scss";
 
-.TimeboxEditor,
 .TimeboxCreator {
     padding: 1rem;
     border: 2px solid white;
@@ -13,8 +13,4 @@
 
 .TimeboxCreator {
     background: lightseagreen;
-}
-
-.TimeboxEditor {
-    background: lightsalmon;
 }
