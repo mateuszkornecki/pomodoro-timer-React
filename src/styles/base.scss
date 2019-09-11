@@ -11,8 +11,8 @@ html {
 }
 
 body {
-    font-family: "Fira Code", monospace;
-    background: #171717;
+    font-family: $fira-code;
+    background: $cod-gray;
     color: white;
 }
 
@@ -21,7 +21,7 @@ button {
     border: none;
     padding: 0.75rem 3rem;
     font-size: 1rem;
-    font-family: "Fira Code", monospace;
+    font-family: $fira-code;
     font-weight: 400;
     margin: 0 0.5rem;
 }
@@ -35,7 +35,7 @@ input {
     border-bottom: 1px solid white;
     padding-bottom: 4px;
     font-size: 1rem;
-    font-family: "Fira Code", monospace;
+    font-family: $fira-code;
     font-weight: 300;
 }
 
