@@ -1,6 +1,6 @@
 import React from "react";
 
-function Clock({ className = "", hours, minutes, seconds, miliseconds }) {
+function Clock({ className, hours, minutes, seconds, miliseconds }) {
     function timeInterval(min, max, value) {
         //It will return a number between min and max
         value = Math.max(min, Math.min(value, max));
@@ -26,9 +26,12 @@ function Clock({ className = "", hours, minutes, seconds, miliseconds }) {
     miliseconds = normalizeTime(0, 999, 3, miliseconds);
 
     return (
-        <h2 className={"Clock " + className}>
+        <h2 className={"clock" + className}>
             {" "}
-            Pozostało {hours}:{minutes}:{seconds}:{miliseconds}
+            Pozostało <mark className="clock__numbers clock__numbers--hours">{hours}</mark>:
+            <mark className="clock__numbers clock__numbers--minutes">{minutes}</mark>:
+            <mark className="clock__numbers clock__numbers--seconds">{seconds}</mark>:
+            <mark className="clock__numbers clock__numbers--miliseconds">{miliseconds}</mark>
         </h2>
     );
 }

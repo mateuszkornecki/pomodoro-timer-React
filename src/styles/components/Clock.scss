@@ -1,3 +1,20 @@
-.Clock {
-    color: #5c5c5c;
+.clock {
+    color: white;
+    font-weight: normal;
+    &__numbers {
+        font-weight: bold;
+        background: none;
+        &--hours {
+            color: $hours-color;
+        }
+        &--minutes {
+            color: $minutes-color;
+        }
+        &--seconds {
+            color: $seconds-color;
+        }
+        &--miliseconds {
+            color: $miliseconds-color;
+        }
+    }
 }
