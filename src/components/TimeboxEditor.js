@@ -15,10 +15,14 @@ class TimeboxEditor extends React.Component {
 
     handleConfirmation = e => {
         console.log(typeof this.taskTimeInput.current.value);
-        const { onConfirmation } = this.props;
-        //!need to learn about that
-        e.preventDefault();
-        onConfirmation(this.titleInput.current.value, parseInt(this.taskTimeInput.current.value))
+        const { onConfirmation, elapsedTime, taskTimeInSeconds } = this.props;
+        if ((this.taskTimeInput.current.value * 60 > elapsedTime) && (this.taskTimeInput.current.value * 60 !== taskTimeInSeconds)) {
+            //!need to learn about that
+            e.preventDefault();
+            onConfirmation(this.titleInput.current.value, this.taskTimeInput.current.value)
+        } else {
+            alert(`wprowadzony czas nie może byc mniejszy od ${(elapsedTime / 60).toFixed(2)} min. oraz musi być inny niż wprowadzony czas początkowy`);
+        }
     }
 
     render() {
