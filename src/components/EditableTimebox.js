@@ -20,18 +20,22 @@ class EditableTimebox extends React.Component {
         actualPercent: 0
     };
 
-    handleChangeTitle = e => {
+    componentWillUnmount() {
+        console.count("unmounted componnet");
+    }
+
+    handleChangeTitle = (title) => {
         this.setState({
-            title: e.target.value
+            title: title
         });
     };
 
-    handleChangeTaskTime = e => {
+    handleChangeTaskTime = (taskTime) => {
         const { elapsedTime } = this.state;
         this.setState({
-            //* 60 to convert seconds to minutes
-            taskTimeInSeconds: e.target.value * 60,
-            taskTimeInMs: e.target.value * 60 * 1000
+            //* 60 to convert minutes to seconds
+            taskTimeInSeconds: taskTime * 60,
+            taskTimeInMs: taskTime * 60 * 1000
         });
         //elapsedTime>0 mean that program is running or it is paused
         if (elapsedTime > 0) {
@@ -75,6 +79,7 @@ class EditableTimebox extends React.Component {
     };
 
     handleEdit = () => {
+
         this.setState(function (prevState) {
             const isEditable = !prevState.isEditable;
             return {
@@ -83,9 +88,17 @@ class EditableTimebox extends React.Component {
         });
     };
 
+    handleEditConfirmation = (title, taskTime) => {
+        this.handleEdit();
+        this.handleChangeTitle(title);
+        this.handleChangeTaskTime(taskTime);
+
+    }
+
     start = () => {
         this.countDown = setInterval(() => {
             let actualTime = Date.now();
+            console.log("timer is working");
             this.setState({
                 actualTime: actualTime
             });
@@ -202,8 +215,7 @@ class EditableTimebox extends React.Component {
                     isEditable={isEditable}
                     onChangeTitle={this.handleChangeTitle}
                     onChangeTaskTime={this.handleChangeTaskTime}
-                    onConfirm={this.handleEdit}
-                // handleStart={this.handleStart}
+                    onConfirmation={this.handleEditConfirmation}
                 />
                 <CurrentTimebox
                     title={title}
