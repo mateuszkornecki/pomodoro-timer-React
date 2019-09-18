@@ -28,7 +28,7 @@ function TimeboxEditor(props) {
                 id="timeInput"
                 onChange={onChangeTaskTime}
                 type="number"
-                defaultValue={taskTimeInSeconds}
+                defaultValue={taskTimeInSeconds / 60}
             />
             <br />
             <button disabled={!isEditable} onClick={onConfirm}>
