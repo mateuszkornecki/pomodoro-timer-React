@@ -3,6 +3,8 @@ import React from "react";
 import Timebox from "./Timebox";
 import TimeboxCreator from "./TimeboxCreator";
 import ErrorBoundary from "./ErrorBoundary";
+import ErrorMessage from "./ErrorMessage";
+
 class TimeboxList extends React.Component {
     state = {
         timeboxes: [
@@ -10,7 +12,8 @@ class TimeboxList extends React.Component {
             // {title: "Ucze się list", taskTime: 10},
             // {title: "Ucze się komponentów niekontrolowanych", taskTime: 5}
         ],
-        editInput: ""
+        editInput: "",
+        hasError: false
     };
 
     handleCreate = createdTimebox => {
@@ -19,12 +22,13 @@ class TimeboxList extends React.Component {
         }
         catch (error) {
             console.log("nie mam pojęcia co właśnie robię");
+            this.setState({ hasError: true });
         }
 
     };
 
     addTimebox = timebox => {
-        // throw new Error("wystąpił błąd podczas dodawania timeboxa");
+        throw new Error("wystąpił błąd podczas dodawania timeboxa");
         this.setState(prevState => {
             const timeboxes = [timebox, ...prevState.timeboxes];
             return {
@@ -71,12 +75,12 @@ class TimeboxList extends React.Component {
     };
 
     render() {
-        const { timeboxes, editInput } = this.state;
+        const { timeboxes, editInput, hasError } = this.state;
         return (
             <>
-                <TimeboxCreator onCreate={this.handleCreate} />
-
-
+                <ErrorMessage hasError={hasError} message="metoda addTimebox() rzuciła wyjątek">
+                    <TimeboxCreator onCreate={this.handleCreate} />
+                </ErrorMessage>
                 <ErrorBoundary message="Coś się wywaliło w Timeboxie">
                     {
                         timeboxes.map((timebox, index) => (
