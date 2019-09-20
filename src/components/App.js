@@ -6,10 +6,10 @@ import ErrorBoundary from "./ErrorBoundary";
 
 function App() {
     return (
-        <ErrorBoundary message="wywaliło App">
+        <ErrorBoundary message="wystąpił błąd całej aplikacji">
             <div className="App">
                 <TimeboxList />
-                <ErrorBoundary message="wywaliło EditableTimebox">
+                <ErrorBoundary message="wystąpił błąd komponentu EditableTimebox">
                     <EditableTimebox />
                 </ErrorBoundary>
             </div>
