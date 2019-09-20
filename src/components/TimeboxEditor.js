@@ -6,10 +6,18 @@ class TimeboxEditor extends React.Component {
         super(props);
         this.titleInput = React.createRef();
         this.taskTimeInput = React.createRef();
+        console.count("constructor");
+    }
+
+    componentDidMount() {
+        console.count("mounted component");
+    }
+
+    componentDidUpdate() {
+        console.count("updated component");
     }
 
     componentWillUnmount() {
-        console.log([this.titleInput.current.value, this.taskTimeInput.current.value]);
         console.count("unmounted component");
     }
 
@@ -26,6 +34,7 @@ class TimeboxEditor extends React.Component {
     }
 
     render() {
+        console.count("render");
         const {
             title,
             taskTimeInSeconds,
