@@ -21,14 +21,14 @@ class TimeboxList extends React.Component {
             this.addTimebox(createdTimebox);
         }
         catch (error) {
-            console.log("nie mam pojęcia co właśnie robię");
+            console.log("metoda addTimebox wyrzuciła błąd");
             this.setState({ hasError: true });
         }
 
     };
 
     addTimebox = timebox => {
-        throw new Error("wystąpił błąd podczas dodawania timeboxa");
+        // throw new Error("wystąpił błąd podczas dodawania timeboxa");
         this.setState(prevState => {
             const timeboxes = [timebox, ...prevState.timeboxes];
             return {
@@ -37,7 +37,7 @@ class TimeboxList extends React.Component {
             };
         });
     };
-    //TODO find another way to create this function
+
     removeTimebox = indexToRemove => {
         this.setState(prevState => {
             const timeboxes = prevState.timeboxes.filter(
@@ -54,8 +54,6 @@ class TimeboxList extends React.Component {
         array.splice(index, 0, value);
         return array;
     };
-
-    //TODO: refactor editing title
 
     editTimebox = (indexToChange, contentToChange) => {
         this.setState(prevState => {
