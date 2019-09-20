@@ -2,24 +2,7 @@ import React from "react";
 
 import Timebox from "./Timebox";
 import TimeboxCreator from "./TimeboxCreator";
-
-class ErrorBoundary extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { hasError: false };
-    }
-
-    static getDerivedStateFromError(error) {
-        // Update state so the next render will show the fallback UI.
-        return { hasError: true };
-    }
-    render() {
-        const { message, children } = this.props;
-        return (
-            this.state.hasError ? message : children
-        )
-    }
-}
+import ErrorBoundary from "./ErrorBoundary";
 class TimeboxList extends React.Component {
     state = {
         timeboxes: [
