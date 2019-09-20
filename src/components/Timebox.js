@@ -1,6 +1,7 @@
 import React from "react";
+import PropTypes from 'prop-types';
 
-function Timebox({ title, taskTime, onDelete, onEdit, index, onChange }) {
+function Timebox({ title, taskTime, onDelete, onEdit, onChange }) {
     if (taskTime <= 0) {
         throw new Error("Czas zadania musi być większy niż zero");
     }
@@ -15,6 +16,16 @@ function Timebox({ title, taskTime, onDelete, onEdit, index, onChange }) {
             <input onChange={onChange} />
         </div>
     );
+}
+
+const stringOrNumber = PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+
+Timebox.propTypes = {
+    title: stringOrNumber.isRequired,
+    taskTime: stringOrNumber.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    onEdit: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
 }
 
 export default Timebox;
