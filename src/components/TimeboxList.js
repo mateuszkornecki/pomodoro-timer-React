@@ -70,7 +70,7 @@ class TimeboxList extends React.Component {
                 <TimeboxCreator onCreate={this.handleCreate} />
 
 
-                <ErrorBoundary message="Coś się wywaliło">
+                <ErrorBoundary message="Coś się wywaliło w Timeboxie">
                     {
                         timeboxes.map((timebox, index) => (
                             <Timebox
