@@ -8,7 +8,6 @@ function Clock({ className, hours, minutes, seconds, miliseconds, coloredNumbers
         { "clock__numbers--colored": coloredNumbers }
     )
 
-
     function timeInterval(min, max, value) {
         //It will return a number between min and max
         value = Math.max(min, Math.min(value, max));
@@ -42,6 +41,15 @@ function Clock({ className, hours, minutes, seconds, miliseconds, coloredNumbers
             <mark className={clockNumberClassName}>{miliseconds}</mark>
         </h2>
     );
+}
+
+Clock.defaultProps = {
+    // className: "Clock",
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    miliseconds: 0,
+
 }
 
 export default Clock;

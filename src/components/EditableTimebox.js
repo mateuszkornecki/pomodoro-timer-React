@@ -204,46 +204,47 @@ class EditableTimebox extends React.Component {
         return (
             <>
                 <React.StrictMode>
-                    {isEditable ? (
-                        <TimeboxEditor
-                            title={title}
-                            taskTimeInSeconds={taskTimeInSeconds}
-                            isRunning={isRunning}
-                            isEditable={isEditable}
-                            elapsedTime={elapsedTime}
-                            onChangeTitle={this.handleChangeTitle}
-                            onChangeTaskTime={this.handleChangeTaskTime}
-                            onConfirmation={this.handleEditConfirmation}
-                        />
-                    ) : (
-                            <CurrentTimebox
+                    {
+                        isEditable ? (
+                            <TimeboxEditor
                                 title={title}
-                                isRunning={isRunning}
-                                isPaused={isPaused}
-                                isEditable={isEditable}
-                                pausesCount={pausesCount}
-                                initialTime={initialTime}
-                                actualTime={actualTime}
-                                taskTimeInMs={taskTimeInMs}
-                                endTime={endTime}
-                                remainingTime={remainingTime}
-                                actualPercent={actualPercent}
-                                elapsedTime={elapsedTime}
                                 taskTimeInSeconds={taskTimeInSeconds}
-                                handleStart={this.handleStart}
-                                handleStop={this.handleStop}
-                                start={this.start}
-                                stop={this.stop}
-                                forceStop={this.forceStop}
-                                togglePause={this.togglePause}
-                                repause={this.repause}
-                                setEndTime={this.setEndTime}
-                                setRemainingTime={this.setRemainingTime}
-                                setElapsedTime={this.setElapsedTime}
-                                setActualPercent={this.setActualPercent}
-                                onConfirm={this.handleEdit}
+                                isRunning={isRunning}
+                                isEditable={isEditable}
+                                elapsedTime={elapsedTime}
+                                onChangeTitle={this.handleChangeTitle}
+                                onChangeTaskTime={this.handleChangeTaskTime}
+                                onConfirmation={this.handleEditConfirmation}
                             />
-                        )
+                        ) : (
+                                <CurrentTimebox
+                                    title={title}
+                                    isRunning={isRunning}
+                                    isPaused={isPaused}
+                                    isEditable={isEditable}
+                                    pausesCount={pausesCount}
+                                    initialTime={initialTime}
+                                    actualTime={actualTime}
+                                    taskTimeInMs={taskTimeInMs}
+                                    endTime={endTime}
+                                    remainingTime={remainingTime}
+                                    actualPercent={actualPercent}
+                                    elapsedTime={elapsedTime}
+                                    taskTimeInSeconds={taskTimeInSeconds}
+                                    handleStart={this.handleStart}
+                                    handleStop={this.handleStop}
+                                    start={this.start}
+                                    stop={this.stop}
+                                    forceStop={this.forceStop}
+                                    togglePause={this.togglePause}
+                                    repause={this.repause}
+                                    setEndTime={this.setEndTime}
+                                    setRemainingTime={this.setRemainingTime}
+                                    setElapsedTime={this.setElapsedTime}
+                                    setActualPercent={this.setActualPercent}
+                                    onConfirm={this.handleEdit}
+                                />
+                            )
                     }
                 </React.StrictMode>
             </>
