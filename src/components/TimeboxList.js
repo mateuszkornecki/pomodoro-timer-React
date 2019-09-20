@@ -14,10 +14,17 @@ class TimeboxList extends React.Component {
     };
 
     handleCreate = createdTimebox => {
-        this.addTimebox(createdTimebox);
+        try {
+            this.addTimebox(createdTimebox);
+        }
+        catch (error) {
+            console.log("nie mam pojęcia co właśnie robię");
+        }
+
     };
 
     addTimebox = timebox => {
+        // throw new Error("wystąpił błąd podczas dodawania timeboxa");
         this.setState(prevState => {
             const timeboxes = [timebox, ...prevState.timeboxes];
             return {
