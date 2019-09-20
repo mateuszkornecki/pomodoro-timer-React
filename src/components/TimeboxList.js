@@ -3,6 +3,23 @@ import React from "react";
 import Timebox from "./Timebox";
 import TimeboxCreator from "./TimeboxCreator";
 
+class ErrorBoundary extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { hasError: false };
+    }
+
+    static getDerivedStateFromError(error) {
+        // Update state so the next render will show the fallback UI.
+        return { hasError: true };
+    }
+    render() {
+        const { message, children } = this.props;
+        return (
+            this.state.hasError ? message : children
+        )
+    }
+}
 class TimeboxList extends React.Component {
     state = {
         timeboxes: [
@@ -68,21 +85,28 @@ class TimeboxList extends React.Component {
         return (
             <>
                 <TimeboxCreator onCreate={this.handleCreate} />
-                {timeboxes.map((timebox, index) => (
-                    <Timebox
-                        key={timebox.id}
-                        title={timebox.title}
-                        taskTime={timebox.taskTime}
-                        onDelete={() => this.removeTimebox(index)}
-                        onEdit={() =>
-                            this.editTimebox(index, {
-                                ...timebox,
-                                title: editInput
-                            })
-                        }
-                        onChange={this.changeTitle}
-                    />
-                ))}
+
+
+                <ErrorBoundary message="Coś się wywaliło">
+                    {
+                        timeboxes.map((timebox, index) => (
+                            <Timebox
+                                key={timebox.id}
+                                title={timebox.title}
+                                taskTime={timebox.taskTime}
+                                onDelete={() => this.removeTimebox(index)}
+                                onEdit={() =>
+                                    this.editTimebox(index, {
+                                        ...timebox,
+                                        title: editInput
+                                    })
+                                }
+                                onChange={this.changeTitle}
+                            />
+                        ))
+                    }
+                </ErrorBoundary>
+
             </>
         );
     }
