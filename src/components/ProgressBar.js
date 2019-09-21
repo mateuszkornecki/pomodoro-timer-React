@@ -1,5 +1,7 @@
 import React from "react";
 import classNames from "classnames";
+import PropTypes from 'prop-types';
+
 
 function ProgressBar({ className = "", percent, trackRemaining, barColor }) {
     let progressClassName = classNames(
@@ -40,7 +42,8 @@ function isNumberBetweenRange(props, propName, componentName) {
 }
 
 ProgressBar.propTypes = {
-    percent: isNumberBetweenRange
+    percent: isNumberBetweenRange,
+    barColor: PropTypes.oneOf(['red', 'green', 'blue']),
 }
 
 export default ProgressBar;
