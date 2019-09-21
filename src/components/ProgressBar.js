@@ -1,16 +1,24 @@
 import React from "react";
 import classNames from "classnames";
 
-function ProgressBar({ className = "", percent, trackRemaining, red }) {
+function ProgressBar({ className = "", percent, trackRemaining, barColor }) {
     let progressClassName = classNames(
         "progress",
         className,
         { "progress--reverse": trackRemaining }
     );
 
+    function checkColor(colorName) {
+        if (barColor === colorName) return true
+    }
+
     let progressBarClassName = classNames(
         "progress__bar",
-        { "progress__bar--red": red, }
+        {
+            "progress__bar--red": checkColor("red"),
+            "progress__bar--blue": checkColor("blue"),
+            "progress__bar--green": checkColor("green")
+        }
     )
 
     const ProgressBarWidth =
