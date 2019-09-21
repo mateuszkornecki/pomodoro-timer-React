@@ -18,20 +18,11 @@ function Timebox({ title, taskTime, onDelete, onEdit, onChange }) {
     );
 }
 
-//! homework, apply that to progress bar!
-function isNumberBetweenRange(props, propName, componentName) {
-    if (typeof props[propName] !== "string") {
-        return new Error(`${propName} has to be number!`);
-    } else if (parseInt(props[propName], 10) > 100 || parseInt(props[propName], 10) < 10) {
-        return new Error(`An error in ${componentName}, ${propName} has to be between 10 and 50 and now it is equal to ${props[propName]}`);
-    }
-}
-
 const stringOrNumber = PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 
 Timebox.propTypes = {
     title: stringOrNumber.isRequired,
-    taskTime: isNumberBetweenRange,
+    taskTime: stringOrNumber.isRequired,
     onDelete: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
