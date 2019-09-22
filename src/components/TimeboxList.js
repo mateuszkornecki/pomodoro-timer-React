@@ -79,11 +79,10 @@ class TimeboxList extends React.Component {
                 <ErrorMessage hasError={hasError} message="metoda addTimebox() rzuciła wyjątek">
                     <TimeboxCreator onCreate={this.handleCreate} />
                 </ErrorMessage>
-                <ErrorBoundary message="Coś się wywaliło w Timeboxie">
-                    {
-                        timeboxes.map((timebox, index) => (
+                {
+                    timeboxes.map((timebox, index) => (
+                        <ErrorBoundary key={timebox.id} message="Coś się wywaliło w Timeboxie">
                             <Timebox
-                                key={timebox.id}
                                 title={timebox.title}
                                 taskTime={timebox.taskTime}
                                 onDelete={() => this.removeTimebox(index)}
@@ -95,9 +94,9 @@ class TimeboxList extends React.Component {
                                 }
                                 onChange={this.changeTitle}
                             />
-                        ))
-                    }
-                </ErrorBoundary>
+                        </ErrorBoundary>
+                    ))
+                }
 
             </>
         );
