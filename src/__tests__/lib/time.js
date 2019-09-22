@@ -21,7 +21,7 @@ describe("reworkTime", () => {
             ).toEqual([0, 0, 30, 0])
         });
     });
-    describe('for duration higher than 1 minute', () => {
+    describe('for duration higher or equal to 1 minute', () => {
         it("returns 0 hours, 1 minutes, 0 seconds, 0 ms for 60 seconds duration", () => {
             expect(
                 reworkTime(60)
