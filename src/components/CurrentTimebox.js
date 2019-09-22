@@ -1,6 +1,8 @@
 import React from "react";
 import Clock from "./Clock";
 import ProgressBar from "./ProgressBar";
+import { reworkTime } from "../lib/time";
+
 
 function CurrentTimebox(props) {
     const {
@@ -18,17 +20,6 @@ function CurrentTimebox(props) {
         onConfirm
     } = props;
 
-    const reworkTime = value => {
-        const fullSec = Math.floor(value);
-        const hours = Math.floor(value / 3600);
-        const minutes = Math.floor(value / 60);
-        const seconds = Math.floor(value % 60);
-        //to prevent counting after passing 0
-        const miliseconds = fullSec >= 0 ? Math.floor((value - fullSec) * 1000) : 0;
-        // return(hours, minutes, seconds, ms);
-        //! update it >> michal, return array and destructurize it later
-        return [hours, minutes, seconds, miliseconds]
-    };
     //if timebox is not running display time entered in input else display  remaining time
     const [hours, minutes, seconds, miliseconds] = reworkTime(isRunning ? remainingTime : taskTimeInSeconds);
     return (
