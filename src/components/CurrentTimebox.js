@@ -18,23 +18,19 @@ function CurrentTimebox(props) {
         onConfirm
     } = props;
 
-    let hours;
-    let minutes;
-    let seconds;
-    let ms;
-    let fullSec;
-
     const reworkTime = value => {
-        fullSec = Math.floor(value);
-        hours = Math.floor(value / 3600);
-        minutes = Math.floor(value / 60);
-        seconds = Math.floor(value % 60);
+        const fullSec = Math.floor(value);
+        const hours = Math.floor(value / 3600);
+        const minutes = Math.floor(value / 60);
+        const seconds = Math.floor(value % 60);
         //to prevent counting after passing 0
-        ms = fullSec >= 0 ? Math.floor((value - fullSec) * 1000) : 0;
+        const miliseconds = fullSec >= 0 ? Math.floor((value - fullSec) * 1000) : 0;
         // return(hours, minutes, seconds, ms);
+        //! update it >> michal, return array and destructurize it later
+        return [hours, minutes, seconds, miliseconds]
     };
     //if timebox is not running display time entered in input else display  remaining time
-    reworkTime(isRunning ? remainingTime : taskTimeInSeconds);
+    const [hours, minutes, seconds, miliseconds] = reworkTime(isRunning ? remainingTime : taskTimeInSeconds);
     return (
         <div
             className={
@@ -47,7 +43,7 @@ function CurrentTimebox(props) {
                 hours={hours}
                 minutes={minutes}
                 seconds={seconds}
-                miliseconds={ms}
+                miliseconds={miliseconds}
                 coloredNumbers={true}
             />
             <ProgressBar
