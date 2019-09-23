@@ -29,6 +29,4 @@ function normalizeTime(min, max, targetLength, value) {
     return fillWithZeros(targetLength, timeInterval(min, max, value));
 }
 
-
-
 export { reworkTime, normalizeTime };
