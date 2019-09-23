@@ -9,7 +9,6 @@ const reworkTime = value => {
     // return(hours, minutes, seconds, ms);
     //! update it >> michal, return array and destructurize it later
     return [hours, minutes, seconds, miliseconds];
-    console.log(reworkTime)
 };
 
 export { reworkTime };

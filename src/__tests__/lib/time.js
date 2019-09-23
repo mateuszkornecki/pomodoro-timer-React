@@ -16,7 +16,7 @@ describe("reworkTime", () => {
         });
     });
 
-    describe('for duration higher pr equal than 1 second but lesser than 1 minute', () => {
+    describe('for duration higher or equal than 1 second but lesser than 1 minute', () => {
         it("returns 0 hours, 0 minutes, 1 seconds, 0 ms for 1 seconds duration", () => {
             expect(
                 reworkTime(1)
