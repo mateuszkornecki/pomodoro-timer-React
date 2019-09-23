@@ -32,6 +32,38 @@ exports[`<Clock/> with react-test-renderer tests for rendering when given hours,
 </h2>
 `;
 
+exports[`<Clock/> with react-test-renderer when given certain hours, minutes, seconds, miliseconds renders properly 1`] = `
+<h2
+  className="clock "
+>
+   
+  Pozostało 
+  <mark
+    className="clock__numbers"
+  >
+    01
+  </mark>
+  :
+  <mark
+    className="clock__numbers"
+  >
+    20
+  </mark>
+  :
+  <mark
+    className="clock__numbers"
+  >
+    42
+  </mark>
+  :
+  <mark
+    className="clock__numbers"
+  >
+    311
+  </mark>
+</h2>
+`;
+
 exports[`<Clock/> with react-test-renderer when given hours, minutes, seconds, miliseconds renders properly 1`] = `
 <h2
   className="clock "

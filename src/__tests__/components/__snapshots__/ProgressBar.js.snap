@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProgressBar with react-test-renderer when given percent and barColor render properly 1`] = `
+<div
+  className="progress"
+>
+  <div
+    className="progress__bar progress__bar--blue"
+    style={
+      Object {
+        "width": "10%  ",
+      }
+    }
+  />
+</div>
+`;
