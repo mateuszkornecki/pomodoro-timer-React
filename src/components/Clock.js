@@ -1,6 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import PropTypes from 'prop-types';
+import { normalizeTime } from '../lib/time'
 
 function Clock({ className, hours, minutes, seconds, miliseconds, coloredNumbers }) {
 
@@ -8,25 +9,6 @@ function Clock({ className, hours, minutes, seconds, miliseconds, coloredNumbers
         "clock__numbers",
         { "clock__numbers--colored": coloredNumbers }
     )
-
-    function timeInterval(min, max, value) {
-        //It will return a number between min and max
-        value = Math.max(min, Math.min(value, max));
-        return value;
-    }
-
-    function fillWithZeros(targetLength, value) {
-        //It will add zeros  before value till value.length = targetLength
-        value = value.toString();
-        while (value.length < targetLength) {
-            value = `0${value}`;
-        }
-        return value;
-    }
-
-    function normalizeTime(min, max, targetLength, value) {
-        return fillWithZeros(targetLength, timeInterval(min, max, value));
-    }
 
     hours = normalizeTime(0, 24, 2, hours);
     minutes = normalizeTime(0, 59, 2, minutes >= 60 ? minutes % 60 : minutes);
@@ -45,7 +27,7 @@ function Clock({ className, hours, minutes, seconds, miliseconds, coloredNumbers
 }
 
 Clock.defaultProps = {
-    className: "Clock",
+    className: "",
     hours: 0,
     minutes: 0,
     seconds: 0,
@@ -54,7 +36,7 @@ Clock.defaultProps = {
 }
 
 Clock.propTypes = {
-    className: PropTypes.string.isRequired,
+    className: PropTypes.string,
     hours: PropTypes.number.isRequired,
     minutes: PropTypes.number.isRequired,
     seconds: PropTypes.number.isRequired,
