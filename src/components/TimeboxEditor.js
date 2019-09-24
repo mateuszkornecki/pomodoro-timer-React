@@ -6,23 +6,22 @@ class TimeboxEditor extends React.Component {
         super(props);
         this.titleInput = React.createRef();
         this.taskTimeInput = React.createRef();
-        console.count("constructor");
+        // console.count("constructor");
     }
 
     componentDidMount() {
-        console.count("mounted component");
+        // console.count("mounted component");
     }
 
     componentDidUpdate() {
-        console.count("updated component");
+        // console.count("updated component");
     }
 
     componentWillUnmount() {
-        console.count("unmounted component");
+        // console.count("unmounted component");
     }
 
     handleConfirmation = e => {
-        console.log(typeof this.taskTimeInput.current.value);
         const { onConfirmation, elapsedTime, taskTimeInSeconds } = this.props;
         if ((this.taskTimeInput.current.value * 60 > elapsedTime) && (this.taskTimeInput.current.value * 60 !== taskTimeInSeconds)) {
             //!need to learn about that
@@ -34,7 +33,7 @@ class TimeboxEditor extends React.Component {
     }
 
     render() {
-        console.count("render");
+        // console.count("render");
         const {
             title,
             taskTimeInSeconds,
