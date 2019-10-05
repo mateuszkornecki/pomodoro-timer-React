@@ -1,6 +1,5 @@
 import React from "react";
 
-import uuid from "uuid";
 
 class TimeboxCreator extends React.Component {
     constructor(props) {
@@ -12,7 +11,6 @@ class TimeboxCreator extends React.Component {
         const { onCreate } = this.props;
         e.preventDefault();
         onCreate({
-            id: uuid.v4(),
             title: this.form.current.children.taskInput.value,
             taskTime: this.form.current.children.timeInput.value
         });
