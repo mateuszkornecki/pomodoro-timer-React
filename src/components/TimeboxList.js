@@ -5,16 +5,43 @@ import TimeboxCreator from "./TimeboxCreator";
 import ErrorBoundary from "./ErrorBoundary";
 import ErrorMessage from "./ErrorMessage";
 
+function wait(ms = 1000) {
+    return new Promise(
+        (resolve) => {
+            setTimeout(resolve, ms);
+        }
+    )
+}
+
+const getAllTimeboxes = async () => {
+    await wait(2000);
+    return [
+        { "id": 1, title: "Ucze się formularzy", taskTime: 15 },
+        { "id": 2, title: "Ucze się list", taskTime: 10 },
+        { "id": 3, title: "Ucze się komponentów niekontrolowanych", taskTime: 5 }
+    ]
+}
+
 class TimeboxList extends React.Component {
     state = {
         timeboxes: [
-            // {title: "Ucze się formularzy", taskTime: 15},
-            // {title: "Ucze się list", taskTime: 10},
-            // {title: "Ucze się komponentów niekontrolowanych", taskTime: 5}
+
         ],
         editInput: "",
         hasError: false
     };
+
+    //simulating delay of server
+
+
+
+
+    componentDidMount() {
+        getAllTimeboxes().then(
+            (timeboxes) => this.setState({ timeboxes })
+        )
+    }
+
 
     handleCreate = createdTimebox => {
         try {
