@@ -5,6 +5,7 @@ import TimeboxCreator from "./TimeboxCreator";
 import ErrorBoundary from "./ErrorBoundary";
 import ErrorMessage from "./ErrorMessage";
 
+//simulating delay of server
 function wait(ms = 1000) {
     return new Promise(
         (resolve) => {
@@ -15,7 +16,7 @@ function wait(ms = 1000) {
 
 const getAllTimeboxes = async () => {
     await wait(5000);
-    throw new Error('Opps, something went wrong!!');
+    // throw new Error('Opps, something went wrong!!');
     return [
         { "id": 1, title: "Ucze się formularzy", taskTime: 15 },
         { "id": 2, title: "Ucze się list", taskTime: 10 },
@@ -28,10 +29,10 @@ class TimeboxList extends React.Component {
         timeboxes: [],
         editInput: "",
         hasError: false,
+        loadingError: false,
         loading: true,
     };
 
-    //simulating delay of server
 
 
 
@@ -42,9 +43,9 @@ class TimeboxList extends React.Component {
         ).catch(
             (error) => {
                 console.log(`Wystąpił błąd : ${error}`);
-                this.setState({ hasError: true });
+                this.setState({ loadingError: true });
             }
-        ).then(
+        ).finally(
             () => this.setState({ loading: false })
         )
     }
@@ -106,34 +107,33 @@ class TimeboxList extends React.Component {
     };
 
     render() {
-        const { timeboxes, editInput, hasError, loading } = this.state;
+        const { timeboxes, editInput, hasError, loading, loadingError } = this.state;
         return (
             <>
-                <ErrorBoundary message="timebox creator przestał działać">
+                <ErrorMessage hasError={hasError} message="timebox creator przestał działać">
                     <TimeboxCreator onCreate={this.handleCreate} />
-                </ErrorBoundary>
-
-                <h2>{loading ? "loading timeboxes..." : null}</h2>
-                <h2>{hasError ? "nie udało się załadować timeboxów" : null}</h2>
-
-                {
-                    timeboxes.map((timebox, index) => (
-                        <ErrorBoundary key={timebox.id} message="Coś się wywaliło w Timeboxie">
-                            <Timebox
-                                title={timebox.title}
-                                taskTime={timebox.taskTime}
-                                onDelete={() => this.removeTimebox(index)}
-                                onEdit={() =>
-                                    this.editTimebox(index, {
-                                        ...timebox,
-                                        title: editInput
-                                    })
-                                }
-                                onChange={this.changeTitle}
-                            />
-                        </ErrorBoundary>
-                    ))
-                }
+                </ErrorMessage>
+                <ErrorMessage hasError={loadingError} message="Nie udało się załadować timeboxów">
+                    <h2>{loading ? "loading timeboxes..." : null}</h2>
+                    {
+                        timeboxes.map((timebox, index) => (
+                            <ErrorBoundary key={timebox.id} message="Coś się wywaliło w Timeboxie">
+                                <Timebox
+                                    title={timebox.title}
+                                    taskTime={timebox.taskTime}
+                                    onDelete={() => this.removeTimebox(index)}
+                                    onEdit={() =>
+                                        this.editTimebox(index, {
+                                            ...timebox,
+                                            title: editInput
+                                        })
+                                    }
+                                    onChange={this.changeTitle}
+                                />
+                            </ErrorBoundary>
+                        ))
+                    }
+                </ErrorMessage>
             </>
         );
     }
