@@ -14,7 +14,7 @@ function wait(ms = 1000) {
 }
 
 const getAllTimeboxes = async () => {
-    await wait(2000);
+    await wait(5000);
     return [
         { "id": 1, title: "Ucze się formularzy", taskTime: 15 },
         { "id": 2, title: "Ucze się list", taskTime: 10 },
@@ -24,24 +24,24 @@ const getAllTimeboxes = async () => {
 
 class TimeboxList extends React.Component {
     state = {
-        timeboxes: [
-
-        ],
+        timeboxes: [],
         editInput: "",
-        hasError: false
+        hasError: false,
+        loading: true,
     };
 
     //simulating delay of server
 
 
 
-
+    //! Pytanie na live, dlaczego () => this.setState({...}), a nie po prostu this.setState po co ta funkcja i dlaczego jak jej nie ma to stan jest odrazu ustawiony na false..
     componentDidMount() {
         getAllTimeboxes().then(
             (timeboxes) => this.setState({ timeboxes })
+        ).then(
+            () => this.setState({ loading: false })
         )
     }
-
 
     handleCreate = createdTimebox => {
         try {
@@ -100,12 +100,13 @@ class TimeboxList extends React.Component {
     };
 
     render() {
-        const { timeboxes, editInput, hasError } = this.state;
+        const { timeboxes, editInput, hasError, loading } = this.state;
         return (
             <>
                 <ErrorMessage hasError={hasError} message="metoda addTimebox() rzuciła wyjątek">
                     <TimeboxCreator onCreate={this.handleCreate} />
                 </ErrorMessage>
+                <h2>{loading ? "loading timeboxes..." : null}</h2>
                 {
                     timeboxes.map((timebox, index) => (
                         <ErrorBoundary key={timebox.id} message="Coś się wywaliło w Timeboxie">
