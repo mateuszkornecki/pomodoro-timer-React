@@ -42,6 +42,7 @@ const TimeboxesAPI = {
     },
     //?? TO WSZYSTKO SPROWADZA SIĘ DO JEDNEGO, PODMIENIA OBIEKT Z TABLICY OBIEKTÓW NA OBIEKT Z ARGUMENTÓW BAZUJĄC NA INDEXIE
     replaceTimebox: async function (timeboxToReplace) {
+        await wait(1000);
         if (!timeboxToReplace.id) {
             throw new Error("Cannot replace timebox without an id.")
         }
@@ -49,6 +50,14 @@ const TimeboxesAPI = {
         const replacedTimebox = { ...timeboxToReplace };
         timeboxes[index] = replacedTimebox;
         return replacedTimebox;
+    },
+    removeTimebox: async function (timeboxToRemove) {
+        await wait(1000);
+        if (!timeboxToRemove.id) {
+            throw new Error("Cannot remove timebox without an id.")
+        }
+        const index = findIndexByAnId(timeboxToRemove.id);
+        timeboxes.splice(index, 1);
     }
 }
 
@@ -102,14 +111,17 @@ class TimeboxList extends React.Component {
     };
 
     removeTimebox = indexToRemove => {
-        this.setState(prevState => {
-            const timeboxes = prevState.timeboxes.filter(
-                (timebox, index) => index !== indexToRemove
-            );
-            return {
-                timeboxes: timeboxes
-            };
-        });
+        TimeboxesAPI.removeTimebox(this.state.timeboxes[indexToRemove])
+            .then(() => {
+                this.setState(prevState => {
+                    const timeboxes = prevState.timeboxes.filter(
+                        (timebox, index) => index !== indexToRemove
+                    );
+                    return {
+                        timeboxes: timeboxes
+                    };
+                });
+            })
     };
 
     updateArray = (array, index, value) => {
