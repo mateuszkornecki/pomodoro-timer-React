@@ -23,20 +23,17 @@ const TimeboxesAPI = {
     getAllTimeboxes: async function () {
         await wait(5000);
         // throw new Error('Opps, something went wrong!!');
-        return timeboxes
+        //! Pytanie na live, nie rozumiem dlaczego po przerobieniu timeboxes na ...timeboxes pojawia się jeden element a wcześniej pojawiały się dwa
+        return [...timeboxes]
     },
     addTimebox: async function (timeboxToAdd) {
         await wait(1000);
-
+        const addedTimebox = { ...timeboxToAdd, id: uuid.v4() };
+        timeboxes.push(addedTimebox)
+        return addedTimebox;
     }
-    //addTimebox
-    //removeTimebox
-    //changeTimebox
-
-
 
 }
-
 
 class TimeboxList extends React.Component {
     state = {
@@ -46,9 +43,6 @@ class TimeboxList extends React.Component {
         loadingError: false,
         loading: true,
     };
-
-
-
 
     //! Pytanie na live, dlaczego () => this.setState({...}), a nie po prostu this.setState po co ta funkcja i dlaczego jak jej nie ma to stan jest odrazu ustawiony na false..
     componentDidMount() {
@@ -77,13 +71,17 @@ class TimeboxList extends React.Component {
 
     addTimebox = timebox => {
         // throw new Error("wystąpił błąd podczas dodawania timeboxa");
-        this.setState(prevState => {
-            const timeboxes = [timebox, ...prevState.timeboxes];
-            return {
-                //OR JUST timeboxes
-                timeboxes: timeboxes
-            };
-        });
+
+        TimeboxesAPI.addTimebox(timebox).then(
+            (addedTimebox) => this.setState(prevState => {
+                const timeboxes = [...prevState.timeboxes, addedTimebox];
+                return {
+                    //OR JUST timeboxes
+                    timeboxes: timeboxes
+                };
+            })
+        )
+
     };
 
     removeTimebox = indexToRemove => {
