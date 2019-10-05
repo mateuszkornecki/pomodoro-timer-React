@@ -14,6 +14,14 @@ function wait(ms = 1000) {
         }
     )
 }
+
+function findIndexByAnId(id) {
+    const result = timeboxes.findIndex((timebox) => timebox.id === id);
+    if (result < 0) {
+        throw new Error("Timebox o podanym id nie istnieje");
+    }
+    return result;
+}
 const timeboxes = [
     { "id": 1, title: "Ucze się formularzy", taskTime: 15 },
     { "id": 2, title: "Ucze się list", taskTime: 10 },
@@ -28,11 +36,20 @@ const TimeboxesAPI = {
     },
     addTimebox: async function (timeboxToAdd) {
         await wait(1000);
-        const addedTimebox = { ...timeboxToAdd, id: uuid.v4() };
+        const addedTimebox = { id: uuid.v4(), ...timeboxToAdd };
         timeboxes.push(addedTimebox)
         return addedTimebox;
+    },
+    //?? TO WSZYSTKO SPROWADZA SIĘ DO JEDNEGO, PODMIENIA OBIEKT Z TABLICY OBIEKTÓW NA OBIEKT Z ARGUMENTÓW BAZUJĄC NA INDEXIE
+    replaceTimebox: async function (timeboxToReplace) {
+        if (!timeboxToReplace.id) {
+            throw new Error("Cannot replace timebox without an id.")
+        }
+        const index = findIndexByAnId(timeboxToReplace.id);
+        const replacedTimebox = { ...timeboxToReplace };
+        timeboxes[index] = replacedTimebox;
+        return replacedTimebox;
     }
-
 }
 
 class TimeboxList extends React.Component {
@@ -101,15 +118,21 @@ class TimeboxList extends React.Component {
         return array;
     };
 
-    editTimebox = (indexToChange, contentToChange) => {
-        this.setState(prevState => {
-            const timeboxes = prevState.timeboxes;
-            this.updateArray(timeboxes, indexToChange, contentToChange);
-            return {
-                timeboxes: timeboxes,
-                editInput: ""
-            };
-        });
+    editTimebox = (indexToChange, timeboxToEdit) => {
+        TimeboxesAPI.replaceTimebox(timeboxToEdit)
+            .then(() => {
+                this.setState(prevState => {
+                    const timeboxes = prevState.timeboxes;
+                    this.updateArray(timeboxes, indexToChange, timeboxToEdit);
+                    return {
+                        timeboxes: timeboxes,
+                        editInput: ""
+                    };
+                });
+            }
+            )
+        console.log(timeboxes);
+
     };
 
     changeTitle = e => {
