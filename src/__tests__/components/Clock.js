@@ -39,7 +39,7 @@ describe('<Clock/> with react-test-renderer', () => {
             <Clock hours={1} minutes={20} seconds={42} miliseconds={311} />
         );
     });
-    //! PYTANIE NA LIVE, dlaczego nie zrobić po prostu ...props.className żeby dostać się do konkretnego klucza?
+    //! TO REFACTOR : ALL TESTS THAT CHECKS PROPS!
     describe('when given hours, minutes, seconds, miliseconds', () => {
         it('renders properly', () => {
             expect(clockRenderer.toJSON()).toMatchSnapshot();
