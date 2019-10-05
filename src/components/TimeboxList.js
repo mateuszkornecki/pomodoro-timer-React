@@ -15,6 +15,7 @@ function wait(ms = 1000) {
 
 const getAllTimeboxes = async () => {
     await wait(5000);
+    throw new Error('Opps, something went wrong!!');
     return [
         { "id": 1, title: "Ucze się formularzy", taskTime: 15 },
         { "id": 2, title: "Ucze się list", taskTime: 10 },
@@ -38,6 +39,11 @@ class TimeboxList extends React.Component {
     componentDidMount() {
         getAllTimeboxes().then(
             (timeboxes) => this.setState({ timeboxes })
+        ).catch(
+            (error) => {
+                console.log(`Wystąpił błąd : ${error}`);
+                this.setState({ hasError: true });
+            }
         ).then(
             () => this.setState({ loading: false })
         )
@@ -103,10 +109,13 @@ class TimeboxList extends React.Component {
         const { timeboxes, editInput, hasError, loading } = this.state;
         return (
             <>
-                <ErrorMessage hasError={hasError} message="metoda addTimebox() rzuciła wyjątek">
+                <ErrorBoundary message="timebox creator przestał działać">
                     <TimeboxCreator onCreate={this.handleCreate} />
-                </ErrorMessage>
+                </ErrorBoundary>
+
                 <h2>{loading ? "loading timeboxes..." : null}</h2>
+                <h2>{hasError ? "nie udało się załadować timeboxów" : null}</h2>
+
                 {
                     timeboxes.map((timebox, index) => (
                         <ErrorBoundary key={timebox.id} message="Coś się wywaliło w Timeboxie">
@@ -125,7 +134,6 @@ class TimeboxList extends React.Component {
                         </ErrorBoundary>
                     ))
                 }
-
             </>
         );
     }
