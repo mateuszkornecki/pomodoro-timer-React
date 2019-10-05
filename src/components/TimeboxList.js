@@ -4,6 +4,7 @@ import Timebox from "./Timebox";
 import TimeboxCreator from "./TimeboxCreator";
 import ErrorBoundary from "./ErrorBoundary";
 import ErrorMessage from "./ErrorMessage";
+import uuid from "uuid";
 
 //simulating delay of server
 function wait(ms = 1000) {
@@ -13,16 +14,29 @@ function wait(ms = 1000) {
         }
     )
 }
+const timeboxes = [
+    { "id": 1, title: "Ucze się formularzy", taskTime: 15 },
+    { "id": 2, title: "Ucze się list", taskTime: 10 },
+    { "id": 3, title: "Ucze się komponentów niekontrolowanych", taskTime: 5 }
+]
+const TimeboxesAPI = {
+    getAllTimeboxes: async function () {
+        await wait(5000);
+        // throw new Error('Opps, something went wrong!!');
+        return timeboxes
+    },
+    addTimebox: async function (timeboxToAdd) {
+        await wait(1000);
 
-const getAllTimeboxes = async () => {
-    await wait(5000);
-    // throw new Error('Opps, something went wrong!!');
-    return [
-        { "id": 1, title: "Ucze się formularzy", taskTime: 15 },
-        { "id": 2, title: "Ucze się list", taskTime: 10 },
-        { "id": 3, title: "Ucze się komponentów niekontrolowanych", taskTime: 5 }
-    ]
+    }
+    //addTimebox
+    //removeTimebox
+    //changeTimebox
+
+
+
 }
+
 
 class TimeboxList extends React.Component {
     state = {
@@ -38,7 +52,7 @@ class TimeboxList extends React.Component {
 
     //! Pytanie na live, dlaczego () => this.setState({...}), a nie po prostu this.setState po co ta funkcja i dlaczego jak jej nie ma to stan jest odrazu ustawiony na false..
     componentDidMount() {
-        getAllTimeboxes().then(
+        TimeboxesAPI.getAllTimeboxes().then(
             (timeboxes) => this.setState({ timeboxes })
         ).catch(
             (error) => {
