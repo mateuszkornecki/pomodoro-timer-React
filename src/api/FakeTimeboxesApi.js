@@ -56,6 +56,18 @@ const FakeTimeboxesAPI = {
         const index = findIndexByAnId(timeboxToRemove.id);
         console.log(`DELETE remove`, timeboxes);
         timeboxes.splice(index, 1);
+    },
+    partiallyUpdateTimebox: async function (timeboxToUpdate) {
+        await wait(1000);
+        if (!timeboxToReplace.id) {
+            throw new Error("Cannot replace timebox without an id.")
+        }
+        const index = findIndexByAnId(timeboxToUpdate.id);
+        const initialTimebox = timeboxes[index];
+        if (timeboxToUpdate.title != initialTimebox.title) {
+
+        }
+        const updatedTimebox = { ...initialTimebox };
     }
 }
 
