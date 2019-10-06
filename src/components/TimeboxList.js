@@ -1,10 +1,9 @@
 import React from "react";
-
 import Timebox from "./Timebox";
 import TimeboxCreator from "./TimeboxCreator";
 import ErrorBoundary from "./ErrorBoundary";
 import ErrorMessage from "./ErrorMessage";
-import TimeboxesAPI from "../api/FetchTimeboxesApi"
+import TimeboxesAPI from "../api/AxiosTimeboxesApi"
 
 
 class TimeboxList extends React.Component {
