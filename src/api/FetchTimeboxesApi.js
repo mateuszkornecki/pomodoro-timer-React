@@ -1,23 +1,27 @@
 const BASE_URL = "http://localhost:4000/timeboxes";
 const FetchTimeboxesAPI = {
     getAllTimeboxes: async function () {
-        const timeboxes = makeRequest(BASE_URL, "GET");
+        const response = await makeRequest(BASE_URL, "GET");
+        const timeboxes = await response.json();
         return timeboxes;
     },
     addTimebox: async function (timeboxToAdd) {
 
-        const addedTimebox = makeRequest(BASE_URL, "POST", timeboxToAdd);
+        const response = await makeRequest(BASE_URL, "POST", timeboxToAdd);
+        const addedTimebox = await response.json();
         return addedTimebox;
     },
     replaceTimebox: async function (timeboxToReplace) {
-        const replacedTimebox = makeRequest(`${BASE_URL}/${timeboxToReplace.id}`, "PUT", timeboxToReplace);
+        const response = await makeRequest(`${BASE_URL}/${timeboxToReplace.id}`, "PUT", timeboxToReplace);
+        const replacedTimebox = await response.json();
         return replacedTimebox;
     },
     removeTimebox: async function (timeboxToRemove) {
         if (!timeboxToRemove.id) {
             throw new Error("Timebox has to have an id to be updated");
         }
-        const removedTimebox = makeRequest(`${BASE_URL}/${timeboxToRemove.id}`, "DELETE", timeboxToRemove);
+        const response = await makeRequest(`${BASE_URL}/${timeboxToRemove.id}`, "DELETE", timeboxToRemove);
+        const removedTimebox = await response.json();
         return removedTimebox;
     }
 }
@@ -36,5 +40,5 @@ async function makeRequest(url, method, body) {
     if (!response.ok) {
         throw new Error("Something went wrong!...");
     }
-    return await response.json();
+    return response;
 }
