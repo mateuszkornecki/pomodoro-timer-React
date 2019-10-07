@@ -1,0 +1,17 @@
+.LoginForm {
+	padding: 1rem;
+	border: 2px solid white;
+	text-align: right;
+	margin: 1rem;
+	background: lightskyblue;
+	&__error-message {
+		display: flex;
+		justify-content: center;
+		margin-bottom: 1rem;
+		border: 1px solid white;
+		padding: 0.5rem;
+		background-color: darkred;
+		color: white;
+		font-weight: bold;
+	}
+}
