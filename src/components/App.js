@@ -8,6 +8,11 @@ function App() {
     return (
         <ErrorBoundary message="wystąpił błąd całej aplikacji">
             <div className="App">
+                <header className="header">
+                    Witaj test01@gmail.com.
+                <a className="header__logout-link" href="#">Wyloguj</a>
+
+                </header>
                 <TimeboxList />
                 <ErrorBoundary message="wystąpił błąd komponentu EditableTimebox">
                     <EditableTimebox />
