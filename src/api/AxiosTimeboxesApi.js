@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const BASE_URL = "http://localhost:4000/timeboxes";
+const BASE_URL = "http://localhost:5000/timeboxes";
 
 const AxiosTimeboxesAPI = {
     getAllTimeboxes: async function () {
