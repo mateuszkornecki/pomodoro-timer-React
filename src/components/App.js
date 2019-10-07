@@ -3,6 +3,7 @@ import EditableTimebox from "./EditableTimebox";
 import TimeboxList from "./TimeboxList";
 import ErrorBoundary from "./ErrorBoundary";
 import LoginForm from "./LoginForm";
+import AuthenticatorAPI from "../api/AuthenticatorApi";
 class App extends React.Component {
 
 
@@ -11,11 +12,16 @@ class App extends React.Component {
 	}
 
 	handleLogout = () => {
+
 		console.log("handling logout");
 	}
 
 	handleLoginAttempt = (credentials) => {
-		console.log("handling login attempt", credentials);
+		AuthenticatorAPI.login(credentials)
+			.then((result) => {
+				console.log(result);
+			})
+		// console.log("handling login attempt", credentials);
 	}
 
 	isUserLoggedIn = () => {
