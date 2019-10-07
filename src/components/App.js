@@ -4,54 +4,74 @@ import TimeboxList from "./TimeboxList";
 import ErrorBoundary from "./ErrorBoundary";
 import LoginForm from "./LoginForm";
 import AuthenticatorAPI from "../api/AuthenticatorApi";
+import jwt from "jsonwebtoken";
 class App extends React.Component {
 
+	state = {
+		accessToken: null,
+		previousLoginAttemptFailed: false
+	}
 
 	getUserEmail = () => {
-		return "test01@gmail.com";
+		console.log()
+		const decodedToken = jwt.decode(this.state.accessToken)
+		return decodedToken.email;
 	}
 
 	handleLogout = () => {
-
-		console.log("handling logout");
+		this.setState({
+			accessToken: null,
+			previousLoginAttemptFailed: false
+		})
 	}
 
 	handleLoginAttempt = (credentials) => {
 		AuthenticatorAPI.login(credentials)
-			.then((result) => {
-				console.log(result);
+			.then(({ accessToken }) => {
+				this.setState({
+					accessToken: accessToken,
+					previousLoginAttemptFailed: false
+				})
 			})
-		// console.log("handling login attempt", credentials);
+			.catch(() => {
+				this.setState({
+					previousLoginAttemptFailed: true
+				})
+			})
 	}
 
 	isUserLoggedIn = () => {
-		return false;
+		return this.state.accessToken ? true : false;
 	}
 
 	render() {
 		return (
 			<ErrorBoundary message="wystąpił błąd całej aplikacji" >
-				<div className="App">
-					{
-						this.isUserLoggedIn()
-							?
-							<>
-								<header className="header">
-									Witaj test01@gmail.com.
-                                    <a className="header__logout-link" href="#">
-										Wyloguj
-                                    </a>
-								</header>
-							</>
-							: <LoginForm
-								errorMessage="Nie udało się zalogować!"
-								onLoginAttempt={this.handleLoginAttempt} />
-					}
-					<TimeboxList />
-					<ErrorBoundary message="wystąpił błąd komponentu EditableTimebox">
-						<EditableTimebox />
-					</ErrorBoundary>
-				</div>
+				{
+					this.isUserLoggedIn()
+						?
+						<>
+							<header className="header">
+								Witaj {this.getUserEmail()}
+								<a className="header__logout-link" onClick={this.handleLogout} href="#">
+									Wyloguj
+                           </a>
+							</header>
+
+
+
+							<div className="App">
+
+								<TimeboxList />
+								<ErrorBoundary message="wystąpił błąd komponentu EditableTimebox">
+									<EditableTimebox />
+								</ErrorBoundary>
+							</div>
+						</>
+						: <LoginForm
+							errorMessage={this.state.previousLoginAttemptFailed ? "Nie udało się zalogować!" : null}
+							onLoginAttempt={this.handleLoginAttempt} />
+				}
 			</ErrorBoundary>
 		);
 	}
