@@ -36,7 +36,7 @@ class LoginForm extends React.Component {
                 <label htmlFor="passwordInput">Password: </label>
                 <input id="passwordInput" type="password" />
                 <br />
-                <button>Zaloguuj</button>
+                <button>Zaloguj</button>
             </form>
         );
     }
