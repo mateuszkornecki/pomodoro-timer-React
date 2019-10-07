@@ -1,0 +1,9 @@
+.header {
+	display: flex;
+	justify-content: flex-end;
+	margin: 1rem;
+	&__logout-link {
+		margin-left: 1rem;
+		color: red;
+	}
+}
