@@ -1,7 +1,9 @@
 
+import React from 'react';
+
 function ErrorMessage({ message, children, hasError }) {
     return (
-        hasError ? message : children
+        <div>{hasError ? <div class="ErrorMessage">{message}</div> : children}</div>
     )
 }
 
