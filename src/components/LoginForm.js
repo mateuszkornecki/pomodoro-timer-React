@@ -24,9 +24,12 @@ class LoginForm extends React.Component {
                 onSubmit={this.handleSubmit}
                 className="LoginForm"
             >
-                <div className="LoginForm__error-message">
-                    {this.props.errorMessage}
-                </div>
+                {this.props.errorMessage ?
+                    <div className="LoginForm__error-message">
+                        {this.props.errorMessage}
+                    </div>
+                    : ""
+                }
                 <label htmlFor="emailInputt">Email: </label>
                 <input id="emailInput" type="email" />
                 <br />
