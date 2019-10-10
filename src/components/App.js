@@ -26,7 +26,6 @@ class App extends React.Component {
         const timeToLogOut = Date.now() + sessionTimeInSeconds * 1000;
         this.interval = setInterval(() => {
             const actualTime = Date.now()
-            console.log([timeToLogOut - actualTime])
             if (timeToLogOut - actualTime <= 0) {
                 this.handleLogout();
             }
