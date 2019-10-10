@@ -12,6 +12,15 @@ class App extends React.Component {
         previousLoginAttemptFailed: false
     }
 
+    componentDidMount() {
+        const localStorageAccessToken = localStorage.getItem('timeboxing-access-token');
+        if (localStorageAccessToken) {
+            this.setState({
+                accessToken: localStorageAccessToken
+            })
+        }
+    }
+
     getUserEmail = () => {
         console.log()
         const decodedToken = jwt.decode(this.state.accessToken)
@@ -22,7 +31,8 @@ class App extends React.Component {
         this.setState({
             accessToken: null,
             previousLoginAttemptFailed: false
-        })
+        });
+        localStorage.removeItem('timeboxing-access-token');
     }
 
     handleLoginAttempt = (credentials) => {
@@ -41,6 +51,12 @@ class App extends React.Component {
     }
 
     isUserLoggedIn = () => {
+        //when user is logged in store accessToken in localStorage
+        if (this.state.accessToken) {
+            localStorage.setItem('timeboxing-access-token', this.state.accessToken);
+            const localStorageAccessToken = localStorage.getItem('timeboxing-access-token');
+            console.log(typeof localStorageAccessToken);
+        }
         return this.state.accessToken ? true : false;
     }
 
