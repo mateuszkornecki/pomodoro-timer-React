@@ -17,7 +17,8 @@ class TimeboxList extends React.Component {
 
     //! Pytanie na live, dlaczego () => this.setState({...}), a nie po prostu this.setState po co ta funkcja i dlaczego jak jej nie ma to stan jest odrazu ustawiony na false..
     componentDidMount() {
-        TimeboxesAPI.getAllTimeboxes().then(
+        TimeboxesAPI.getToken(this.props.accessToken);
+        TimeboxesAPI.getAllTimeboxes(this.props.accessToken).then(
             (timeboxes) => this.setState({ timeboxes })
         ).catch(
             (error) => {
@@ -31,7 +32,7 @@ class TimeboxList extends React.Component {
 
     handleCreate = createdTimebox => {
         try {
-            this.addTimebox(createdTimebox);
+            this.addTimebox(createdTimebox, this.props.accessToken);
         }
         catch (error) {
             console.log("metoda addTimebox wyrzuciła błąd");
@@ -43,7 +44,7 @@ class TimeboxList extends React.Component {
     addTimebox = timebox => {
         // throw new Error("wystąpił błąd podczas dodawania timeboxa");
 
-        TimeboxesAPI.addTimebox(timebox).then(
+        TimeboxesAPI.addTimebox(timebox, this.props.accessToken).then(
             (addedTimebox) => this.setState(prevState => {
                 const timeboxes = [...prevState.timeboxes, addedTimebox];
                 return {
@@ -56,7 +57,7 @@ class TimeboxList extends React.Component {
     };
 
     removeTimebox = indexToRemove => {
-        TimeboxesAPI.removeTimebox(this.state.timeboxes[indexToRemove])
+        TimeboxesAPI.removeTimebox(this.state.timeboxes[indexToRemove], this.props.accessToken)
             .then(() => {
                 this.setState(prevState => {
                     const timeboxes = prevState.timeboxes.filter(
