@@ -17,6 +17,26 @@ class App extends React.Component {
         this.getAccessTokenFromLocalStorage();
     }
 
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
+    setTimerOnLogIn = () => {
+        const sessionTimeInSeconds = 3600
+        const timeToLogOut = Date.now() + sessionTimeInSeconds * 1000;
+        this.interval = setInterval(() => {
+            const actualTime = Date.now()
+            console.log([timeToLogOut - actualTime])
+            if (timeToLogOut - actualTime <= 0) {
+                this.handleLogout();
+            }
+        }, 1000)
+    }
+
+    clearTimeOnLogOut = () => {
+        clearInterval(this.interval);
+    }
+
     getUserEmail = () => {
         console.log()
         const decodedToken = jwt.decode(this.state.accessToken)
@@ -46,14 +66,14 @@ class App extends React.Component {
             })
     }
 
-    setAccessTokenToLocalStorage() {
+    setAccessTokenToLocalStorage = () => {
         if (this.state.accessToken) {
             localStorage.setItem('timeboxing-access-token', this.state.accessToken);
             const localStorageAccessToken = localStorage.getItem('timeboxing-access-token');
         }
     }
 
-    getAccessTokenFromLocalStorage() {
+    getAccessTokenFromLocalStorage = () => {
         const localStorageAccessToken = localStorage.getItem('timeboxing-access-token');
         if (localStorageAccessToken) {
             this.setState({
@@ -62,7 +82,7 @@ class App extends React.Component {
         }
     }
 
-    removeAccessTokenFromLocalStorage() {
+    removeAccessTokenFromLocalStorage = () => {
         localStorage.removeItem('timeboxing-access-token');
 
     }
@@ -70,6 +90,10 @@ class App extends React.Component {
     isUserLoggedIn = () => {
         //when user is logged in store accessToken in localStorage
         this.setAccessTokenToLocalStorage();
+        if (this.state.accessToken) {
+            this.setTimerOnLogIn();
+        } else this.clearTimeOnLogOut();
+
         return this.state.accessToken ? true : false;
     }
 
