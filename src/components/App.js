@@ -5,6 +5,7 @@ import ErrorBoundary from "./ErrorBoundary";
 import LoginForm from "./LoginForm";
 import AuthenticatorAPI from "../api/AuthenticatorApi";
 import jwt from "jsonwebtoken";
+import { timingSafeEqual } from "crypto";
 class App extends React.Component {
 
     state = {
@@ -13,12 +14,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        const localStorageAccessToken = localStorage.getItem('timeboxing-access-token');
-        if (localStorageAccessToken) {
-            this.setState({
-                accessToken: localStorageAccessToken
-            })
-        }
+        this.getAccessTokenFromLocalStorage();
     }
 
     getUserEmail = () => {
@@ -32,7 +28,7 @@ class App extends React.Component {
             accessToken: null,
             previousLoginAttemptFailed: false
         });
-        localStorage.removeItem('timeboxing-access-token');
+        this.removeAccessTokenFromLocalStorage();
     }
 
     handleLoginAttempt = (credentials) => {
@@ -50,13 +46,30 @@ class App extends React.Component {
             })
     }
 
-    isUserLoggedIn = () => {
-        //when user is logged in store accessToken in localStorage
+    setAccessTokenToLocalStorage() {
         if (this.state.accessToken) {
             localStorage.setItem('timeboxing-access-token', this.state.accessToken);
             const localStorageAccessToken = localStorage.getItem('timeboxing-access-token');
-            console.log(typeof localStorageAccessToken);
         }
+    }
+
+    getAccessTokenFromLocalStorage() {
+        const localStorageAccessToken = localStorage.getItem('timeboxing-access-token');
+        if (localStorageAccessToken) {
+            this.setState({
+                accessToken: localStorageAccessToken
+            })
+        }
+    }
+
+    removeAccessTokenFromLocalStorage() {
+        localStorage.removeItem('timeboxing-access-token');
+
+    }
+
+    isUserLoggedIn = () => {
+        //when user is logged in store accessToken in localStorage
+        this.setAccessTokenToLocalStorage();
         return this.state.accessToken ? true : false;
     }
 
