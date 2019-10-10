@@ -29,7 +29,7 @@ class App extends React.Component {
             if (timeToLogOut - actualTime <= 0) {
                 this.handleLogout();
             }
-        }, 1000)
+        }, 60000)
     }
 
     clearTimeOnLogOut = () => {
