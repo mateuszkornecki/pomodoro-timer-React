@@ -17,7 +17,7 @@ class TimeboxList extends React.Component {
 
     //! Pytanie na live, dlaczego () => this.setState({...}), a nie po prostu this.setState po co ta funkcja i dlaczego jak jej nie ma to stan jest odrazu ustawiony na false..
     componentDidMount() {
-        TimeboxesAPI.getToken(this.props.accessToken);
+        TimeboxesAPI.setAccessToken(this.props.accessToken);
         TimeboxesAPI.getAllTimeboxes(this.props.accessToken).then(
             (timeboxes) => this.setState({ timeboxes })
         ).catch(

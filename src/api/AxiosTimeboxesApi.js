@@ -3,7 +3,7 @@ const axios = require('axios');
 const BASE_URL = "http://localhost:5000/timeboxes";
 
 const AxiosTimeboxesAPI = {
-    getToken: function (accessToken) {
+    setAccessToken: function (accessToken) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
     },
     getAllTimeboxes: async function (accessToken) {
