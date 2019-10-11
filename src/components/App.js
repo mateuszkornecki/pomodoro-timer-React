@@ -98,13 +98,14 @@ class App extends React.Component {
         return (
             <div className="App">
                 <ErrorBoundary message="wystąpił błąd całej aplikacji" >
-                    {this.isUserLoggedIn()
-                        ?
-
-                        <AuthenticatedApp accessToken={this.state.accessToken} onLogout={this.handleLogout} />
-                        : <LoginForm
-                            errorMessage={this.state.previousLoginAttemptFailed ? "Nie udało się zalogować!" : null}
-                            onLoginAttempt={this.handleLoginAttempt} />
+                    {
+                        this.isUserLoggedIn() ?
+                            <AuthenticatedApp accessToken={this.state.accessToken} onLogout={this.handleLogout} />
+                            :
+                            <LoginForm
+                                errorMessage={this.state.previousLoginAttemptFailed ? "Nie udało się zalogować!" : null}
+                                onLoginAttempt={this.handleLoginAttempt}
+                            />
                     }
                 </ErrorBoundary>
             </div >
