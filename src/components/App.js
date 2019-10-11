@@ -1,11 +1,9 @@
 import React from "react";
-import EditableTimebox from "./EditableTimebox";
-import TimeboxList from "./TimeboxList";
 import ErrorBoundary from "./ErrorBoundary";
 import LoginForm from "./LoginForm";
 import AuthenticatorAPI from "../api/AuthenticatorApi";
 import jwt from "jsonwebtoken";
-import Header from "./Header";
+
 import AuthenticatedApp from "./AuthenticatedApp";
 class App extends React.Component {
 
@@ -103,13 +101,9 @@ class App extends React.Component {
                     this.isUserLoggedIn()
                         ?
                         <>
-                            <AuthenticatedApp />
-                            <Header accessToken={this.state.accessToken} onLogout={this.handleLogout} />
                             <div className="App">
-                                <TimeboxList accessToken={this.state.accessToken} />
-                                <ErrorBoundary message="wystąpił błąd komponentu EditableTimebox">
-                                    <EditableTimebox />
-                                </ErrorBoundary>
+                                <AuthenticatedApp accessToken={this.state.accessToken} onLogout={this.handleLogout} />
+
                             </div>
                         </>
                         : <LoginForm
