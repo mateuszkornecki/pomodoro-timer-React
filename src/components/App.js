@@ -5,7 +5,7 @@ import ErrorBoundary from "./ErrorBoundary";
 import LoginForm from "./LoginForm";
 import AuthenticatorAPI from "../api/AuthenticatorApi";
 import jwt from "jsonwebtoken";
-import { timingSafeEqual } from "crypto";
+import UserGreetings from "./UserGreetings";
 class App extends React.Component {
 
     state = {
@@ -37,7 +37,6 @@ class App extends React.Component {
     }
 
     getUserEmail = () => {
-        console.log()
         const decodedToken = jwt.decode(this.state.accessToken)
         return decodedToken.email;
     }
@@ -104,7 +103,8 @@ class App extends React.Component {
                         ?
                         <>
                             <header className="header">
-                                Witaj {this.getUserEmail()}
+                                <UserGreetings accessToken={this.state.accessToken} />
+                                <br />
                                 <a className="header__logout-link" onClick={this.handleLogout} href="#">
                                     Wyloguj
                            </a>
