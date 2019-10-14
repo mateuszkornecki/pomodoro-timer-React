@@ -5,6 +5,7 @@ import AuthenticatorAPI from "../api/AuthenticatorApi";
 import jwt from "jsonwebtoken";
 
 import AuthenticatedApp from "./AuthenticatedApp";
+import AuthenticationContext from "../context/AuthenticationContext";
 class App extends React.Component {
 
     state = {
@@ -98,14 +99,18 @@ class App extends React.Component {
         return (
             <div className="App">
                 <ErrorBoundary message="wystąpił błąd całej aplikacji" >
+
                     {
                         this.isUserLoggedIn() ?
-                            <AuthenticatedApp accessToken={this.state.accessToken} onLogout={this.handleLogout} />
+                            <AuthenticationContext.Provider value={{ accessToken: this.state.accessToken }}>
+                                <AuthenticatedApp accessToken={this.state.accessToken} onLogout={this.handleLogout} />
+                            </AuthenticationContext.Provider>
                             :
                             <LoginForm
                                 errorMessage={this.state.previousLoginAttemptFailed ? "Nie udało się zalogować!" : null}
                                 onLoginAttempt={this.handleLoginAttempt}
                             />
+
                     }
                 </ErrorBoundary>
             </div >
