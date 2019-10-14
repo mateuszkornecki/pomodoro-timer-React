@@ -5,12 +5,12 @@ import EditableTimebox from "./EditableTimebox";
 import ErrorBoundary from "./ErrorBoundary";
 
 
-function AuthenticatedApp({ accessToken, onLogout }) {
+function AuthenticatedApp({ onLogout }) {
 
     return (
         <>
-            <Header accessToken={accessToken} onLogout={onLogout} />
-            <TimeboxList accessToken={accessToken} />
+            <Header onLogout={onLogout} />
+            <TimeboxList />
             <ErrorBoundary message="wystąpił błąd komponentu EditableTimebox">
                 <EditableTimebox />
             </ErrorBoundary>
