@@ -5,15 +5,23 @@ function Timebox({ title, taskTime, onDelete, onEdit, onChange }) {
     if (taskTime <= 0) {
         throw new Error("Czas zadania musi być większy niż zero");
     }
+    const input = React.createRef();
+    const clearInput = () => {
+        input.current.value = "";
+    }
 
+    const handleEdit = async () => {
+        await onEdit();
+        clearInput();
+    }
     return (
         <div className="Timebox">
             <h3>
                 {title} - {taskTime} min.
             </h3>
             <button onClick={onDelete}>Usuń</button>
-            <button onClick={onEdit}>Zmień</button>
-            <input onChange={onChange} />
+            <button onClick={handleEdit}>Zmień</button>
+            <input ref={input} onChange={onChange} />
         </div>
     );
 }
