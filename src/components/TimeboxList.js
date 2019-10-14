@@ -4,6 +4,7 @@ import TimeboxCreator from "./TimeboxCreator";
 import ErrorBoundary from "./ErrorBoundary";
 import ErrorMessage from "./ErrorMessage";
 import TimeboxesAPI from "../api/AxiosTimeboxesApi"
+import AuthenticationContext from "../context/AuthenticationContext";
 
 
 class TimeboxList extends React.Component {
@@ -17,8 +18,8 @@ class TimeboxList extends React.Component {
 
     //! Pytanie na live, dlaczego () => this.setState({...}), a nie po prostu this.setState po co ta funkcja i dlaczego jak jej nie ma to stan jest odrazu ustawiony na false..
     componentDidMount() {
-        TimeboxesAPI.setAccessToken(this.props.accessToken);
-        TimeboxesAPI.getAllTimeboxes(this.props.accessToken).then(
+        TimeboxesAPI.setAccessToken(this.context.accessToken);
+        TimeboxesAPI.getAllTimeboxes(this.context.accessToken).then(
             (timeboxes) => this.setState({ timeboxes })
         ).catch(
             (error) => {
@@ -32,7 +33,7 @@ class TimeboxList extends React.Component {
 
     handleCreate = createdTimebox => {
         try {
-            this.addTimebox(createdTimebox, this.props.accessToken);
+            this.addTimebox(createdTimebox, this.context.accessToken);
         }
         catch (error) {
             console.log("metoda addTimebox wyrzuciła błąd");
@@ -44,7 +45,7 @@ class TimeboxList extends React.Component {
     addTimebox = timebox => {
         // throw new Error("wystąpił błąd podczas dodawania timeboxa");
 
-        TimeboxesAPI.addTimebox(timebox, this.props.accessToken).then(
+        TimeboxesAPI.addTimebox(timebox, this.context.accessToken).then(
             (addedTimebox) => this.setState(prevState => {
                 const timeboxes = [...prevState.timeboxes, addedTimebox];
                 return {
@@ -57,7 +58,7 @@ class TimeboxList extends React.Component {
     };
 
     removeTimebox = indexToRemove => {
-        TimeboxesAPI.removeTimebox(this.state.timeboxes[indexToRemove], this.props.accessToken)
+        TimeboxesAPI.removeTimebox(this.state.timeboxes[indexToRemove], this.context.accessToken)
             .then(() => {
                 this.setState(prevState => {
                     const timeboxes = prevState.timeboxes.filter(
@@ -129,5 +130,7 @@ class TimeboxList extends React.Component {
         );
     }
 }
+
+TimeboxList.contextType = AuthenticationContext;
 
 export default TimeboxList;
