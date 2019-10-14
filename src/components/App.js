@@ -103,7 +103,7 @@ class App extends React.Component {
                     {
                         this.isUserLoggedIn() ?
                             <AuthenticationContext.Provider value={{ accessToken: this.state.accessToken }}>
-                                <AuthenticatedApp accessToken={this.state.accessToken} onLogout={this.handleLogout} />
+                                <AuthenticatedApp onLogout={this.handleLogout} />
                             </AuthenticationContext.Provider>
                             :
                             <LoginForm
