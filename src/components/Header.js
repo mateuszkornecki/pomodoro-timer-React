@@ -1,7 +1,7 @@
 import React from 'react';
 import UserGreetings from "./UserGreetings";
 
-function Header({ accessToken, onLogout }) {
+function Header({ onLogout }) {
 
     return (
         <>
