@@ -6,7 +6,7 @@ function Header({ accessToken, onLogout }) {
     return (
         <>
             <header className="header">
-                <UserGreetings accessToken={accessToken} />
+                <UserGreetings />
                 <br />
                 <a className="header__logout-link" onClick={onLogout} href="#">
                     Wyloguj
