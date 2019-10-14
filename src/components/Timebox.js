@@ -10,10 +10,11 @@ function Timebox({ title, taskTime, onDelete, onEdit, onChange }) {
         input.current.value = "";
     }
 
-    const handleEdit = async () => {
-        await onEdit();
+    const handleEdit = () => {
+        onEdit();
         clearInput();
     }
+
     return (
         <div className="Timebox">
             <h3>
