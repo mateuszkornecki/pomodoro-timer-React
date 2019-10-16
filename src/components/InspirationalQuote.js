@@ -1,13 +1,18 @@
 import React from 'react';
+import Quotes from 'inspirational-quotes';
 
-function InspirationalQuote({ }) {
-    return (
-        <figure>
-            <figcaption><cite>Esterad Thyssen</cite></figcaption>
-            <blockquote>To have a million and not to have a million add up to two million </blockquote>
-        </figure>
+const { text, author } = Quotes.getQuote();
+class InspirationalQuote extends React.Component {
 
-    )
+    render() {
+        return (
+            <figure>
+                <figcaption><cite>{author}</cite></figcaption>
+                <blockquote>{text}</blockquote>
+            </figure >
+
+        )
+    }
 }
 
 export default InspirationalQuote;
