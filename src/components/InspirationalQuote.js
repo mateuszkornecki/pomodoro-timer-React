@@ -7,9 +7,14 @@ class InspirationalQuote extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({
-            quote: Quotes.getQuote()
-        })
+        import('inspirational-quotes').then(
+            (Quotes) => {
+                this.setState({
+                    quote: Quotes.getQuote()
+                })
+            }
+        ).catch(err => console.log(err, "Couldn't load inspirational-quotes library"))
+
     }
 
     render() {
