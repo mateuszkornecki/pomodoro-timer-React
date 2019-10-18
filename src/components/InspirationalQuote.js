@@ -1,16 +1,30 @@
 import React from 'react';
 import Quotes from 'inspirational-quotes';
-
-const { text, author } = Quotes.getQuote();
 class InspirationalQuote extends React.Component {
+
+    state = {
+        quote: null
+    }
+
+    componentDidMount() {
+        this.setState({
+            quote: Quotes.getQuote()
+        })
+    }
 
     render() {
         return (
-            <figure>
-                <figcaption><cite>{author}</cite></figcaption>
-                <blockquote>{text}</blockquote>
-            </figure >
-
+            <>
+                {
+                    this.state.quote ?
+                        <figure>
+                            <figcaption><cite>{this.state.quote.author}</cite></figcaption>
+                            <blockquote>{this.state.quote.text}</blockquote>
+                        </figure >
+                        :
+                        "Loading quote..."
+                }
+            </>
         )
     }
 }
