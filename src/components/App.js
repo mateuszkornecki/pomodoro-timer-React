@@ -1,12 +1,11 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ErrorBoundary from "./ErrorBoundary";
 import LoginForm from "./LoginForm";
 import AuthenticatorAPI from "../api/AuthenticatorApi";
 import jwt from "jsonwebtoken";
-import AuthenticatedApp from "./AuthenticatedApp";
-
 import AuthenticationContext from "../context/AuthenticationContext";
 
+const AuthenticatedApp = React.lazy(() => import("./AuthenticatedApp"));
 class App extends React.Component {
 
     state = {
@@ -103,9 +102,11 @@ class App extends React.Component {
 
                     {
                         this.isUserLoggedIn() ?
-                            <AuthenticationContext.Provider value={{ accessToken: this.state.accessToken, onLogout: this.handleLogout }}>
-                                <AuthenticatedApp />
-                            </AuthenticationContext.Provider>
+                            <Suspense fallback={<div>Loading...</div>}>
+                                <AuthenticationContext.Provider value={{ accessToken: this.state.accessToken, onLogout: this.handleLogout }}>
+                                    <AuthenticatedApp />
+                                </AuthenticationContext.Provider>
+                            </Suspense>
                             :
                             <LoginForm
                                 errorMessage={this.state.previousLoginAttemptFailed ? "Nie udało się zalogować!" : null}
