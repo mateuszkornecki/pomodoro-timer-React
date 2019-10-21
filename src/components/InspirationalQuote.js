@@ -1,5 +1,4 @@
 import React from 'react';
-import Quotes from 'inspirational-quotes';
 class InspirationalQuote extends React.Component {
 
     state = {
