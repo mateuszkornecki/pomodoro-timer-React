@@ -1,10 +1,10 @@
-import React from "react";
-import Timebox from "./Timebox";
+import React, { Suspense } from "react";
 import TimeboxCreator from "./TimeboxCreator";
 import ErrorBoundary from "./ErrorBoundary";
 import ErrorMessage from "./ErrorMessage";
 import TimeboxesAPI from "../api/AxiosTimeboxesApi"
 import AuthenticationContext from "../context/AuthenticationContext";
+const Timebox = React.lazy(() => import("./Timebox"));
 
 
 class TimeboxList extends React.Component {
@@ -110,18 +110,20 @@ class TimeboxList extends React.Component {
                     {
                         timeboxes.map((timebox, index) => (
                             <ErrorBoundary key={timebox.id} message="Coś się wywaliło w Timeboxie">
-                                <Timebox
-                                    title={timebox.title}
-                                    taskTime={timebox.taskTime}
-                                    onDelete={() => this.removeTimebox(index)}
-                                    onEdit={() =>
-                                        this.editTimebox(index, {
-                                            ...timebox,
-                                            title: editInput
-                                        })
-                                    }
-                                    onChange={this.changeTitle}
-                                />
+                                <Suspense fallback={<div>Loading...</div>}>
+                                    <Timebox
+                                        title={timebox.title}
+                                        taskTime={timebox.taskTime}
+                                        onDelete={() => this.removeTimebox(index)}
+                                        onEdit={() =>
+                                            this.editTimebox(index, {
+                                                ...timebox,
+                                                title: editInput
+                                            })
+                                        }
+                                        onChange={this.changeTitle}
+                                    />
+                                </Suspense>
                             </ErrorBoundary>
                         ))
                     }
