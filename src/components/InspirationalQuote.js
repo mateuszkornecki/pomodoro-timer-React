@@ -1,36 +1,39 @@
-import React from 'react';
-class InspirationalQuote extends React.Component {
+import React, { useState, useEffect } from 'react';
+function InspirationalQuote() {
 
-    state = {
-        quote: null
-    }
+   const [quote, setQuote] = useState(null);
 
-    componentDidMount() {
-        import('inspirational-quotes').then(
-            (Quotes) => {
-                this.setState({
-                    quote: Quotes.getQuote()
-                })
-            }
-        ).catch(err => console.log(err, "Couldn't load inspirational-quotes library"))
+   useEffect(() => {
+      console.count('lama');
+      import('inspirational-quotes').then(
+         (Quotes) => {
+            setQuote(Quotes.getQuote())
+         }
+      ).catch(err => console.log(err, "Couldn't load inspirational-quotes library"))
+   })
+   // componentDidMount() {
+   //    import('inspirational-quotes').then(
+   //       (Quotes) => {
+   //          this.setState({
+   //             quote: Quotes.getQuote()
+   //          })
+   //       }
+   //    ).catch(err => console.log(err, "Couldn't load inspirational-quotes library"))
 
-    }
-
-    render() {
-        return (
-            <>
-                {
-                    this.state.quote ?
-                        <figure>
-                            <figcaption><cite>{this.state.quote.author}</cite></figcaption>
-                            <blockquote>{this.state.quote.text}</blockquote>
-                        </figure >
-                        :
-                        "Loading quote..."
-                }
-            </>
-        )
-    }
+   // }
+   return (
+      <>
+         {
+            quote ?
+               <figure>
+                  <figcaption><cite>{quote.author}</cite></figcaption>
+                  <blockquote>{quote.text}</blockquote>
+               </figure >
+               :
+               "Loading quote..."
+         }
+      </>
+   )
 }
 
 export default InspirationalQuote;
