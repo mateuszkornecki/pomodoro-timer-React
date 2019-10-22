@@ -4,7 +4,6 @@ function InspirationalQuote() {
    const [quote, setQuote] = useState(null);
 
    useEffect(() => {
-      console.count('lama');
       import('inspirational-quotes').then(
          (Quotes) => {
             setQuote(Quotes.getQuote())
