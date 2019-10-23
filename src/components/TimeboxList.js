@@ -1,4 +1,4 @@
-import React, { Suspense, useState, useEffect } from "react";
+import React, { Suspense, useState, useEffect, useContext } from "react";
 import TimeboxCreator from "./TimeboxCreator";
 import ErrorBoundary from "./ErrorBoundary";
 import ErrorMessage from "./ErrorMessage";
@@ -6,17 +6,9 @@ import TimeboxesAPI from "../api/AxiosTimeboxesApi"
 import AuthenticationContext from "../context/AuthenticationContext";
 const Timebox = React.lazy(() => import("./Timebox"));
 
-
 function TimeboxList() {
-   // state = {
-   //    timeboxes: [],
-   //    editInput: "",
-   //    hasError: false,
-   //    loadingError: false,
-   //    loading: true,
-   // };
 
-   const [state, useState] = useState({
+   const [state, setState] = useState({
       timeboxes: [],
       editInput: "",
       hasError: false,
@@ -24,19 +16,41 @@ function TimeboxList() {
       loading: true
    })
 
-   componentDidMount() {
+   const context = useContext(AuthenticationContext);
+
+   //! WEEK8 useEffect fix: nie używać jednego useState, ew użyć prevState
+   useEffect(() => {
       TimeboxesAPI.setAccessToken(context.accessToken);
       TimeboxesAPI.getAllTimeboxes(context.accessToken).then(
-         (timeboxes) => setState({ timeboxes })
+         (timeboxes) => {
+            setState(prevState => {
+               return {
+                  ...prevState,
+                  timeboxes
+               }
+            });
+         }
       ).catch(
          (error) => {
             console.log(`Wystąpił błąd : ${error}`);
-            setState({ loadingError: true });
+            setState(prevState => {
+               return {
+                  ...prevState,
+                  loadingError: true
+               }
+            });
          }
       ).finally(
-         () => setState({ loading: false })
+         () => {
+            setState(prevState => {
+               return {
+                  ...prevState,
+                  loading: false
+               }
+            });
+         }
       )
-   }
+   }, [])
 
    const handleCreate = createdTimebox => {
       try {
@@ -50,30 +64,20 @@ function TimeboxList() {
    };
 
    const addTimebox = timebox => {
-      //!WEEK8 LESSON4
-      // import("../api/AxiosTimeboxesApi").then(TimeboxesAPI => {
-      //     TimeboxesAPI.addTimebox(timebox, context.accessToken).then(
-      //         (addedTimebox) => setState(prevState => {
-      //             const timeboxes = [...prevState.timeboxes, addedTimebox];
-      //             return {
-      //                 timeboxes: timeboxes
-      //             };
-      //         })
-      //     )
-      // })
-      TimeboxesAPI.addTimebox(timebox, this.context.accessToken).then(
-         (addedTimebox) => setState(prevState => {
-            const timeboxes = [...prevState.timeboxes, addedTimebox];
-            return {
-               timeboxes: timeboxes
-            };
-         })
-      )
-
+      import("../api/AxiosTimeboxesApi").then(TimeboxesAPI => {
+         TimeboxesAPI.default.addTimebox(timebox, context.accessToken).then(
+            (addedTimebox) => setState(prevState => {
+               const timeboxes = [...prevState.timeboxes, addedTimebox];
+               return {
+                  timeboxes: timeboxes
+               };
+            })
+         )
+      })
    };
 
    const removeTimebox = indexToRemove => {
-      TimeboxesAPI.removeTimebox(state.timeboxes[indexToRemove], this.context.accessToken)
+      TimeboxesAPI.removeTimebox(state.timeboxes[indexToRemove], context.accessToken)
          .then(() => {
             setState(prevState => {
                const timeboxes = prevState.timeboxes.filter(
@@ -108,8 +112,12 @@ function TimeboxList() {
    };
 
    const changeTitle = e => {
-      setState({
-         editInput: e.target.value
+      let inputValue = e.target.value;
+      setState(prevState => {
+         return {
+            ...prevState,
+            editInput: inputValue
+         }
       });
    };
 
@@ -143,9 +151,7 @@ function TimeboxList() {
             }
          </ErrorMessage>
       </>
-   ); const
+   );
 }
-
-TimeboxList.contextType = AuthenticationContext;
 
 export default TimeboxList;
