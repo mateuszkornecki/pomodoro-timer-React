@@ -1,40 +1,34 @@
-import React from "react";
+import React, { useRef } from "react";
 
+function TimeboxCreator(props) {
+   const form = useRef();
 
-class TimeboxCreator extends React.Component {
-    constructor(props) {
-        super(props);
-        this.form = React.createRef();
-    }
+   const handleSubmit = e => {
+      const { onCreate } = props;
+      e.preventDefault();
+      onCreate({
+         title: form.current.children.taskInput.value,
+         taskTime: form.current.children.timeInput.value
+      });
+      form.current.children.taskInput.value = "";
+      form.current.children.timeInput.value = "";
+   };
 
-    handleSubmit = e => {
-        const { onCreate } = this.props;
-        e.preventDefault();
-        onCreate({
-            title: this.form.current.children.taskInput.value,
-            taskTime: this.form.current.children.timeInput.value
-        });
-        this.form.current.children.taskInput.value = "";
-        this.form.current.children.timeInput.value = "";
-    };
-
-    render() {
-        return (
-            <form
-                ref={this.form}
-                onSubmit={this.handleSubmit}
-                className="TimeboxCreator"
-            >
-                <label htmlFor="taskInput">Co robisz?</label>
-                <input id="taskInput" type="text" />
-                <br />
-                <label htmlFor="timeInput">Ile minut?</label>
-                <input id="timeInput" type="number" />
-                <br />
-                <button> Dodaj Timebox'a</button>
-            </form>
-        );
-    }
+   return (
+      <form
+         ref={form}
+         onSubmit={handleSubmit}
+         className="TimeboxCreator"
+      >
+         <label htmlFor="taskInput">Co robisz?</label>
+         <input id="taskInput" type="text" />
+         <br />
+         <label htmlFor="timeInput">Ile minut?</label>
+         <input id="timeInput" type="number" />
+         <br />
+         <button> Dodaj Timebox'a</button>
+      </form>
+   );
 }
 
 export default TimeboxCreator;
