@@ -44,7 +44,7 @@ function TimeboxList() {
             });
          }
       )
-   }, [])
+   }, [context.accessToken])
 
    const handleCreate = createdTimebox => {
       try {
