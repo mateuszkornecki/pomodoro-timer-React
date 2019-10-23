@@ -1,71 +1,47 @@
-import React from "react";
+import React, { useRef } from "react";
 
-class TimeboxEditor extends React.Component {
+function TimeboxEditor(props) {
 
-    constructor(props) {
-        super(props);
-        this.titleInput = React.createRef();
-        this.taskTimeInput = React.createRef();
-        // console.count("constructor");
-    }
+   const titleInput = useRef();
+   const taskTimeInput = useRef();
 
-    componentDidMount() {
-        // console.count("mounted component");
-    }
+   const handleConfirmation = e => {
+      const { onConfirmation, elapsedTime, taskTimeInSeconds } = props;
+      if ((taskTimeInput.current.value * 60 > elapsedTime) && (taskTimeInput.current.value * 60 !== taskTimeInSeconds)) {
+         e.preventDefault();
+         onConfirmation(titleInput.current.value, taskTimeInput.current.value)
+      } else {
+         alert(`wprowadzony czas nie może byc mniejszy od ${(elapsedTime / 60).toFixed(2)} min. oraz musi być inny niż wprowadzony czas początkowy`);
+      }
+   }
 
-    componentDidUpdate() {
-        // console.count("updated component");
-    }
+   const { title, taskTimeInSeconds, isEditable, } = props;
 
-    componentWillUnmount() {
-        // console.count("unmounted component");
-    }
-
-    handleConfirmation = e => {
-        const { onConfirmation, elapsedTime, taskTimeInSeconds } = this.props;
-        if ((this.taskTimeInput.current.value * 60 > elapsedTime) && (this.taskTimeInput.current.value * 60 !== taskTimeInSeconds)) {
-            //!need to learn about that
-            e.preventDefault();
-            onConfirmation(this.titleInput.current.value, this.taskTimeInput.current.value)
-        } else {
-            alert(`wprowadzony czas nie może byc mniejszy od ${(elapsedTime / 60).toFixed(2)} min. oraz musi być inny niż wprowadzony czas początkowy`);
-        }
-    }
-
-    render() {
-        // console.count("render");
-        const {
-            title,
-            taskTimeInSeconds,
-            isEditable,
-        } = this.props;
-
-        return (
-            <div
-                className={isEditable ? "TimeboxEditor" : "TimeboxEditor inactive"}
-            >
-                <label htmlFor="taskInput">Co robisz?</label>
-                <input
-                    id="taskInput"
-                    type="text"
-                    defaultValue={title}
-                    ref={this.titleInput}
-                />
-                <br />
-                <label htmlFor="timeInput">Ile minut?</label>
-                <input
-                    id="timeInput"
-                    type="number"
-                    defaultValue={taskTimeInSeconds / 60}
-                    ref={this.taskTimeInput}
-                />
-                <br />
-                <button disabled={!isEditable} onClick={this.handleConfirmation}>
-                    Zatwierdź zmiany
+   return (
+      <div
+         className={isEditable ? "TimeboxEditor" : "TimeboxEditor inactive"}
+      >
+         <label htmlFor="taskInput">Co robisz?</label>
+         <input
+            id="taskInput"
+            type="text"
+            defaultValue={title}
+            ref={titleInput}
+         />
+         <br />
+         <label htmlFor="timeInput">Ile minut?</label>
+         <input
+            id="timeInput"
+            type="number"
+            defaultValue={taskTimeInSeconds / 60}
+            ref={taskTimeInput}
+         />
+         <br />
+         <button disabled={!isEditable} onClick={handleConfirmation}>
+            Zatwierdź zmiany
             </button>
-            </div>
-        );
-    }
+      </div>
+   );
 }
 
 export default TimeboxEditor;
