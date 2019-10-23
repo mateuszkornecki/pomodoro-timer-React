@@ -9,12 +9,13 @@ const Timebox = React.lazy(() => import("./Timebox"));
 function TimeboxList() {
 
    const [state, setState] = useState({
-      timeboxes: [],
       editInput: "",
       hasError: false,
       loadingError: false,
       loading: true
    })
+
+   const [timeboxes, setTimeboxes] = useState([]);
 
    const context = useContext(AuthenticationContext);
 
@@ -22,14 +23,7 @@ function TimeboxList() {
    useEffect(() => {
       TimeboxesAPI.setAccessToken(context.accessToken);
       TimeboxesAPI.getAllTimeboxes(context.accessToken).then(
-         (timeboxes) => {
-            setState(prevState => {
-               return {
-                  ...prevState,
-                  timeboxes
-               }
-            });
-         }
+         (timeboxes) => setTimeboxes(timeboxes)
       ).catch(
          (error) => {
             console.log(`Wystąpił błąd : ${error}`);
@@ -66,26 +60,22 @@ function TimeboxList() {
    const addTimebox = timebox => {
       import("../api/AxiosTimeboxesApi").then(TimeboxesAPI => {
          TimeboxesAPI.default.addTimebox(timebox, context.accessToken).then(
-            (addedTimebox) => setState(prevState => {
-               const timeboxes = [...prevState.timeboxes, addedTimebox];
-               return {
-                  timeboxes: timeboxes
-               };
+            (addedTimebox) => setTimeboxes(prevState => {
+               const timeboxes = [...prevState, addedTimebox];
+               return timeboxes;
             })
          )
       })
    };
 
    const removeTimebox = indexToRemove => {
-      TimeboxesAPI.removeTimebox(state.timeboxes[indexToRemove], context.accessToken)
+      TimeboxesAPI.removeTimebox(timeboxes[indexToRemove], context.accessToken)
          .then(() => {
-            setState(prevState => {
-               const timeboxes = prevState.timeboxes.filter(
+            setTimeboxes(prevState => {
+               const timeboxes = prevState.filter(
                   (timebox, index) => index !== indexToRemove
                );
-               return {
-                  timeboxes: timeboxes
-               };
+               return timeboxes;
             });
          })
    };
@@ -99,14 +89,17 @@ function TimeboxList() {
    const editTimebox = (indexToChange, timeboxToEdit) => {
       TimeboxesAPI.replaceTimebox(timeboxToEdit)
          .then(() => {
-            setState(prevState => {
-               const timeboxes = prevState.timeboxes;
+            setTimeboxes(prevState => {
+               const timeboxes = prevState;
                updateArray(timeboxes, indexToChange, timeboxToEdit);
-               return {
-                  timeboxes: timeboxes,
-                  editInput: ""
-               };
+               return timeboxes;
             });
+            setState(prevState => {
+               return {
+                  ...prevState,
+                  editInput: ""
+               }
+            })
          }
          )
    };
@@ -121,7 +114,7 @@ function TimeboxList() {
       });
    };
 
-   const { timeboxes, editInput, hasError, loading, loadingError } = state;
+   const { editInput, hasError, loading, loadingError } = state;
    return (
       <>
          <ErrorMessage hasError={hasError} message="timebox creator przestał działać">
