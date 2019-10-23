@@ -8,117 +8,117 @@ import AuthenticationContext from "../context/AuthenticationContext";
 const AuthenticatedApp = React.lazy(() => import("./AuthenticatedApp"));
 class App extends React.Component {
 
-    state = {
-        accessToken: null,
-        previousLoginAttemptFailed: false
-    }
+   state = {
+      accessToken: null,
+      previousLoginAttemptFailed: false
+   }
 
-    componentDidMount() {
-        this.getAccessTokenFromLocalStorage();
-    }
+   componentDidMount() {
+      this.getAccessTokenFromLocalStorage();
+   }
 
-    componentWillUnmount() {
-        clearInterval(this.interval);
-    }
+   componentWillUnmount() {
+      clearInterval(this.interval);
+   }
 
-    setTimerOnLogIn = () => {
-        const sessionTimeInSeconds = 3600
-        const timeToLogOut = Date.now() + sessionTimeInSeconds * 1000;
-        this.interval = setInterval(() => {
-            const actualTime = Date.now()
-            if (timeToLogOut - actualTime <= 0) {
-                this.handleLogout();
-            }
-        }, 60000)
-    }
+   setTimerOnLogIn = () => {
+      const sessionTimeInSeconds = 3600
+      const timeToLogOut = Date.now() + sessionTimeInSeconds * 1000;
+      this.interval = setInterval(() => {
+         const actualTime = Date.now()
+         if (timeToLogOut - actualTime <= 0) {
+            this.handleLogout();
+         }
+      }, 60000)
+   }
 
-    clearTimeOnLogOut = () => {
-        clearInterval(this.interval);
-    }
+   clearTimeOnLogOut = () => {
+      clearInterval(this.interval);
+   }
 
-    getUserEmail = () => {
-        const decodedToken = jwt.decode(this.state.accessToken)
-        return decodedToken.email;
-    }
+   getUserEmail = () => {
+      const decodedToken = jwt.decode(this.state.accessToken)
+      return decodedToken.email;
+   }
 
-    handleLogout = () => {
-        this.setState({
-            accessToken: null,
-            previousLoginAttemptFailed: false
-        });
-        this.removeAccessTokenFromLocalStorage();
-    }
+   handleLogout = () => {
+      this.setState({
+         accessToken: null,
+         previousLoginAttemptFailed: false
+      });
+      this.removeAccessTokenFromLocalStorage();
+   }
 
-    handleLoginAttempt = (credentials) => {
-        AuthenticatorAPI.login(credentials)
-            .then(({ accessToken }) => {
-                this.setState({
-                    accessToken: accessToken,
-                    previousLoginAttemptFailed: false
-                })
-            })
-            .catch(() => {
-                this.setState({
-                    previousLoginAttemptFailed: true
-                })
-            })
-    }
-
-    setAccessTokenToLocalStorage = () => {
-        if (this.state.accessToken) {
-            localStorage.setItem('timeboxing-access-token', this.state.accessToken);
-            const localStorageAccessToken = localStorage.getItem('timeboxing-access-token');
-        }
-    }
-
-    getAccessTokenFromLocalStorage = () => {
-        const localStorageAccessToken = localStorage.getItem('timeboxing-access-token');
-        if (localStorageAccessToken) {
+   handleLoginAttempt = (credentials) => {
+      AuthenticatorAPI.login(credentials)
+         .then(({ accessToken }) => {
             this.setState({
-                accessToken: localStorageAccessToken
+               accessToken: accessToken,
+               previousLoginAttemptFailed: false
             })
-        }
-    }
+         })
+         .catch(() => {
+            this.setState({
+               previousLoginAttemptFailed: true
+            })
+         })
+   }
 
-    removeAccessTokenFromLocalStorage = () => {
-        localStorage.removeItem('timeboxing-access-token');
+   setAccessTokenToLocalStorage = () => {
+      if (this.state.accessToken) {
+         localStorage.setItem('timeboxing-access-token', this.state.accessToken);
+         localStorage.getItem('timeboxing-access-token');
+      }
+   }
 
-    }
+   getAccessTokenFromLocalStorage = () => {
+      const localStorageAccessToken = localStorage.getItem('timeboxing-access-token');
+      if (localStorageAccessToken) {
+         this.setState({
+            accessToken: localStorageAccessToken
+         })
+      }
+   }
 
-    isUserLoggedIn = () => {
-        //when user is logged in store accessToken in localStorage
-        this.setAccessTokenToLocalStorage();
-        if (this.state.accessToken) {
-            this.setTimerOnLogIn();
-        } else this.clearTimeOnLogOut();
+   removeAccessTokenFromLocalStorage = () => {
+      localStorage.removeItem('timeboxing-access-token');
 
-        return this.state.accessToken ? true : false;
-    }
+   }
 
-    render() {
-        return (
-            <div className="App">
-                <ErrorBoundary message="wystąpił błąd całej aplikacji" >
+   isUserLoggedIn = () => {
+      //when user is logged in store accessToken in localStorage
+      this.setAccessTokenToLocalStorage();
+      if (this.state.accessToken) {
+         this.setTimerOnLogIn();
+      } else this.clearTimeOnLogOut();
 
-                    {
-                        this.isUserLoggedIn() ?
-                            <Suspense fallback={<div>Loading...</div>}>
-                                <AuthenticationContext.Provider value={{ accessToken: this.state.accessToken, onLogout: this.handleLogout }}>
-                                    <AuthenticatedApp />
-                                </AuthenticationContext.Provider>
-                            </Suspense>
-                            :
-                            <LoginForm
-                                errorMessage={this.state.previousLoginAttemptFailed ? "Nie udało się zalogować!" : null}
-                                onLoginAttempt={this.handleLoginAttempt}
-                            />
+      return this.state.accessToken ? true : false;
+   }
 
-                    }
-                </ErrorBoundary>
-            </div >
+   render() {
+      return (
+         <div className="App">
+            <ErrorBoundary message="wystąpił błąd całej aplikacji" >
 
-        );
-    }
+               {
+                  this.isUserLoggedIn() ?
+                     <Suspense fallback={<div>Loading...</div>}>
+                        <AuthenticationContext.Provider value={{ accessToken: this.state.accessToken, onLogout: this.handleLogout }}>
+                           <AuthenticatedApp />
+                        </AuthenticationContext.Provider>
+                     </Suspense>
+                     :
+                     <LoginForm
+                        errorMessage={this.state.previousLoginAttemptFailed ? "Nie udało się zalogować!" : null}
+                        onLoginAttempt={this.handleLoginAttempt}
+                     />
+
+               }
+            </ErrorBoundary>
+         </div >
+
+      );
+   }
 }
 
 export default App;
