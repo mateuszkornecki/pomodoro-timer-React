@@ -9,17 +9,8 @@ function InspirationalQuote() {
             setQuote(Quotes.getQuote())
          }
       ).catch(err => console.log(err, "Couldn't load inspirational-quotes library"))
-   })
-   // componentDidMount() {
-   //    import('inspirational-quotes').then(
-   //       (Quotes) => {
-   //          this.setState({
-   //             quote: Quotes.getQuote()
-   //          })
-   //       }
-   //    ).catch(err => console.log(err, "Couldn't load inspirational-quotes library"))
+   }, [quote])
 
-   // }
    return (
       <>
          {
