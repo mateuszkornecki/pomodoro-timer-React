@@ -17,12 +17,12 @@ function TimeboxList() {
 
    const [timeboxes, setTimeboxes] = useState([]);
 
-   const context = useContext(AuthenticationContext);
+   const { accessToken } = useContext(AuthenticationContext);
 
    //! WEEK8 useEffect fix: nie używać jednego useState, ew użyć prevState
    useEffect(() => {
-      TimeboxesAPI.setAccessToken(context.accessToken);
-      TimeboxesAPI.getAllTimeboxes(context.accessToken).then(
+      TimeboxesAPI.setAccessToken(accessToken);
+      TimeboxesAPI.getAllTimeboxes(accessToken).then(
          (timeboxes) => setTimeboxes(timeboxes)
       ).catch(
          (error) => {
@@ -44,11 +44,11 @@ function TimeboxList() {
             });
          }
       )
-   }, [context.accessToken])
+   }, [accessToken])
 
    const handleCreate = createdTimebox => {
       try {
-         addTimebox(createdTimebox, context.accessToken);
+         addTimebox(createdTimebox, accessToken);
       }
       catch (error) {
          console.log("metoda addTimebox wyrzuciła błąd");
@@ -59,7 +59,7 @@ function TimeboxList() {
 
    const addTimebox = timebox => {
       import("../api/AxiosTimeboxesApi").then(TimeboxesAPI => {
-         TimeboxesAPI.default.addTimebox(timebox, context.accessToken).then(
+         TimeboxesAPI.default.addTimebox(timebox, accessToken).then(
             (addedTimebox) => setTimeboxes(prevState => {
                const timeboxes = [...prevState, addedTimebox];
                return timeboxes;
@@ -69,7 +69,7 @@ function TimeboxList() {
    };
 
    const removeTimebox = indexToRemove => {
-      TimeboxesAPI.removeTimebox(timeboxes[indexToRemove], context.accessToken)
+      TimeboxesAPI.removeTimebox(timeboxes[indexToRemove], accessToken)
          .then(() => {
             setTimeboxes(prevState => {
                const timeboxes = prevState.filter(
