@@ -4,7 +4,8 @@ import ErrorMessage from "./ErrorMessage";
 import TimeboxesAPI from "../api/AxiosTimeboxesApi"
 import AuthenticationContext from "../context/AuthenticationContext";
 import TimeboxList from "./TimeboxList";
-export const Timebox = React.lazy(() => import("./Timebox"));
+import ReadOnlyTimebox from "./ReadOnlyTimebox";
+import Timebox from "./Timebox";
 
 function TimeboxManager() {
 
@@ -114,6 +115,30 @@ function TimeboxManager() {
       });
    };
 
+   const renderTimebox = (timebox, index) => {
+      return (
+         <Timebox
+            title={timebox.title}
+            taskTime={timebox.taskTime}
+            onDelete={() => removeTimebox(index)}
+            onEdit={() => editTimebox(index, {
+               ...timebox,
+               title: state.editInput
+            })}
+            onChange={changeTitle}
+         />
+      )
+   }
+
+   const renderReadOnlyTimebox = (timebox, index) => {
+      return (
+         <ReadOnlyTimebox
+            title={timebox.title}
+            taskTime={timebox.taskTime}
+         />
+      )
+   }
+
    const { hasError } = state;
    return (
       <>
@@ -123,12 +148,9 @@ function TimeboxManager() {
          <ErrorMessage hasError={hasError} message="timebox list przestał działać">
             <TimeboxList
                timeboxes={timeboxes}
-               onTimeboxDelete={removeTimebox}
-               onTimeboxEdit={editTimebox}
-               onTimeboxTitleChange={changeTitle}
-               editInput={state.editInput}
                onLoadingError={state.loadingError}
                onLoading={state.loading}
+               renderTimebox={renderReadOnlyTimebox}
             />
          </ErrorMessage>
       </>
@@ -136,4 +158,3 @@ function TimeboxManager() {
 }
 
 export default TimeboxManager;
-
