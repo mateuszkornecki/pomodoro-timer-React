@@ -1,16 +1,8 @@
 import React from 'react';
 
-function InspirationalQuotePresentational({ quote }) {
+function InspirationalQuotePresentational({ quote, render }) {
 
-   return (<>
-      {quote ?
-         <figure>
-            <figcaption><cite>{quote.author}</cite></figcaption>
-            <blockquote>{quote.text}</blockquote>
-         </figure>
-         :
-         "Loading quote..."}
-   </>);
+   return render(quote);
 }
 
 export default InspirationalQuotePresentational;
